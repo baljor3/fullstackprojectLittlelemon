@@ -7,9 +7,9 @@ import { json } from "stream/consumers";
 const BookingForm  = () =>{
 
     const [date, setDate] = useState();
-    const [time,setTime] = useState();
-    const [guest, setGuest]  =useState();
-    const [occasion, setOccasion] = useState();
+    const [time,setTime] = useState("17:00");
+    const [guest, setGuest]  =useState("1");
+    const [occasion, setOccasion] = useState("Birthday");
     const [apidata, setData] = useState();
     const [availableTimes, setAvailableTimes] = useState(['17:00',
     '18:00',
@@ -38,7 +38,6 @@ const BookingForm  = () =>{
 
             }
         }
-        console.log(temptime)
         const temp = ['17:00',
         '18:00',
         '19:00',
@@ -77,6 +76,10 @@ const BookingForm  = () =>{
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if(date === "" || date === null || date === undefined){
+            alert("Please select a date")
+            return
+        }
         addDates(date, time,guest,occasion);
      };
 
@@ -84,7 +87,7 @@ const BookingForm  = () =>{
     const ChangeDate = (e) => {
     updatedate(e.target.value)
     setDate(e.target.value);
-     };
+    };
 
     return(
     <form style={{"display": 'grid', "max-width": 200, "gap": 20}} onSubmit={handleSubmit}>
@@ -98,7 +101,7 @@ const BookingForm  = () =>{
         <label for ="res-time">Choose a Time</label>
 
         <select id = "res-time"
-        onClick={(e)=>{setTime(e.target.value)}}>
+        onChange={(e)=>{setTime(e.target.value)}}>
         {availableTimes.map((time) =>(
             <option>{time}</option>
         ))}
@@ -107,12 +110,12 @@ const BookingForm  = () =>{
         <label for="guests" >Number of guests</label>
 
         <input type="number" placeholder="1" min="1" max="10" id="guests"
-        onClick={(e)=> {setGuest(e.target.value)}}></input>
+        onChange={(e)=> {setGuest(e.target.value)}}></input>
 
         <label for="occasion">Occasion</label>
 
         <select id="occasion"
-        onClick={(e)=> {setOccasion(e.target.value)}} >
+        onChange={(e)=> {setOccasion(e.target.value)}} >
             <option>Birthday</option>
             <option>Anniversary</option>
         </select>
