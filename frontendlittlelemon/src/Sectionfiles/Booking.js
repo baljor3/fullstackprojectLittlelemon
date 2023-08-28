@@ -74,13 +74,14 @@ const BookingForm  = () =>{
         })
     }
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = () => {
+        
         if(date === "" || date === null || date === undefined){
             alert("Please select a date")
             return
         }
         addDates(date, time,guest,occasion);
+        alert("Your reservations were made!")
      };
 
 
@@ -95,6 +96,7 @@ const BookingForm  = () =>{
 
         <input type = "date"
         id="res-date"
+        required name="date"
         onChange={ChangeDate}
          ></input>
 
