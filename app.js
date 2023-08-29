@@ -3,26 +3,11 @@ const app = express();
 const cors = require("cors")
 const mysql = require("mysql")
 
-//create db
-app.get('/createdb',(req, res )=>{
-  let sql = 'CREATE DATABASE nodemysql';
-
-  db.query(sql,(err,result)={
-    
-    if(err){
-      throw err;
-    }
-
-  })
-  console.log("db created")
-})
-
-// Create Connection
 const db = mysql.createConnection({
-  host: " localhost",
-  usser: "root",
+  host: "localhost",
+  port: 3306,
+  user: "root",
   password: "159159",
-  database: "nodemysql"
 });
 
 //connect
@@ -32,6 +17,33 @@ db.connect((err)=>{
   }
   console.log("Connected to mysql");
 });
+
+//create db
+app.get('/createdb',(req, res )=>{
+  let sql = 'CREATE DATABASE nodemysql';
+
+  db.query(sql,(err,result)=>{
+    
+    if(err){
+      throw err;
+    }
+  })
+  console.log("db created")
+})
+
+// create table
+app.get('/createlogintable', (req,res)=>{
+  let sql = 'CREATE TABLE login(id int AUTO_INCREMENT, username VARCHAR(255), password VARCHAR(255), PRIMARY KEY (id))';
+  db.query(sql, (err,result)=>{
+    if(err){
+      throw err;
+    }
+    console.log(result)
+    res.send("login table created")
+  })
+})
+// Create Connection
+
 
 
 app.use(
