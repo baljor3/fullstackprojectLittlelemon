@@ -6,6 +6,7 @@ import Nav from "./Sectionfiles/Nav"
 import Main from "./Sectionfiles/Main"
 import Footer from "./Sectionfiles/Footer"
 import BookingPage from "./Sectionfiles/Booking"
+import Login  from "./Sectionfiles/Login"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
     <Route path="/" element={<Main />}></Route>
     <Route path="/booking" element={<BookingPage />}></Route>
+    <Route path="/login" element ={<Login/>}> </Route>
     </Routes>
       </BrowserRouter>
       <Footer></Footer>

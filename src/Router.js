@@ -37,4 +37,19 @@ router.post("/saveDates",(req,res)=>{
 
 });
 
+router.post('/logininsert', async (req, res) => {
+  const { username, email,password } = req.body;
+  const sql = 'INSERT INTO login (username, email,password) VALUES (?, ?,?)';
+  const values = [username, email,password];
+
+  db.query(sql, values, (err, result) => {
+    if (err) {
+      console.error('Error inserting login data:', err);
+      res.status(500).json({ error: 'An error occurred' });
+    } else {
+      res.status(201).json({ message: 'Login data inserted successfully' });
+    }
+  });
+});
+
 module.exports = router;

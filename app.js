@@ -8,6 +8,7 @@ const db = mysql.createConnection({
   port: 3306,
   user: "root",
   password: "159159",
+  database: "nodemysql"
 });
 
 //connect
@@ -33,7 +34,7 @@ app.get('/createdb',(req, res )=>{
 
 // create table
 app.get('/createlogintable', (req,res)=>{
-  let sql = 'CREATE TABLE login(id int AUTO_INCREMENT, username VARCHAR(255), password VARCHAR(255), PRIMARY KEY (id))';
+  let sql = 'CREATE TABLE login(id int AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255) ,password VARCHAR(255), PRIMARY KEY (id))';
   db.query(sql, (err,result)=>{
     if(err){
       throw err;
@@ -42,7 +43,6 @@ app.get('/createlogintable', (req,res)=>{
     res.send("login table created")
   })
 })
-// Create Connection
 
 
 
