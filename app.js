@@ -1,23 +1,8 @@
 const express = require("express");
 const app = express();
 const cors = require("cors")
-const mysql = require("mysql")
+const db = require("db")
 
-const db = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "159159",
-  database: "nodemysql"
-});
-
-//connect
-db.connect((err)=>{
-  if(err){
-    throw err;
-  }
-  console.log("Connected to mysql");
-});
 
 //create db
 app.get('/createdb',(req, res )=>{
@@ -57,7 +42,7 @@ const DatesRouter = require("./src");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/api/dates", DatesRouter);
+app.use("/api", DatesRouter);
 
 
 

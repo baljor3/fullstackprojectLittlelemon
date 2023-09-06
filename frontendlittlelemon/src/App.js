@@ -1,13 +1,12 @@
 import './App.css';
 import  React from "react"
-
-import Header from"./Sectionfiles/Header"
 import Nav from "./Sectionfiles/Nav"
 import Main from "./Sectionfiles/Main"
 import Footer from "./Sectionfiles/Footer"
 import BookingPage from "./Sectionfiles/Booking"
 import Login  from "./Sectionfiles/Login"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
+import Register from './Sectionfiles/Register';
 
 function App() {
   return (
@@ -17,6 +16,7 @@ function App() {
     <Route path="/" element={<Main />}></Route>
     <Route path="/booking" element={<BookingPage />}></Route>
     <Route path="/login" element ={<Login/>}> </Route>
+    <Route path="/register" element ={<Register/>}></Route>
     </Routes>
       </BrowserRouter>
       <Footer></Footer>
