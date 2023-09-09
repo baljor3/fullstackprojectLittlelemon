@@ -27,9 +27,23 @@ const Register = () => {
               console.log(data);
             })
         }
+
+    function hasWhiteSpace(str, b) {
+            for (let i = 0; i < str.length; i++) {
+              if (str[i] === ' ' || str[i] === '\t' || str[i] === '\n' || str[i] === '\r') {
+                return b = true; // Found a white space character
+            }
+        }
+        return false; // No white space character found
+    }
         
     const checkUserName = (username,bool) => {
         bool = false;
+        hasWhiteSpace(username, bool)
+        if(bool === true){
+            setErrorPass("there is whitespace in your username")
+            return bool = true;
+        }
         if(username.length < 4){
             setErrorUser("Username is too short")
             return bool = true;
@@ -41,10 +55,16 @@ const Register = () => {
 
     const checkEmail = (email,bool) => {
 
-        const e = email.value.trim();
+        
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-        if (!emailRegex.test(e)) {
+        hasWhiteSpace(email, bool)
+        if(bool === true){
+            setErrorPass("there is whitespace in your email")
+            return bool = true;
+        }
+
+        if (!emailRegex.test(email)) {
             setErrorEmail("Incorrect Email format")
             return bool = true;
         }else{
@@ -54,14 +74,28 @@ const Register = () => {
     }
 
     const checkPassword = (p, bool) => {
+       
+        hasWhiteSpace(p, bool)
+        if(bool === true){
+            setErrorPass("there is whitespace in your password")
+            return bool = true;
+        }
 
+        if(p.length < 4){
+            setErrorPass("Password too short")
+            return bool = true;
+        }else{
+            setErrorPass("")
+        }
         
     }
 
-    const submitdata =()=>{
+    const submitdata =(e)=>{
+        e.preventDefault();
         const bool = false;
         checkUserName(username,bool)
         checkEmail(email,bool)
+        checkPassword(password,bool)
         if(bool === true){
             return;
         }
@@ -74,17 +108,17 @@ const Register = () => {
             <input id = "username"
             onChange={(e)=> setUserName(e.target.value)}
             required></input>
-            <span id="error" style="color: red;">{errorUser}</span>
+            <span >  {errorUser}  </span>
 
             <label>Email</label>
             <input id ="email"
             onChange={(e)=> setEmail(e.target.value)}></input>
-            <span id="error" style="color: red;">{errorEmail}</span>
+            <span  >  {errorEmail}  </span>
 
             <label>Password</label>
             <input id="password"
             onChange={(e)=> setPassword(e.target.value)}></input>
-            <span id="error" style="color: red;">{errorPass}</span>
+            <span >  {errorPass}  </span>
 
 
             <button type="submit">Register</button>
