@@ -28,7 +28,8 @@ const Register = () => {
             })
         }
 
-    function hasWhiteSpace(str, b) {
+    function hasWhiteSpace(str) {
+        b = false;
             for (let i = 0; i < str.length; i++) {
               if (str[i] === ' ' || str[i] === '\t' || str[i] === '\n' || str[i] === '\r') {
                 return b = true; // Found a white space character
@@ -37,9 +38,9 @@ const Register = () => {
         return false; // No white space character found
     }
         
-    const checkUserName = (username,bool) => {
-        bool = false;
-        hasWhiteSpace(username, bool)
+    const checkUserName = (username) => {
+        const bool = false;
+        bool = hasWhiteSpace(username)
         if(bool === true){
             setErrorPass("there is whitespace in your username")
             return bool = true;
@@ -53,12 +54,12 @@ const Register = () => {
         }
     }
 
-    const checkEmail = (email,bool) => {
-
+    const checkEmail = (email) => {
+        const bool = false;
         
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
-        hasWhiteSpace(email, bool)
+        bool = hasWhiteSpace(email)
         if(bool === true){
             setErrorPass("there is whitespace in your email")
             return bool = true;
@@ -73,9 +74,9 @@ const Register = () => {
 
     }
 
-    const checkPassword = (p, bool) => {
-       
-        hasWhiteSpace(p, bool)
+    const checkPassword = (p) => {
+        const bool = false;
+        bool = hasWhiteSpace(p, bool)
         if(bool === true){
             setErrorPass("there is whitespace in your password")
             return bool = true;
@@ -93,9 +94,9 @@ const Register = () => {
     const submitdata =(e)=>{
         e.preventDefault();
         const bool = false;
-        checkUserName(username,bool)
-        checkEmail(email,bool)
-        checkPassword(password,bool)
+        bool =checkUserName(username)
+        bool =checkEmail(email,bool)
+        bool = checkPassword(password,bool)
         if(bool === true){
             return;
         }
