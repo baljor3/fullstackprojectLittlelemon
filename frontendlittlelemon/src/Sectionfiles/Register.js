@@ -29,7 +29,7 @@ const Register = () => {
         }
 
     function hasWhiteSpace(str) {
-        b = false;
+        var b = false;
             for (let i = 0; i < str.length; i++) {
               if (str[i] === ' ' || str[i] === '\t' || str[i] === '\n' || str[i] === '\r') {
                 return b = true; // Found a white space character
@@ -38,14 +38,16 @@ const Register = () => {
         return false; // No white space character found
     }
         
-    const checkUserName = (username) => {
-        const bool = false;
-        bool = hasWhiteSpace(username)
+    const checkUserName = (user) => {
+        console.log(user)
+        var bool = false;
+        bool = hasWhiteSpace(user)
         if(bool === true){
             setErrorPass("there is whitespace in your username")
             return bool = true;
         }
-        if(username.length < 4){
+        console.log("before loop")
+        if(this.user.length < 4){
             setErrorUser("Username is too short")
             return bool = true;
         }
@@ -55,7 +57,7 @@ const Register = () => {
     }
 
     const checkEmail = (email) => {
-        const bool = false;
+        var bool = false;
         
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -75,14 +77,14 @@ const Register = () => {
     }
 
     const checkPassword = (p) => {
-        const bool = false;
-        bool = hasWhiteSpace(p, bool)
+        var bool = false;
+        bool = hasWhiteSpace(p)
         if(bool === true){
             setErrorPass("there is whitespace in your password")
             return bool = true;
         }
 
-        if(p.length < 4){
+        if(this.p.length < 4){
             setErrorPass("Password too short")
             return bool = true;
         }else{
@@ -93,16 +95,18 @@ const Register = () => {
 
     const submitdata =(e)=>{
         e.preventDefault();
-        const bool = false;
+        console.log(username)
+        var bool = false;
         bool =checkUserName(username)
-        bool =checkEmail(email,bool)
-        bool = checkPassword(password,bool)
+        bool =checkEmail(email)
+        bool = checkPassword(password)
         if(bool === true){
             return;
         }
         addUser(username,email,password)
         alert("the data was added")
     }
+
     return(
     <form style={{"display": 'grid', "max-width": 200, "gap": 20}} onSubmit={submitdata}>
             <label>Username</label>
