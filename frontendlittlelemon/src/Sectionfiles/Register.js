@@ -47,7 +47,8 @@ const Register = () => {
             return bool = true;
         }
         console.log("before loop")
-        if(this.user.length < 4){
+        if(user.length < 4){
+            
             setErrorUser("Username is too short")
             return bool = true;
         }
@@ -84,7 +85,7 @@ const Register = () => {
             return bool = true;
         }
 
-        if(this.p.length < 4){
+        if(p.length < 4){
             setErrorPass("Password too short")
             return bool = true;
         }else{
