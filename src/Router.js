@@ -2,6 +2,7 @@ const datecontoller =require('./Controller')
 const express = require('express')
 const router = express.Router()
 const db = require('../db');
+const jwt  = require('jsonwebtoken')
 
 router.get("/getDates",(req,res)=>{
     try{
@@ -38,7 +39,7 @@ router.post("/saveDates",(req,res)=>{
 
 });
 
-router.post('/logininsert', async (req, res) => {
+router.post('/logininsert', (req, res) => {
   const { username, email,password } = req.body;
   const sql = 'INSERT INTO login (username, email,password) VALUES (?, ?,?)';
   const values = [username, email,password];
@@ -53,4 +54,32 @@ router.post('/logininsert', async (req, res) => {
   });
 });
 
+router.post('/login',(req,res)=>{
+    try{
+    const {username,password} = req.body;
+    const sql = 'SELECT * FROM login WHERE username = ? AND password = ?'
+    const values = [username,password];
+
+    db.query(sql, values, (err,result)=>{
+        if(err){
+            res.status(500).json({error:"The username or password is invalid"})
+        }else{
+            const user = result
+            const token = jwt.sign({ id: user.id, username: user.username }, 'secretKey', { expiresIn: '1h' }, (err,token) =>{
+                if(err){
+                    res.status(500).json({error: "error when creating token"})
+                }else{
+                res.json({token})
+                }
+            })
+             
+        }
+    })
+
+    
+}catch(error){
+    res.status(500).json({ message: 'Server error.' });
+}
+
+})
 module.exports = router;

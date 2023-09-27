@@ -14,6 +14,7 @@
     "express": "^4.18.2",
     "framer-motion": "^10.12.16",
     "fs": "^0.0.1-security",
+    "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "node-polyfill-webpack-plugin": "^2.0.1",
@@ -26,6 +27,7 @@
     "react-router-dom": "^6.14.0",
     "react-scripts": "^5.0.1",
     "stream": "^0.0.2",
+    "universal-cookie": "^6.1.1",
     "web-vitals": "^2.1.4",
     "zlib": "^1.0.5"
   },
