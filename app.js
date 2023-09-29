@@ -11,6 +11,7 @@ app.get('/createdb',(req, res )=>{
   db.query(sql,(err,result)=>{
     
     if(err){
+      console.log(err)
       throw err;
     }
   })

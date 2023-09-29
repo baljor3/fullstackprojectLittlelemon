@@ -56,19 +56,21 @@ router.post('/logininsert', (req, res) => {
 
 router.post('/login',(req,res)=>{
     try{
-    const {username,password} = req.body;
+    const {username , password} = req.body;
     const sql = 'SELECT * FROM login WHERE username = ? AND password = ?'
     const values = [username,password];
 
     db.query(sql, values, (err,result)=>{
         if(err){
-            res.status(500).json({error:"The username or password is invalid"})
+            res.status(500).json({error:"Query failed"})
         }else{
+            console.log("here are the results",result)
             const user = result
             const token = jwt.sign({ id: user.id, username: user.username }, 'secretKey', { expiresIn: '1h' }, (err,token) =>{
                 if(err){
                     res.status(500).json({error: "error when creating token"})
                 }else{
+                res.json(result)
                 res.json({token})
                 }
             })

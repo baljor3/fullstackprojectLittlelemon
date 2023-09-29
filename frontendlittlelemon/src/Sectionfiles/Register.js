@@ -50,7 +50,7 @@ const Register = () => {
         if(user.length < 4){
             
             setErrorUser("Username is too short")
-            return bool = true;
+            return true;
         }
         else{
             setErrorUser("")
@@ -91,7 +91,6 @@ const Register = () => {
         }else{
             setErrorPass("")
         }
-        
     }
 
     const submitdata =(e)=>{
@@ -99,7 +98,13 @@ const Register = () => {
         console.log(username)
         var bool = false;
         bool =checkUserName(username)
+        if(bool === true){
+            return;
+        }
         bool =checkEmail(email)
+        if(bool === true){
+            return;
+        }
         bool = checkPassword(password)
         if(bool === true){
             return;
