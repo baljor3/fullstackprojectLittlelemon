@@ -8,12 +8,12 @@ const Login = () => {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     
-    const login = async(username, password) =>{
+    const login = async(user, pass) =>{
         await fetch('http://localhost:8080/api/login',{
             method: 'POST',
             body: JSON.stringify({
-               "username":username,
-               "password":password
+               "username":user,
+               "password":pass
             })})
             .then((res) => res.json())
             .then((data) => {
@@ -28,6 +28,7 @@ const Login = () => {
    
     const k=(e) =>{
         e.preventDefault()
+        console.log(username,password)
         login(username, password)
         
     }

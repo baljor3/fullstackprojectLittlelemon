@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {Link }from 'react-router-dom';
 
 
 const Register = () => {
@@ -39,14 +40,13 @@ const Register = () => {
     }
         
     const checkUserName = (user) => {
-        console.log(user)
+
         var bool = false;
         bool = hasWhiteSpace(user)
         if(bool === true){
             setErrorPass("there is whitespace in your username")
             return bool = true;
         }
-        console.log("before loop")
         if(user.length < 4){
             
             setErrorUser("Username is too short")
@@ -133,7 +133,7 @@ const Register = () => {
 
 
             <button type="submit">Register</button>
-            <button>Login</button>
+            <Link to="/login"> <button>Login</button></Link>
     </form>
     )
 }

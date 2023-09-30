@@ -55,10 +55,11 @@ router.post('/logininsert', (req, res) => {
 });
 
 router.post('/login',(req,res)=>{
-    try{
+    
     const {username , password} = req.body;
     const sql = 'SELECT * FROM login WHERE username = ? AND password = ?'
     const values = [username,password];
+    console.log("here is the req.body",req.body)
 
     db.query(sql, values, (err,result)=>{
         if(err){
@@ -66,22 +67,18 @@ router.post('/login',(req,res)=>{
         }else{
             console.log("here are the results",result)
             const user = result
-            const token = jwt.sign({ id: user.id, username: user.username }, 'secretKey', { expiresIn: '1h' }, (err,token) =>{
+            const token = jwt.sign({ id: user.id, username: user.username },
+                'secretKey',
+                { expiresIn: '1h' }, (err,token) =>{
                 if(err){
                     res.status(500).json({error: "error when creating token"})
                 }else{
-                res.json(result)
                 res.json({token})
                 }
             })
-             
         }
     })
 
-    
-}catch(error){
-    res.status(500).json({ message: 'Server error.' });
-}
 
 })
 module.exports = router;
