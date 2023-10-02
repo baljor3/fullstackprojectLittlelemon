@@ -65,7 +65,10 @@ router.post('/login',(req,res)=>{
         if(err){
             res.status(500).json({error:"Query failed"})
         }else{
-            console.log("here are the results",result)
+           
+            if (result === undefined || result.length ==0){
+                res.json(false)
+            }
             const user = result
             const token = jwt.sign({ id: user.id, username: user.username },
                 'secretKey',
@@ -81,4 +84,5 @@ router.post('/login',(req,res)=>{
 
 
 })
+
 module.exports = router;

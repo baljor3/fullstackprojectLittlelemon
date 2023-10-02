@@ -7,6 +7,7 @@ const Login = () => {
     const cookies = new Cookies();
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
+    const [errorLogin, setErrorrLogin] = useState();
     
     const login = async(user, pass) =>{
         await fetch('http://localhost:8080/api/login',{
@@ -14,11 +15,22 @@ const Login = () => {
             body: JSON.stringify({
                "username":user,
                "password":pass
-            })})
+            }), 
+            headers: {
+                'Content-type': 'application/json'
+            }
+            })
+
             .then((res) => res.json())
             .then((data) => {
-              console.log(data)
+              if(data === false){
+                setErrorrLogin("Incorrect password or username")
+                cookies.set("jwt_authorization","")
+                console.log(cookies)
+              }else{
+              setErrorrLogin("")
               cookies.set("jwt_authorization",data)
+              }
             })
             .catch(error =>{
                 console.log(error)
@@ -46,6 +58,7 @@ const Login = () => {
             <input id="password"
             onChange={(e)=> setPassword(e.target.value)} required></input>
 
+            <span>{errorLogin}</span>
             <button type="submit">Login</button>
             <Link to="/register"><button>Register</button> </Link>
     </form>

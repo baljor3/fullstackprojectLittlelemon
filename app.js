@@ -30,6 +30,31 @@ app.get('/createlogintable', (req,res)=>{
   })
 })
 
+//create cart
+app.get('/createCart',(req,res)=>{
+  let sql = 'CREATE TABLE cart(orderid int AUTO_INCREMENT, userid int, productid int, PRIMARY KEY (orderid), FOREIGN KEY (userid) REFERENCES login(id), FOREIGN KEY (productid) REFERENCES product(productid))'
+
+    db.query(sql, (err,result)=>{
+      if(err){
+        throw err;
+      }
+      console.log(result)
+      res.send("cart table created")
+    })
+})
+
+//create product
+app.get('/createProduct',(req,res)=>{
+  let sql = 'CREATE TABLE product(productid int AUTO_INCREMENT, name VARCHAR(255), Description TEXT, price double(3,2), PRIMARY KEY(productid))'
+  db.query(sql, (err,result)=>{
+    if(err){
+      throw err;
+    }
+    console.log(result)
+    res.send("product table created")
+  })
+})
+
 
 
 app.use(
