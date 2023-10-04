@@ -85,4 +85,31 @@ router.post('/login',(req,res)=>{
 
 })
 
+router.post('/additem',(req,res)=>{
+    const token = req.body.token
+    console.log(token)
+
+    if(token){
+        const decode = jwt.verify(token,'secret')
+        console.log(decode.id)
+    }else{
+        res.status(401).json({error:"Unauthorized request"})
+    }
+    /*
+    const {userid,productid} = req.body
+    const sql = "INSERT INTO cart(userid, productid) VALUES (?, ?)"
+    const values = [userid,productid]
+    console.log("here is the req.body",req.body)
+
+    db.query(sql,values,(err,result)=>{
+        if(err){
+            res.status(500).send("Query failed")
+        }else{
+            res.status(200).send("values inserted")
+        }
+    })
+    */
+})
+
+
 module.exports = router;
