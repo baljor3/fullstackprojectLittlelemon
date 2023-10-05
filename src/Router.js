@@ -76,13 +76,14 @@ router.post('/login',(req,res)=>{
                 if(err){
                     res.status(500).json({error: "error when creating token"})
                 }else{
-                res.json({token})
+                    console.log(token)
+                res.cookie("token",token,{
+                    httpOnly: true
+                })
                 }
             })
         }
     })
-
-
 })
 
 router.post('/additem',(req,res)=>{
@@ -90,7 +91,7 @@ router.post('/additem',(req,res)=>{
     console.log(token)
 
     if(token){
-        const decode = jwt.verify(token,'secret')
+        const decode = jwt.verify(token,'secretKey')
         console.log(decode.id)
     }else{
         res.status(401).json({error:"Unauthorized request"})
