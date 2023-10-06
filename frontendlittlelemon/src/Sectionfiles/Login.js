@@ -26,8 +26,8 @@ const Login = () => {
             .then((data) => {
               if(data === false){
                 setErrorrLogin("Incorrect password or username")
-               /* cookies.set("jwt_authorization","")
-                console.log(cookies) */
+               cookies.set("jwt_authorization","")
+                console.log(cookies) 
               }else{
               setErrorrLogin("")
 

@@ -70,16 +70,14 @@ router.post('/login',(req,res)=>{
                 res.json(false)
             }
             const user = result
-            const token = jwt.sign({ id: user.id, username: user.username },
+            const token = jwt.sign({ id: user[0].id},
                 'secretKey',
                 { expiresIn: '1h' }, (err,token) =>{
                 if(err){
                     res.status(500).json({error: "error when creating token"})
                 }else{
-                    console.log(token)
-                res.cookie("token",token,{
-                    httpOnly: true
-                })
+                
+                res.send({token})
                 }
             })
         }
@@ -87,20 +85,24 @@ router.post('/login',(req,res)=>{
 })
 
 router.post('/additem',(req,res)=>{
-    const token = req.body.token
-    console.log(token)
-
+    console.log(req.body)
+    console.log(req.headers.token)
+    var token = req.headers.token
+    token =JSON.parse(token)["token"] 
+  
     if(token){
         const decode = jwt.verify(token,'secretKey')
-        console.log(decode.id)
+        var userid = decode.id
     }else{
         res.status(401).json({error:"Unauthorized request"})
     }
-    /*
-    const {userid,productid} = req.body
-    const sql = "INSERT INTO cart(userid, productid) VALUES (?, ?)"
+    
+    const {productid} = req.body
+    const sql = 'INSERT INTO cart(userid, productid) VALUES (?, ?)'
     const values = [userid,productid]
-    console.log("here is the req.body",req.body)
+    console.log(productid)
+    console.log(userid)
+    console.log(typeof(userid), typeof(productid))
 
     db.query(sql,values,(err,result)=>{
         if(err){
@@ -109,7 +111,7 @@ router.post('/additem',(req,res)=>{
             res.status(200).send("values inserted")
         }
     })
-    */
+    
 })
 
 
