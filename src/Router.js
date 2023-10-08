@@ -59,7 +59,7 @@ router.post('/login',(req,res)=>{
     const {username , password} = req.body;
     const sql = 'SELECT * FROM login WHERE username = ? AND password = ?'
     const values = [username,password];
-    console.log("here is the req.body",req.body)
+
 
     db.query(sql, values, (err,result)=>{
         if(err){
@@ -85,8 +85,7 @@ router.post('/login',(req,res)=>{
 })
 
 router.post('/additem',(req,res)=>{
-    console.log(req.body)
-    console.log(req.headers.token)
+
     var token = req.headers.token
     token =JSON.parse(token)["token"] 
   
@@ -99,16 +98,18 @@ router.post('/additem',(req,res)=>{
     
     const {productid} = req.body
     const sql = 'INSERT INTO cart(userid, productid) VALUES (?, ?)'
+
     const values = [userid,productid]
-    console.log(productid)
-    console.log(userid)
-    console.log(typeof(userid), typeof(productid))
+    
+
 
     db.query(sql,values,(err,result)=>{
         if(err){
-            res.status(500).send("Query failed")
+            
+            res.status(500).json({error:"Query Failed"})
         }else{
-            res.status(200).send("values inserted")
+            
+            res.status(200).json({message:"values inserted"})
         }
     })
     
