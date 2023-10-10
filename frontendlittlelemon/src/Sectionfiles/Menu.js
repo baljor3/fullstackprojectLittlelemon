@@ -19,6 +19,8 @@ const Menu=() => {
         }).then((res)=> res.json())
         .then((data)=>{
             console.log(data)
+        }).catch(err =>{
+            alert("Login to order items")
         })
     }
 

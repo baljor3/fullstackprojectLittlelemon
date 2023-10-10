@@ -115,5 +115,29 @@ router.post('/additem',(req,res)=>{
     
 })
 
+router.get('/getCart',(req,res)=>{
+   const IdorNot= getUserID(req.headers.token)
+   const sql = 'SELECT * FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL'
 
+   db.query(sql, IdorNot,(err,result)=>{
+    if(err){
+        console.log(err)
+        res.status(500).json({error:"Query failed"})
+    }else{
+        res.status(200).json({message:"users access"})
+    }
+   })
+})
+
+function getUserID(TokenHeader){
+    var token = TokenHeader
+    token =JSON.parse(token)["token"] 
+  
+    if(token){
+        const decode = jwt.verify(token,'secretKey')
+        return decode.id
+    }else{
+        return res.status(401).json({error:"Unauthorized request"})
+    }
+}
 module.exports = router;

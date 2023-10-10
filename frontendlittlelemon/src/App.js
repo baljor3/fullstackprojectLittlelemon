@@ -6,6 +6,7 @@ import Menu from "./Sectionfiles/Menu"
 import Footer from "./Sectionfiles/Footer"
 import BookingPage from "./Sectionfiles/Booking"
 import Login  from "./Sectionfiles/Login"
+import Cart from "./Sectionfiles/Cart"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Register from './Sectionfiles/Register';
 
@@ -19,6 +20,7 @@ function App() {
     <Route path="/login" element ={<Login/>}> </Route>
     <Route path="/register" element ={<Register/>}></Route>
     <Route path = "/menu" element ={<Menu/>}></Route>
+    <Route path = "/cart" element = {<Cart/>}> </Route>
     </Routes>
       </BrowserRouter>
       <Footer></Footer>

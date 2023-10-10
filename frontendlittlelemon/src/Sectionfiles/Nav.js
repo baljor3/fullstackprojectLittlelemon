@@ -23,9 +23,10 @@ const navlinks = [
         name:"Reservations",
         link:"/booking",
     },
+
     {
-        name:"order",
-        link:"/order",
+        name:"cart",
+        link:"/cart",
     },
 
     {
