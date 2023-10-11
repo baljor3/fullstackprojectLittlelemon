@@ -56,7 +56,6 @@ app.get('/createProduct',(req,res)=>{
 })
 
 
-
 app.use(
   cors({
   origin:'*'

@@ -124,7 +124,7 @@ router.get('/getCart',(req,res)=>{
         console.log(err)
         res.status(500).json({error:"Query failed"})
     }else{
-        res.status(200).json({message:"users access"})
+        res.send(result)
     }
    })
 })

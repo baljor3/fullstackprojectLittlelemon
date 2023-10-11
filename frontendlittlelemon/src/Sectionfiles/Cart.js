@@ -1,8 +1,8 @@
-import {React, useEffect} from "react"
+import {React, useEffect, useState} from "react"
 import Cookies from "js-cookie";
 
 const Cart=()=>{
-    var dataarray =[]
+    var [data, setData] = useState([])
     useEffect(() =>{
         fetch('http://localhost:8080/api/getCart',{
             headers:{
@@ -11,9 +11,8 @@ const Cart=()=>{
         })
         .then((response)=>response.json())
         .then((data)=>{
-            console.log(data)
-            dataarray = data
-            console.log(dataarray)
+            
+            setData(data)
         }).catch((err)=>{
             console.log(err.message);
         });
@@ -23,7 +22,11 @@ const Cart=()=>{
     return(
         <body>
             <ul>
-                <li></li>
+                {data.map((item)=>{
+                    return(
+                    <li key={item.orderid}>{item.name} {item.price}</li>
+                    )
+                })}
             </ul>
         </body>
     )
