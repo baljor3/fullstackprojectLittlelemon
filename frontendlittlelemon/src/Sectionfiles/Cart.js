@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from "react"
 import Cookies from "js-cookie";
 
+
 const Cart=()=>{
     var [data, setData] = useState([])
     useEffect(() =>{
@@ -19,12 +20,17 @@ const Cart=()=>{
     },[])
 
 
+
     return(
         <body>
             <ul>
                 {data.map((item)=>{
                     return(
-                    <li key={item.orderid}>{item.name} {item.price}</li>
+                    <li key={item.orderid}>{item.name} {item.price}
+                    <img 
+                    src = "C:\Users\bobby\Desktop\projects\Coursera\fullstack\fullstackprojectLittlelemon\frontendlittlelemon\src\asset\bruchetta.png" // s3 bucket here
+                    alt = "product"/>
+                    </li>
                     )
                 })}
             </ul>
