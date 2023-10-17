@@ -2,7 +2,8 @@ const datecontoller =require('./Controller')
 const express = require('express')
 const router = express.Router()
 const db = require('../db');
-const jwt  = require('jsonwebtoken')
+const jwt  = require('jsonwebtoken');
+const { restart } = require('nodemon');
 
 router.get("/getDates",(req,res)=>{
     try{
@@ -86,20 +87,12 @@ router.post('/login',(req,res)=>{
 
 router.post('/additem',(req,res)=>{
 
-    var token = req.headers.token
-    token =JSON.parse(token)["token"] 
-  
-    if(token){
-        const decode = jwt.verify(token,'secretKey')
-        var userid = decode.id
-    }else{
-        res.status(401).json({error:"Unauthorized request"})
-    }
-    
+    const IdorNot= getUserID(req.headers.token)
+
     const {productid} = req.body
     const sql = 'INSERT INTO cart(userid, productid) VALUES (?, ?)'
 
-    const values = [userid,productid]
+    const values = [IdorNot,productid]
     
 
 
@@ -115,9 +108,28 @@ router.post('/additem',(req,res)=>{
     
 })
 
+router.post('/deleteitem',(req,res)=>{
+    const IdorNot= getUserID(req.headers.token)
+
+    const {productid} = req.body
+    const values = [IdorNot, productid]
+
+    const sql = 'DELETE FROM  cart where cart.userid = ? and cart.productid = ? LIMIT 1'
+
+
+    db.query(sql, values, (err,result)=>{
+        if(err){
+            res.status(500).json({error:"Query failed"})
+        }else{
+            res.status(200).json({message:"values inserted"})
+        }
+    })
+
+})
+
 router.get('/getCart',(req,res)=>{
    const IdorNot= getUserID(req.headers.token)
-   const sql = 'SELECT * FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL'
+   const sql = 'SELECT cart.productid, product.name, product.price, SUM(product.price) AS total,COUNT(cart.productid) as numberofItems FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL GROUP BY cart.productid'
 
    db.query(sql, IdorNot,(err,result)=>{
     if(err){
@@ -128,6 +140,8 @@ router.get('/getCart',(req,res)=>{
     }
    })
 })
+
+
 
 function getUserID(TokenHeader){
     var token = TokenHeader

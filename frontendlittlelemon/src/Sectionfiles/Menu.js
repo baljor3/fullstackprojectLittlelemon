@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 const Menu=() => {
     const [productid, setProductID] = useState()
     const jwtToken = Cookies.get('jwt_authorization')
+
+    
     const additem = async(productid) =>{
         await fetch('http://localhost:8080/api/additem',{
         method: "POST",
