@@ -9,6 +9,7 @@ import Login  from "./Sectionfiles/Login"
 import Cart from "./Sectionfiles/Cart"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Register from './Sectionfiles/Register';
+import Review from './Sectionfiles/Review';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
     <Route path="/register" element ={<Register/>}></Route>
     <Route path = "/menu" element ={<Menu/>}></Route>
     <Route path = "/cart" element = {<Cart/>}> </Route>
+    <Route path = "/review/:itemId" element= {<Review/>}></Route>
     </Routes>
       </BrowserRouter>
       <Footer></Footer>

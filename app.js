@@ -50,12 +50,20 @@ app.get('/createProduct',(req,res)=>{
     if(err){
       throw err;
     }
-    console.log(result)
+   
     res.send("product table created")
   })
 })
 
-
+app.get('/createReview',(req,res)=>{
+  let sql = 'CREATE TABLE review(reviewid int AUTO_INCREMENT, userid int, username VARCHAR(255), Description TEXT,FOREIGN KEY (userid) REFERENCES login(id))'
+  db.query(sql, (err,result)=>{
+    if(err){
+      throw err;
+    }
+    res.send("review created")
+  })
+})
 app.use(
   cors({
   origin:'*'

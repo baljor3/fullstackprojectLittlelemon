@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import "../Css/Main.css"
 import greek from "../asset/greek salad.jpg"
 import Cookies from "js-cookie";
+import {Link }from 'react-router-dom';
+
 
 const Menu=() => {
     const [productid, setProductID] = useState()
@@ -41,11 +43,9 @@ const Menu=() => {
                 <img src= {greek} alt = "greeksalad" className="specialImage"></img>
                     <p style={{"margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Greek Salad</span>  <span style={{"float":"right"}}>$12.99</span> </p>
                     <p className="text-container">The famous greek salad of crispy lettuce, peppers,
-                    olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons. </p>
-                    <form onSubmit={addToCart}>
-                    <input type = "hidden" onSubmit = {(e)=> setProductID(1)}></input>
-                    <button type="submit">Order a delivery</button>
-                    </form>
+                    olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
+                    <button onClick={()=>addToCart()}>Order a delivery</button><br></br>
+                    <Link to= "/review/1">Reviews</Link>
             </div>
         </div>
         </main>
