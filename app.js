@@ -56,7 +56,7 @@ app.get('/createProduct',(req,res)=>{
 })
 
 app.get('/createReview',(req,res)=>{
-  let sql = 'CREATE TABLE review(reviewid int AUTO_INCREMENT, userid int, username VARCHAR(255), Description TEXT,FOREIGN KEY (userid) REFERENCES login(id))'
+  let sql = 'CREATE TABLE review(reviewid int AUTO_INCREMENT, rating int ,username VARCHAR(255),userid int, productid int, Description TEXT,FOREIGN KEY (userid) REFERENCES login(id), FOREIGN KEY (productid) REFERENCES product(productid), PRIMARY KEY(reviewid))'
   db.query(sql, (err,result)=>{
     if(err){
       throw err;

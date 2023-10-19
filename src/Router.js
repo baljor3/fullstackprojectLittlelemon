@@ -114,7 +114,7 @@ router.post('/deleteitem',(req,res)=>{
     const {productid} = req.body
     const values = [IdorNot, productid]
 
-    const sql = 'DELETE FROM  cart where cart.userid = ? and cart.productid = ? LIMIT 1'
+    const sql = 'DELETE FROM cart where cart.userid = ? and cart.productid = ? LIMIT 1'
 
 
     db.query(sql, values, (err,result)=>{
@@ -141,7 +141,35 @@ router.get('/getCart',(req,res)=>{
    })
 })
 
+router.post('/writeReview',(req,res)=>{
+    const IdorNot = getUserID(req.headers.token)
+    const username = getUserName(IdorNot)
+    const {rating, description, productid} = req.body
+    const values = [IdorNot , username, rating , description , productid]
+    const sql = 'INSERT INTO review(userid, username, rating, description, productid ) VAlUES (? , ? , ? , ? , ?)'
 
+    
+    db.query(sql, values, (err, result)=>{
+        if(err){
+            res.status(500).json({error:"Query failed"})
+        }else{
+            res.status(200).json({message:"values inserted"})
+        }
+    })
+
+})
+
+function getUserName(id){
+    const sql = 'SELECT username from login where id = ?'
+
+    db.query(sql, id, (err,result)=>{
+        if(err){
+            res.status(500).json({error:"failed retrieving username"})
+        }else{
+            return result
+        }
+    })
+}
 
 function getUserID(TokenHeader){
     var token = TokenHeader
