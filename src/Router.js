@@ -87,7 +87,11 @@ router.post('/login',(req,res)=>{
 
 router.post('/additem',(req,res)=>{
 
-    const IdorNot= getUserID(req.headers.token)
+    try{
+        var IdorNot = getUserID(req.headers.token)
+    }catch(err){
+        return res.status(401).json({err:err.message})
+    }
 
     const {productid} = req.body
     const sql = 'INSERT INTO cart(userid, productid) VALUES (?, ?)'
@@ -109,7 +113,11 @@ router.post('/additem',(req,res)=>{
 })
 
 router.post('/deleteitem',(req,res)=>{
-    const IdorNot= getUserID(req.headers.token)
+    try{
+        var IdorNot = getUserID(req.headers.token)
+    }catch(err){
+        return res.status(401).json({err:err.message})
+    }
 
     const {productid} = req.body
     const values = [IdorNot, productid]
@@ -128,12 +136,15 @@ router.post('/deleteitem',(req,res)=>{
 })
 
 router.get('/getCart',(req,res)=>{
-   const IdorNot= getUserID(req.headers.token)
+    try{
+        var IdorNot = getUserID(req.headers.token)
+    }catch(err){
+        return res.status(401).json({err:err.message})
+    }
    const sql = 'SELECT cart.productid, product.name, product.price, SUM(product.price) AS total,COUNT(cart.productid) as numberofItems FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL GROUP BY cart.productid'
 
    db.query(sql, IdorNot,(err,result)=>{
     if(err){
-        console.log(err)
         res.status(500).json({error:"Query failed"})
     }else{
         res.send(result)
@@ -141,11 +152,19 @@ router.get('/getCart',(req,res)=>{
    })
 })
 
-router.post('/writeReview',(req,res)=>{
-    const IdorNot = getUserID(req.headers.token)
-    const username = getUserName(IdorNot)
+router.post('/writeReview',async (req,res)=>{
+   
+   
+    try{
+    var IdorNot = getUserID(req.headers.token)
+    }catch(err){
+        return res.status(401).json({err:err.message})
+    }
+    
+    const username = await getUserName(IdorNot)
     const {rating, description, productid} = req.body
     const values = [IdorNot , username, rating , description , productid]
+    
     const sql = 'INSERT INTO review(userid, username, rating, description, productid ) VAlUES (? , ? , ? , ? , ?)'
 
     
@@ -160,26 +179,29 @@ router.post('/writeReview',(req,res)=>{
 })
 
 function getUserName(id){
-    const sql = 'SELECT username from login where id = ?'
-
-    db.query(sql, id, (err,result)=>{
-        if(err){
-            res.status(500).json({error:"failed retrieving username"})
-        }else{
-            return result
-        }
-    })
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT username FROM login WHERE id = ?';
+        db.query(sql, id, (err, result) => {
+            if (err) {
+                reject(new Error('Query failed'));
+            } else {
+                resolve(result[0].username);
+            }
+        });
+    });
 }
 
 function getUserID(TokenHeader){
     var token = TokenHeader
-    token =JSON.parse(token)["token"] 
+    
+    token =JSON.parse(token)["token"]
   
-    if(token){
-        const decode = jwt.verify(token,'secretKey')
-        return decode.id
-    }else{
-        return res.status(401).json({error:"Unauthorized request"})
+     try{
+        const result = jwt.verify(token,'secretKey')
+        return result.id
+    }catch(err){
+            throw new Error('Unauthorized')
     }
+   
 }
 module.exports = router;
