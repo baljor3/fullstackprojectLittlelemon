@@ -24,7 +24,7 @@ const Menu=() => {
         .then((data)=>{
             console.log(data)
         }).catch(err =>{
-            alert("Login to order items")
+            alert("Logi to order items")
         })
     }
 

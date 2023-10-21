@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import greek from "../asset/greek salad.jpg"
 import Cookies from "js-cookie";
 
@@ -8,6 +8,8 @@ const Review = ()=>{
     const [rating, setRating] = useState(1)
 
     const jwtToken = Cookies.get('jwt_authorization')
+
+
 
 
 const writeReview = async(rating,review)=>{
@@ -54,7 +56,7 @@ const ratingSelection = [
 
 
 const fun = (e)=>{
-    e.preventDefault();
+
     writeReview(rating,review)
     e.preventDefault();
 }
@@ -63,6 +65,7 @@ return(
 <main>
     <img src = {greek} alt = "Greek Salad" height="500px" width="500px"></img>
     <p>The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
+
     <form onSubmit={fun}>
     <select name = "rating" onChange={(e)=>{setRating(e.target.value)}}>
         {ratingSelection.map((item)=>{
@@ -72,6 +75,10 @@ return(
     <textarea rows="4" cols = "50" onChange={(e)=>{setReview(e.target.value)}}></textarea>
     <button>Add a Review!</button>
     </form>
+
+    <div>
+
+    </div>
    
 
 </main>)

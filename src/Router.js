@@ -152,14 +152,28 @@ router.get('/getCart',(req,res)=>{
    })
 })
 
+router.get('/getReviews',(req,res)=>{
+    const {productid} = req.body;
+    let sql = "SELECT rating, username, productid, description FROM review where productid = ?"
+
+    db.query(sql,productid,(err,result)=>{
+        if(err){
+            res.status(500).json({error:"Query failed"})
+        }else{
+            res.send(result)
+        }
+    })
+})
+
 router.post('/writeReview',async (req,res)=>{
    
-   
+
     try{
     var IdorNot = getUserID(req.headers.token)
     }catch(err){
         return res.status(401).json({err:err.message})
     }
+    
     
     const username = await getUserName(IdorNot)
     const {rating, description, productid} = req.body
@@ -170,6 +184,7 @@ router.post('/writeReview',async (req,res)=>{
     
     db.query(sql, values, (err, result)=>{
         if(err){
+
             res.status(500).json({error:"Query failed"})
         }else{
             res.status(200).json({message:"values inserted"})
