@@ -152,14 +152,17 @@ router.get('/getCart',(req,res)=>{
    })
 })
 
-router.get('/getReviews',(req,res)=>{
+router.post('/getReviews',(req,res)=>{
     const {productid} = req.body;
+    console.log(req.body)
     let sql = "SELECT rating, username, productid, description FROM review where productid = ?"
 
     db.query(sql,productid,(err,result)=>{
         if(err){
+            console.log(err)
             res.status(500).json({error:"Query failed"})
         }else{
+            console.log(result)
             res.send(result)
         }
     })

@@ -6,10 +6,39 @@ const Review = ()=>{
 
     const [review, setReview] = useState()
     const [rating, setRating] = useState(1)
+    const [reviewArray, setReviewArray] = useState([])
 
     const jwtToken = Cookies.get('jwt_authorization')
 
-
+    useEffect(() => {
+        // Define a function to fetch reviews
+        const fetchReviews = async () => {
+          try {
+            const response = await fetch('http://localhost:8080/api/getReviews', {
+              method: 'POST',
+              body: JSON.stringify({
+                productid: '1'
+              }),
+              headers: {
+                'Content-type': 'application/json'
+              }
+            });
+    
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+    
+            const data = await response.json();
+            setReviewArray(data);
+          } catch (error) {
+            console.error('Error fetching reviews:', error);
+          }
+        };
+    
+        // Call the fetchReviews function when the component mounts
+        fetchReviews();
+      }, []); // The empty dependency array ensures this runs only on component mount
+    
 
 
 const writeReview = async(rating,review)=>{
@@ -26,6 +55,7 @@ const writeReview = async(rating,review)=>{
     })
     .then((data)=>{
         console.log(data)
+        console.log(reviewArray)
     }).catch((error)=>{
         console.log(error)
     })
@@ -77,7 +107,11 @@ return(
     </form>
 
     <div>
-
+       {reviewArray.map((item)=>{
+        return(<div>
+            {item.name} {item.description} {item.rating}
+        </div>)
+       })}
     </div>
    
 

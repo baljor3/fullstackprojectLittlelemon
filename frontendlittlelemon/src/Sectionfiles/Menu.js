@@ -24,12 +24,12 @@ const Menu=() => {
         .then((data)=>{
             console.log(data)
         }).catch(err =>{
-            alert("Logi to order items")
+            alert("Login to order items")
         })
     }
 
     const addToCart =(e)=>{
-        e.preventDefault()
+       
         additem()
     }
     
