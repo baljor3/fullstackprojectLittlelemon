@@ -3,8 +3,9 @@
     justify-content: center;
     row-gap: 25px;
     column-gap: 25px;
-    grid-template-columns: 200px 200px 200px;
-    grid-template-rows: 25px 410px;
+    grid-template-columns: 230px 230px 230px;
+    grid-template-rows: 25px 230px;
+    padding-bottom: 20px;
   }
 
   .grid-container-testimonials{
@@ -43,8 +44,8 @@
 }
 
 .blackbutton{
-  color:white;
-  background-color:black;
+  color:black;
+  background-color:#CDC959;
   text-align:"center";
   text-decoration: none;
   display:"inline-block";
@@ -52,22 +53,36 @@
 }
 
 .card{
-  background-color: #F4CE14;
-  border-radius: 5px 5px 0 0;
+  background-color: #D9D9D9;
+  border-radius: 5px 5px 5px 5px;
 }
+
+
 .text-container {
-  width: 200px; /* Set the desired width of the div */
-  height: 128px;
-  overflow: hidden; /* Hide any overflowing content */
-  text-overflow: ellipsis; /* Show an ellipsis (...) if the text is truncated */
+  width: 200px;
+  height: 69px;
+  overflow: hidden;
+}
+
+.text-container.overflowed {
+  position: relative;
+}
+
+.text-container.overflowed::after {
+  content: '\2026'; /* Unicode character for ellipsis */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding-left: 5px; /* Add some spacing between text and ellipsis */
+  background: linear-gradient(to right, transparent, white 50%);
 }
 
 .specialImage{
-  width: 200px;
-  height: 200px;
+  width: 230px;
+  height: 103px;
+  border-radius: 5px;
   margin-bottom: 0;
   padding-bottom: 0;
-  border-radius: 5px 5px 0 0;
 }
 
 .testImages{

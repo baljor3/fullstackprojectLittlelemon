@@ -46,7 +46,7 @@ const contact = [
 
 
 const  Footer = () =>{
-    return (<footer>
+    return (<footer style = {{"background-color":"#D6D26D"}}>
     <div className="flex-container-footer">
         <div style={{"margin": 10}}><p>Doormat Navigation</p>
         {doormatNav.map(door =>(

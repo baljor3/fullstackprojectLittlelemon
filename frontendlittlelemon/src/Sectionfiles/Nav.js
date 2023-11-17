@@ -45,7 +45,7 @@ const image =[
 
 const Nav = () =>{
 return (
-    <nav>
+    <nav style = {{"background-color":"#D6D26D"}}>
         <Box maxW = "sm" maxH = "sm">
         <div class = "flex-container" >
         <img src= {logo} alt = "Logo" />
