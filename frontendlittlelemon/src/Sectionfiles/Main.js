@@ -30,31 +30,42 @@ const  Main = () =>{
         </div>
         <div className="grid-container-main" style = {{"background-color":"#D6D26D"}}>
             <div className="SpecialHeading">Special</div>
-            <div><button>Online Menu</button></div>
+            <div><Link to="/menu"><button className="menubutton">Online Menu</button></Link></div>
             <div className="card">
                 <img src= {greek} alt = "greeksalad" className="specialImage"></img>
                     <p style={{"margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Greek Salad</span>  <span style={{"float":"right"}}>$12.99</span> </p>
                     <EllipsisTextContainer
                     text ="The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons."
-                    maxHeight="69px"
+                    maxHeight="60px"
                     maxWidth="200px"
+                    link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     <button>Order a delivery</button>
             </div>
             <div className="card">
             <img src = {bruchetta} alt = "bruchetta" className="specialImage"></img>
                     <p style={{"margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Bruchetta </span>   <span style={{"float":"right"}}>$5.99</span></p>
-                    <p className="text-container">Our Bruschetta is made 
-                        from grilled bread that has been smeared with garlic and seasoned
-                         with salt and olive oil.  </p>
+                    <EllipsisTextContainer
+                    text ="Our Bruschetta is made 
+                    from grilled bread that has been smeared with garlic and seasoned
+                     with salt and olive oil."
+                    maxHeight="60px"
+                    maxWidth="200px"
+                    link="http://localhost:3000/review/1"
+                    ></EllipsisTextContainer>
                     <button>Order a delivery</button>
             </div>
             <div className="card">
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
                     <p style={{ "margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Lemon Dessert</span>  <span style={{"float":"right"}}>$5.99</span></p>
-                    <p className="text-container">This comes straight from grandma’s 
-                        recipe book, every last ingredient has been sourced 
-                        and is as authentic as can be imagined.  </p>
+                    <EllipsisTextContainer
+                    text ="This comes straight from grandma’s 
+                    recipe book, every last ingredient has been sourced 
+                    and is as authentic as can be imagined."
+                    maxHeight="60px"
+                    maxWidth="200px"
+                    link="http://localhost:3000/review/1"
+                    ></EllipsisTextContainer>
                     <button >Order a delivery</button>
             </div>
         </div>

@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "../Css/Main.css" // Import your stylesheet with the provided CSS
 
-const EllipsisTextContainer = ({ text, maxWidth, maxHeight }) => {
+
+
+const EllipsisTextContainer = ({ text, link,maxWidth, maxHeight }) => {
   const [isOverflowed, setIsOverflowed] = useState(false);
   const textContainerRef = useRef(null);
 
   useEffect(() => {
     const textContainer = textContainerRef.current;
-
+    
     if (textContainer.scrollHeight > textContainer.clientHeight) {
       setIsOverflowed(true);
     } else {
@@ -21,7 +23,14 @@ const EllipsisTextContainer = ({ text, maxWidth, maxHeight }) => {
       ref={textContainerRef}
       style={{ maxWidth, maxHeight, overflow: 'hidden' }}
     >
+        <div className="text-content">
       {text}
+      </div>
+      {link && isOverflowed && (
+        <a href={link} className="read-more-link">
+          ..See More
+        </a>
+      )}
     </div>
   );
 };
