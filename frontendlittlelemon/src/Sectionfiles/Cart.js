@@ -53,9 +53,10 @@ const Cart=()=>{
             }
         })
         .then((response)=>response.json())
-        .then((data)=>{
+        .then((wdata)=>{
             setUpdateEffect(false)
-            setData(data)
+            setData(wdata)
+            console.log(data)
         }).catch((err)=>{
             console.log(err.message);
         });

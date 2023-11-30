@@ -65,24 +65,26 @@ router.post('/login',(req,res)=>{
     db.query(sql, values, (err,result)=>{
         if(err){
             res.status(500).json({error:"Query failed"})
-        }else{
-           
-            if (result === undefined || result.length ==0){
-                res.json(false)
-            }
-            const user = result
-            const token = jwt.sign({ id: user[0].id},
+        }else {
+            if (result && result.length > 0) {
+              const user = result[0]; 
+            jwt.sign(
+                { id: user.id }, 
                 'secretKey',
-                { expiresIn: '1h' }, (err,token) =>{
-                if(err){
-                    res.status(500).json({error: "error when creating token"})
-                }else{
-                
-                res.send({token})
+                { expiresIn: '1h' },
+                (err, token) => {
+                  if (err) {
+                    res.status(500).json({ error: "Error when creating token" });
+                  } else {
+                    res.send({ token });
+                  }
                 }
-            })
-        }
-    })
+              );
+            } else {
+              res.status(401).send(false);
+            }
+    }
+})
 })
 
 router.post('/additem',(req,res)=>{
@@ -102,7 +104,6 @@ router.post('/additem',(req,res)=>{
 
     db.query(sql,values,(err,result)=>{
         if(err){
-            
             res.status(500).json({error:"Query Failed"})
         }else{
             

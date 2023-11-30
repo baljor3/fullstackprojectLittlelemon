@@ -79,7 +79,12 @@
   position: relative;
 }
 
-
+.addButton{
+  color: #5C7600;
+  border-radius: 20px;
+  border: #5C7600;
+  cursor: pointer;
+}
 
 .text-container.overflowed .text-content {
   position: relative;
