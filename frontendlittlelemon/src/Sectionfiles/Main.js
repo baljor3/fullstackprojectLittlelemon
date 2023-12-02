@@ -11,26 +11,26 @@ import Cookies from "js-cookie";
 
 const  Main = () =>{
     const [productid, setProductID] = useState()
-    const [numberData, setNumeberData] = useState([])
+    var [numberData, setNumeberData] = useState([])
+    const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
-    
+
     const additem = async(productid) =>{
         try {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
             }
-            const response = await fetch('http://localhost:8080/api/additem', {   
-                method: "POST",
-                body: JSON.stringify({
-                    "productid": 1
-                }),
-                headers: {
-                    "token": jwtToken,
-                    'Content-type': 'application/json'
-                }
-            });
-            const data = await response.json();
-            console.log(data);
+            await fetch('http://localhost:8080/api/additem', {
+            method: "POST",
+            body: JSON.stringify({
+              "productid": 1
+            }),
+            headers: {
+              "token": jwtToken,
+              'Content-type': 'application/json'
+            }
+          });
+          setUpdateEffect(true)
         } catch (error) {
             console.error('Error:', error);
             alert("Login to order items");
@@ -42,18 +42,21 @@ const  Main = () =>{
             headers:{
                 "token":Cookies.get('jwt_authorization')
             }
-        }).then((response)=>response.json())
+        })
+        .then((response)=>response.json())
         .then((data)=>{
-           console.log(data)
-            setNumeberData(data)
-            console.log(numberData)
+            //setNumeberData(data)
+            //console.log(numberData)
+            for(let i = 0; i<data.length; i++){
+                setNumeberData(prevData =>[...numberData, data[i]])
+            }
         }).catch((err)=>{
             console.log(err.message);
         });
-    },[])
+    },[updateEffect])
+
 
     const addToCart =(e)=>{
-       
         additem()
     }
     
@@ -86,6 +89,12 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     <button className="addButton" onClick={()=>addToCart()}>+ Add</button>
+                    <button className="lefthalfCircle">-</button>
+                    <button className="greenPill">{numberData.map((item)=>{
+                        return(item.numberofItems)
+                    })}</button>
+                    <button className="righthalfCircle">+</button>
+
             </div>
             <div className="card">
             <img src = {bruchetta} alt = "bruchetta" className="specialImage"></img>

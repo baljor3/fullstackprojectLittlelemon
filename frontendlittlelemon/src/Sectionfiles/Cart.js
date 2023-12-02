@@ -11,7 +11,7 @@ const Cart=()=>{
 
     const additem = useCallback(async (productid) => {
         try {
-          const response = await fetch('http://localhost:8080/api/additem', {
+          await fetch('http://localhost:8080/api/additem', {
             method: "POST",
             body: JSON.stringify({
               "productid": 1
@@ -22,12 +22,10 @@ const Cart=()=>{
             }
           });
           setUpdateEffect(true)
-          const data = await response.json();
-          console.log(data);
         } catch (err) {
           console.error(err);
         }
-      },[jwtToken]);
+      },);
 
     const deleteitem = useCallback( async(productid) =>{
         await fetch('http://localhost:8080/api/deleteitem',{
@@ -43,7 +41,7 @@ const Cart=()=>{
             setUpdateEffect(true)
             console.log(data)
         })
-    },[jwtToken])
+    })
 
     // TODO:UseEffect is called mutiple times instead of once, hence creating mutiple re-renders.
     useEffect( () =>{
@@ -69,10 +67,10 @@ const Cart=()=>{
     }
 
     function listItems(data){
-        console.log("before render")
-        console.log(data.length)
-        console.log(data)
-        if(data === undefined || data.length === 0  || data === "undefined"){
+        if(data.err === 'Unauthorized'){
+            return(<p>Please login to add items to cart</p>)
+        }
+        if(data === undefined || data.length === 0 || data.length === undefined  || data === "undefined"){
             return(<p>No items in the cart</p>)
         }else{
             console.log(data[0]["total"])
