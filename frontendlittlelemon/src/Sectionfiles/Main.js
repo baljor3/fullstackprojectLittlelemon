@@ -36,31 +36,45 @@ const  Main = () =>{
             alert("Login to order items");
         }
     }
-
+    
     useEffect(()=>{
-        fetch('http://localhost:8080/api/getCart',{
-            headers:{
-                "token":Cookies.get('jwt_authorization')
-            }
-        })
-        .then((response)=>response.json())
-        .then((data)=>{
-            //setNumeberData(data)
-            //console.log(numberData)
-            for(let i = 0; i<data.length; i++){
-                setNumeberData(prevData =>[...numberData, data[i]])
-            }
-        }).catch((err)=>{
-            console.log(err.message);
-        });
-    },[updateEffect])
+        const fetachData = async () =>{
+            const data = await fetch('http://localhost:8080/api/getCart',{
+                headers:{
+                    "token":Cookies.get('jwt_authorization')
+                }
+            });
 
+            if (!data.ok) {
+                throw new Error('Network request failed');
+              }
+
+            const json = await data.json();
+
+            setNumeberData(json);
+            console.log(numberData)
+        }
+        fetachData()
+        .catch((err) =>{
+            console.log(err)
+        })
+    },[updateEffect])
 
     const addToCart =(e)=>{
         additem()
     }
     
-   
+   const updateNumber = (number) =>{
+  
+    console.log(number)
+    if(number <1 || number === undefined || number === "undefined" || number === null ){
+        return(<button className="addButton" onClick={()=>addToCart()}>+ Add</button>)
+    }else{
+      return(  <div><button className="lefthalfCircle">-</button> <button className="greenPill">{number}</button> <button className="righthalfCircle">+</button></div>)
+    }
+   }
+
+
     return (<main>
         <div className="flex-container-main" style = {{"background-color":"#5C7600"}}>
             <div>
@@ -88,12 +102,10 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    <button className="addButton" onClick={()=>addToCart()}>+ Add</button>
-                    <button className="lefthalfCircle">-</button>
-                    <button className="greenPill">{numberData.map((item)=>{
-                        return(item.numberofItems)
-                    })}</button>
-                    <button className="righthalfCircle">+</button>
+                    
+                    {updateNumber(
+                        numberData.map((item)=>{return(item.numberOfItems)}
+                        ))}
 
             </div>
             <div className="card">
