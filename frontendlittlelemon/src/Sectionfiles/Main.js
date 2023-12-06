@@ -9,9 +9,11 @@ import BookingForm from "./Booking"
 import EllipsisTextContainer from './EllipsisTextContainer';
 import Cookies from "js-cookie";
 
+
+
 const  Main = () =>{
     const [productid, setProductID] = useState()
-    var [numberData, setNumeberData] = useState([])
+    var [numberData, setNumeberData] = useState([]);
     const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
 
@@ -36,28 +38,28 @@ const  Main = () =>{
             alert("Login to order items");
         }
     }
-    
+
+   
+
     useEffect(()=>{
-        const fetachData = async () =>{
-            const data = await fetch('http://localhost:8080/api/getCart',{
-                headers:{
-                    "token":Cookies.get('jwt_authorization')
-                }
-            });
-
-            if (!data.ok) {
-                throw new Error('Network request failed');
-              }
-
-            const json = await data.json();
-
-            setNumeberData(json);
-            console.log(numberData)
-        }
-        fetachData()
-        .catch((err) =>{
-            console.log(err)
+        fetch('http://localhost:8080/api/getCart',{
+            headers:{
+                "token":Cookies.get('jwt_authorization')
+            }
         })
+        .then((response)=>response.json())
+        .then((wdata)=>{
+            setUpdateEffect(false)
+            if(wdata.err != "Unauthorized"){
+            setNumeberData(wdata)
+            }
+            console.log("here")
+            console.log(wdata)
+            console.log(numberData)
+            console.log(wdata.err)
+        }).catch((err)=>{
+            console.log(err.message);
+        });
     },[updateEffect])
 
     const addToCart =(e)=>{
@@ -67,7 +69,8 @@ const  Main = () =>{
    const updateNumber = (number) =>{
   
     console.log(number)
-    if(number <1 || number === undefined || number === "undefined" || number === null ){
+    console.log(number === null)
+    if(!Array.isArray(number) || number.length === 0 || number.some(item => item === null || item < 1)){
         return(<button className="addButton" onClick={()=>addToCart()}>+ Add</button>)
     }else{
       return(  <div><button className="lefthalfCircle">-</button> <button className="greenPill">{number}</button> <button className="righthalfCircle">+</button></div>)
