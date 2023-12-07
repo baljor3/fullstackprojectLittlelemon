@@ -39,7 +39,27 @@ const  Main = () =>{
         }
     }
 
-   
+    const minusitem = async(productid) =>{
+        try {
+            if(jwtToken ==="" || jwtToken === undefined){
+                alert("login to order items")
+            }
+            await fetch('http://localhost:8080/api/deleteitem', {
+            method: "POST",
+            body: JSON.stringify({
+              "productid": 1
+            }),
+            headers: {
+              "token": jwtToken,
+              'Content-type': 'application/json'
+            }
+          });
+          setUpdateEffect(true)
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Login to order items");
+        }
+    }
 
     useEffect(()=>{
         fetch('http://localhost:8080/api/getCart',{
@@ -50,30 +70,22 @@ const  Main = () =>{
         .then((response)=>response.json())
         .then((wdata)=>{
             setUpdateEffect(false)
-            if(wdata.err != "Unauthorized"){
+            if(wdata.err === undefined){
             setNumeberData(wdata)
             }
-            console.log("here")
-            console.log(wdata)
-            console.log(numberData)
-            console.log(wdata.err)
         }).catch((err)=>{
             console.log(err.message);
         });
     },[updateEffect])
 
-    const addToCart =(e)=>{
-        additem()
-    }
-    
-   const updateNumber = (number) =>{
   
-    console.log(number)
-    console.log(number === null)
+   const updateNumber = (number) =>{
+    
     if(!Array.isArray(number) || number.length === 0 || number.some(item => item === null || item < 1)){
-        return(<button className="addButton" onClick={()=>addToCart()}>+ Add</button>)
+        
+        return(<button className="addButton" onClick={()=>additem()}>+ Add</button>)
     }else{
-      return(  <div><button className="lefthalfCircle">-</button> <button className="greenPill">{number}</button> <button className="righthalfCircle">+</button></div>)
+      return(  <div><button onClick={minusitem} className="lefthalfCircle">-</button><button className="greenPill">{number}</button><button onClick={additem} className="righthalfCircle">+</button></div>)
     }
    }
 
@@ -107,7 +119,7 @@ const  Main = () =>{
                     ></EllipsisTextContainer>
                     
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberOfItems)}
+                        numberData.map((item)=>{return(item.numberofItems)}
                         ))}
 
             </div>
@@ -122,7 +134,9 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    <button>Order a delivery</button>
+                    {updateNumber(
+                        numberData.map((item)=>{return(item.numberofItems)}
+                        ))}
             </div>
             <div className="card">
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
@@ -135,7 +149,9 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    <button >Order a delivery</button>
+                    {updateNumber(
+                        numberData.map((item)=>{return(item.numberofItems)}
+                        ))}
             </div>
         </div>
         <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
