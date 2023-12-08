@@ -101,7 +101,7 @@ const  Main = () =>{
 
    const findPicture = (productid) =>{
     if(productid ===1){
-        return(<img src = {greek} height = "70px" width= "70px"></img>)
+        return(<img style={{float:"left", padding:0,margin:0}}src = {greek} height = "70px" width= "70px"></img>)
     }
 
    }
@@ -178,10 +178,19 @@ const  Main = () =>{
                 <p>review here</p>
             </div>
             {reviewData.map((item)=>{
-                return(<div className="card">
-                    <div>{item.rating}</div> 
-                <div>{findPicture(item.productid)} 
-                {item.Description}</div> </div>)
+                return(
+            <div className="card">
+                <div>{item.rating}</div> 
+                <table>
+                    <tb>
+                    {findPicture(item.productid)} 
+                    </tb>
+                <tb style = {{whiteSpace:"break-spaces"}}>
+                {item.Description}
+                
+                </tb>
+            </table>
+            </div>)
             })}
         </div>
     </main>);
