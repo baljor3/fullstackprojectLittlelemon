@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 const  Main = () =>{
     const [productid, setProductID] = useState()
     var [numberData, setNumeberData] = useState([]);
+    var [reviewData, setreviewData] = useState([]);
     const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
 
@@ -78,6 +79,15 @@ const  Main = () =>{
         });
     },[updateEffect])
 
+    useEffect(()=>{
+        fetch('http://localhost:8080/api/getTopReviews')
+        .then((response)=>response.json())
+        .then((data)=>{
+            setreviewData(data)
+            console.log(reviewData)
+        })
+
+    },[])
   
    const updateNumber = (number) =>{
     
@@ -89,6 +99,12 @@ const  Main = () =>{
     }
    }
 
+   const findPicture = (productid) =>{
+    if(productid ===1){
+        return(<img src = {greek} height = "70px" width= "70px"></img>)
+    }
+
+   }
 
     return (<main>
         <div className="flex-container-main" style = {{"background-color":"#5C7600"}}>
@@ -156,26 +172,17 @@ const  Main = () =>{
         </div>
         <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
             <div className="testHeading">testimonials</div>
-            <div>
+            <div className="card">
                 <p>rating</p>
                 <img src = {bruchetta} alt = "bruchetta" className="testImages"></img>Bruchetta
                 <p>review here</p>
             </div>
-            <div>
-                <p>rating</p>
-                <img src = {bruchetta} alt = "bruchetta" className="testImages"></img>Bruchetta
-                <p>review here</p>
-            </div>
-            <div>
-                <p>rating</p>
-                <img src = {bruchetta} alt = "bruchetta" className="testImages"></img>Bruchetta
-                <p>review here</p>
-            </div>
-            <div>
-                <p>rating</p>
-                <img src = {bruchetta} alt = "bruchetta" className="testImages"></img>Bruchetta
-                <p>review here</p>
-            </div>
+            {reviewData.map((item)=>{
+                return(<div className="card">
+                    <div>{item.rating}</div> 
+                <div>{findPicture(item.productid)} 
+                {item.Description}</div> </div>)
+            })}
         </div>
     </main>);
 };

@@ -64,12 +64,26 @@ app.get('/createReview',(req,res)=>{
     res.send("review created")
   })
 })
+
+app.get('/changeReviewTable',(req,res)=>{
+  let sql = "ALTER TABLE review ADD date DATE"
+
+  db.query(sql,(err,result)=>{
+    if(err){
+      throw err;
+    }
+
+    res.send("review table change")
+  })
+
+})
 app.use(
   cors({
   origin:'*'
 }));
 
 const DatesRouter = require("./src");
+const { EncryptionFilterSensitiveLog } = require("@aws-sdk/client-s3");
 
 
 app.use(express.json());

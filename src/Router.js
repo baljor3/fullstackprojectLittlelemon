@@ -153,6 +153,20 @@ router.get('/getCart',(req,res)=>{
    })
 })
 
+router.get('/getTopReviews',(req,res)=>{
+    const sql = 'SELECT rating, Description, productid FROM review LIMIT 5'
+
+    db.query(sql,(err,result)=>{
+        if(err){
+            res.status(500).json({error:"Query failed"})
+        }else{
+            res.send(result)
+        }
+    })
+
+
+})
+
 router.post('/getReviews',(req,res)=>{
     const {productid} = req.body;
     console.log(req.body)
