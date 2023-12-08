@@ -185,9 +185,8 @@ const  Main = () =>{
                     <tb>
                     {findPicture(item.productid)} 
                     </tb>
-                <tb style = {{whiteSpace:"break-spaces"}}>
+                <tb style = {{className:"text-container"}} >
                 {item.Description}
-                
                 </tb>
             </table>
             </div>)

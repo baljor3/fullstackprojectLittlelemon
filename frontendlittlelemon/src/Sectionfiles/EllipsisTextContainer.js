@@ -23,9 +23,9 @@ const EllipsisTextContainer = ({ text, link,maxWidth, maxHeight }) => {
       ref={textContainerRef}
       style={{ maxWidth, maxHeight, overflow: 'hidden' }}
     >
-        <div className="text-content">
+        
       {text}
-      </div>
+      
       {link && isOverflowed && (
         <a href={link} className="read-more-link">
           ..See More
