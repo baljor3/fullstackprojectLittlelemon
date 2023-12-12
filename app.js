@@ -53,6 +53,22 @@ app.get('/createProduct',(req,res)=>{
   })
 })
 
+app.get('/updateProductPrice',(req,res)=>{
+  let sql = "ALTER TABLE product MODIFY COLUMN price DOUBLE(8,2)"
+
+  db.query(sql,(err,result)=>{
+    if(err){
+      throw err;
+    }
+    res.send("table changed")
+  })
+
+})
+/*
+INSERT INTO nodemysql.product(name,Description,price) VALUES 
+("Bruchetta", "Our Bruschetta is made from grilled bread that has been smeared with garlic and seasoned with salt and olive oil.",15),
+("LemonDessert", "This comes straight from grandma’s recipe book, every last ingredient has been sourced and is as authentic as can be imagined.",8);
+*/
 app.get('/createReview',(req,res)=>{
   let sql = 'CREATE TABLE review(reviewid int AUTO_INCREMENT, rating int ,username VARCHAR(255),userid int, productid int, Description TEXT,FOREIGN KEY (userid) REFERENCES login(id), FOREIGN KEY (productid) REFERENCES product(productid), PRIMARY KEY(reviewid))'
   db.query(sql, (err,result)=>{

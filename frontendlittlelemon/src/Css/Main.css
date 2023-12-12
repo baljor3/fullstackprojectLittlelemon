@@ -8,6 +8,16 @@
     padding-bottom: 20px;
   }
 
+  .grid-container-menu{
+    display: grid;
+    justify-content: center;
+    padding-top: 20px;
+    row-gap: 25px;
+    column-gap: 25px;
+    grid-template-columns: 230px 230px 230px;
+    padding-bottom: 20px;
+  }
+
   .grid-container-testimonials{
     display: grid;
     justify-content: center;

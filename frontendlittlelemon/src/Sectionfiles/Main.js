@@ -132,7 +132,6 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    
                     {updateNumber(
                         numberData.map((item)=>{return(item.numberofItems)}
                         ))}
@@ -142,7 +141,7 @@ const  Main = () =>{
             <img src = {bruchetta} alt = "bruchetta" className="specialImage"></img>
                     <p style={{"margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Bruchetta </span>   <span style={{"float":"right"}}>$5.99</span></p>
                     <EllipsisTextContainer
-                    text ="Our Bruschetta is made 
+                    text ="Our Bruschetta is made
                     from grilled bread that has been smeared with garlic and seasoned
                      with salt and olive oil."
                     maxHeight="60px"
@@ -157,8 +156,8 @@ const  Main = () =>{
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
                     <p style={{ "margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>Lemon Dessert</span>  <span style={{"float":"right"}}>$5.99</span></p>
                     <EllipsisTextContainer
-                    text ="This comes straight from grandma’s 
-                    recipe book, every last ingredient has been sourced 
+                    text ="This comes straight from grandma’s
+                    recipe book, every last ingredient has been sourced
                     and is as authentic as can be imagined."
                     maxHeight="60px"
                     maxWidth="200px"
