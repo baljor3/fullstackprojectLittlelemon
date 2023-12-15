@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import "../Css/Main.css"
 import greek from "../asset/greek salad.jpg"
 import bruchetta from "../asset/bruchetta.png"
@@ -15,7 +15,7 @@ const Menu=() => {
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
     var [numberData, setNumeberData] = useState([]);
-
+    var count = 0;
 
     const additem = async(productid) =>{
         try {
@@ -25,14 +25,18 @@ const Menu=() => {
             await fetch('http://localhost:8080/api/additem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": 1
+              "productid": productid
             }),
             headers: {
               "token": jwtToken,
               'Content-type': 'application/json'
             }
+          }).then((data)=>{
+            if(data.status === 401){
+                alert("log in")
+            }
           });
-          setUpdateEffect(true)
+          setUpdateEffect(prev => !prev);
         } catch (error) {
             console.error('Error:', error);
             alert("Login to order items");
@@ -44,17 +48,18 @@ const Menu=() => {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
             }
+            console.log(productid)
             await fetch('http://localhost:8080/api/deleteitem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": 1
+              "productid": productid
             }),
             headers: {
               "token": jwtToken,
               'Content-type': 'application/json'
             }
           });
-          setUpdateEffect(true)
+          setUpdateEffect(prev => !prev);
         } catch (error) {
             console.error('Error:', error);
             alert("Login to order items");
@@ -69,7 +74,7 @@ const Menu=() => {
         })
         .then((response)=>response.json())
         .then((wdata)=>{
-            setUpdateEffect(false)
+            console.log(wdata)
             if(wdata.err === undefined){
             setNumeberData(wdata)
             }
@@ -78,14 +83,6 @@ const Menu=() => {
         });
     },[updateEffect])
 
-    const updateNumber = (number) =>{
-        if(!Array.isArray(number) || number.length === 0 || number.some(item => item === null || item < 1)){
-            return(<button className="addButton" onClick={()=>additem()}>+ Add</button>)
-        }else{
-          return(  <div><button onClick={minusitem} className="lefthalfCircle">-</button><button className="greenPill">{number}</button><button onClick={additem} className="righthalfCircle">+</button></div>)
-        }
-       }
-
     useEffect(()=>{
         fetch('http://localhost:8080/api/getProducts',{
             method: "GET"
@@ -93,17 +90,39 @@ const Menu=() => {
         .then((data)=>{
             setProductList(data)
         })
-    })
+    },[])
+
+    const updateNumber = (number, productid) =>{
+        number = number[count]
+
+        count = count + 1;
+        const handleAddItem = (e) => additem(e.target.value);
+        const handleMinusItem = (e) => minusitem(e.target.value);
+        if( !number|| !numberData || numberData.length === undefined ||count > numberData.length){
+            return(<button value ={productid} className="addButton" onClick={handleAddItem}>
+                + Add
+                </button>)
+
+        }else{
+          return(
+          <div>
+            <button value = {productid} onClick={handleMinusItem} className="lefthalfCircle">-</button>
+            <button className="greenPill">{number}</button>
+            <button value = {productid} onClick={handleAddItem} className="righthalfCircle">+</button>
+            </div>)
+        }
+    }
+
 
     const findPicture = (productid) =>{
+
         if(productid ===1){
-            return(<img className="specialImage"src = {greek} height = "70px" width= "70px"></img>)
+            return(<img key ={productid} alt =""className="specialImage"src = {greek} height = "70px" width= "70px"></img>)
         } else if(productid === 4){
-            return(<img className="specialImage"src = {bruchetta} height = "70px" width= "70px"></img>)
+            return(<img key ={productid} alt =""className="specialImage"src = {bruchetta} height = "70px" width= "70px"></img>)
         }else{
-            return(<img className="specialImage"src = {lemonDessert} height = "70px" width= "70px"></img>)
+            return(<img key ={productid} alt =""className="specialImage"src = {lemonDessert} height = "70px" width= "70px"></img>)
         }
-        
     }
 
     return(
@@ -120,9 +139,10 @@ const Menu=() => {
                         height ="60px">
                     </EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}
-                        ))}
-                    <br></br><Link to="/review/{item.productid}">Reviews</Link>
+                        numberData.map((item)=>{return(item.numberofItems)}),
+                        item.productid
+                        )}
+                    <br></br><Link to={`/review/${item.productid}`}>Reviews</Link>
                     </div>
                 )
             })}

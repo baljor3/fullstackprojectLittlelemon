@@ -106,11 +106,9 @@ router.post('/additem',(req,res)=>{
         if(err){
             res.status(500).json({error:"Query Failed"})
         }else{
-            
             res.status(200).json({message:"values inserted"})
         }
     })
-    
 })
 
 router.post('/deleteitem',(req,res)=>{
@@ -246,6 +244,5 @@ function getUserID(TokenHeader){
     }catch(err){
             throw new Error('Unauthorized')
     }
-   
 }
 module.exports = router;
