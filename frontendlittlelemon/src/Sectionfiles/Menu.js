@@ -17,7 +17,7 @@ const Menu=() => {
     var [numberData, setNumeberData] = useState([]);
     var count = 0;
 
-    const additem = async(productid) =>{
+    const additem = async(v) =>{
         try {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
@@ -25,7 +25,7 @@ const Menu=() => {
             await fetch('http://localhost:8080/api/additem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": productid
+              "productid": v
             }),
             headers: {
               "token": jwtToken,
