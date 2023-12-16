@@ -106,11 +106,9 @@ router.post('/additem',(req,res)=>{
         if(err){
             res.status(500).json({error:"Query Failed"})
         }else{
-            
             res.status(200).json({message:"values inserted"})
         }
     })
-    
 })
 
 router.post('/deleteitem',(req,res)=>{
@@ -135,14 +133,25 @@ router.post('/deleteitem',(req,res)=>{
     })
 
 })
+router.get('/getProducts',(req,res)=>{
 
+    let sql = "SELECT * from product"
+
+    db.query(sql,(err,result)=>{
+        if(err){
+            res.status(500).json({error:"Query failed"})
+        }else{
+            res.send(result)
+        }
+    })
+})
 router.get('/getCart',(req,res)=>{
     try{
         var IdorNot = getUserID(req.headers.token)
     }catch(err){
         return res.status(401).json({err:err.message})
     }
-   const sql = 'SELECT cart.productid, product.name, product.price, SUM(product.price) AS total,COUNT(cart.productid) as numberofItems FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL GROUP BY cart.productid'
+   const sql = 'SELECT cart.productid, product.name, product.price, SUM(product.price) AS total,COUNT(cart.productid) as numberofItems FROM cart JOIN product ON cart.productid = product.productid where userid = ? AND cart.productid IS NOT NULL GROUP BY cart.productid ORDER BY cart.productid'
 
    db.query(sql, IdorNot,(err,result)=>{
     if(err){
@@ -235,6 +244,5 @@ function getUserID(TokenHeader){
     }catch(err){
             throw new Error('Unauthorized')
     }
-   
 }
 module.exports = router;
