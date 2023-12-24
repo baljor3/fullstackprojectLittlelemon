@@ -220,6 +220,19 @@ router.post('/writeReview',async (req,res)=>{
 
 })
 
+router.get("/getCookies",(req,res)=>{
+    try{
+        token = req.headers.token
+        token = JSON.parse(token)["token"]
+        var time  = jwt.decode(token,'secretKey')
+        const expirationDate = new Date(time.exp* 1000);
+
+        res.status(200).send({"time": time.exp})
+        }catch(err){
+            return res.status(401).json({err:err.message})
+    }
+})
+
 function getUserName(id){
     return new Promise((resolve, reject) => {
         const sql = 'SELECT username FROM login WHERE id = ?';
@@ -235,9 +248,8 @@ function getUserName(id){
 
 function getUserID(TokenHeader){
     var token = TokenHeader
-    
     token =JSON.parse(token)["token"]
-  
+
      try{
         const result = jwt.verify(token,'secretKey')
         return result.id

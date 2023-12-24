@@ -1,9 +1,10 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Box} from "@chakra-ui/react";
 import "../Css/Nav.css"
 import logo from "../asset/logo.png"
 import { Link } from 'react-router-dom';
 import Home from "./Main"
+import Cookies from "js-cookie";
 
 
 const navlinks = [
@@ -44,13 +45,28 @@ const image =[
 ];
 
 const Nav = () =>{
+    const jwtToken = Cookies.get('jwt_authorization')
+    useEffect(()=>{
+        fetch("http://localhost:8080/api/getCookies",{
+            headers:{
+                "token": jwtToken,
+                'Content-type': 'application/json'
+            }
+        })
+        .then((response)=>response.json())
+        .then((data)=>{
+            console.log(new Date().getTime())
+            console.log(data["time"]*1000)
+        })
+    },[])
+
 return (
     <nav style = {{"background-color":"#D6D26D"}}>
         <Box maxW = "sm" maxH = "sm">
         <div class = "flex-container" >
         <img src= {logo} alt = "Logo" />
-        {navlinks.map((navlink, index) => (
-            <Link to={navlink.link} className="flex-item"> {navlink.name}</Link>
+        {navlinks.map((navlink) => (
+            <Link key = {navlink.name} to={navlink.link} className="flex-item"> {navlink.name}</Link>
         ))}
         </div>
         </Box>
