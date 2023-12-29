@@ -1,11 +1,11 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { Box} from "@chakra-ui/react";
 import "../Css/Nav.css"
 import logo from "../asset/logo.png"
 import { Link } from 'react-router-dom';
 import Home from "./Main"
 import Cookies from "js-cookie";
-
+import { AuthContext } from './auth';
 
 const navlinks = [
     {
@@ -46,6 +46,8 @@ const image =[
 
 const Nav = () =>{
     const jwtToken = Cookies.get('jwt_authorization')
+    const { isLoggedIn } = useContext(AuthContext);
+
     useEffect(()=>{
         fetch("http://localhost:8080/api/getCookies",{
             headers:{
@@ -68,6 +70,7 @@ return (
         {navlinks.map((navlink) => (
             <Link key = {navlink.name} to={navlink.link} className="flex-item"> {navlink.name}</Link>
         ))}
+        <h1>{isLoggedIn ? 'Logged In' : 'Not Logged In'}</h1>
         </div>
         </Box>
     </nav>

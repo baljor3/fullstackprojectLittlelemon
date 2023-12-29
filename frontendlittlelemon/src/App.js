@@ -10,10 +10,12 @@ import Cart from "./Sectionfiles/Cart"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Register from './Sectionfiles/Register';
 import Review from './Sectionfiles/Review';
+import { AuthProvider } from './Sectionfiles/auth';
 
 function App() {
   return (
     <main>
+     <AuthProvider>
       <BrowserRouter><Nav></Nav>
       <Routes>
     <Route path="/" element={<Main />}></Route>
@@ -26,6 +28,7 @@ function App() {
     </Routes>
       </BrowserRouter>
       <Footer></Footer>
+      </AuthProvider> 
     </main>
   );
 }

@@ -1,7 +1,7 @@
-import React, {useState} from "react"
+import React, {useState, createContext, useContext} from "react"
 import {Link, useNavigate  }from 'react-router-dom';
 import Cookies from "universal-cookie"
-import Nav from "./Nav"
+import { AuthContext } from "./auth"
 
 
 const Login = () => {
@@ -10,8 +10,8 @@ const Login = () => {
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     const [errorLogin, setErrorrLogin] = useState();
-    const [isAut, setisAut] = useState(false);
     const navigate = useNavigate()
+    const {logIn} = useContext(AuthContext)
 
     const login = async(user, pass) =>{
         await fetch('http://localhost:8080/api/login',{
@@ -24,7 +24,6 @@ const Login = () => {
                 'Content-type': 'application/json'
             }
             })
-
             .then((res) => res.json())
             .then((data) => {
               if(data === false){
@@ -34,7 +33,7 @@ const Login = () => {
               }else{
              setErrorrLogin("")
              cookies.set("jwt_authorization",data)
-             setisAut(true)
+             logIn();
              navigate("/")
               }
             })
