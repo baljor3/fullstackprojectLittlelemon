@@ -29,6 +29,28 @@
     background-color: #495E57;
 }
 
+.grid-container-review{
+  display: grid;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 20px;
+  row-gap: 5px;
+  column-gap: 20px;
+  grid-template-areas: 'title image image';
+  grid-template-columns: 150px, 200px;
+  grid-template-rows: 50px 200px;
+  padding-bottom: 20px;
+  background-color: #5C7600;
+}
+
+.grid-cotainer-userReviews{
+  display: grid;
+  grid-template-rows: 25px 100px;
+  background-color: #CDC959;
+  border-style: solid;
+  border-color: #5C7600;
+}
+
 .testHeading{
   grid-column:1/5;
   text-align: center;

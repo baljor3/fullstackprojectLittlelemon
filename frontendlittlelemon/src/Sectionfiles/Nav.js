@@ -30,10 +30,6 @@ const navlinks = [
         link:"/cart",
     },
 
-    {
-        name: "Login",
-        link: "/login",
-    },
 
 ];
 
@@ -46,7 +42,7 @@ const image =[
 
 const Nav = () =>{
     const jwtToken = Cookies.get('jwt_authorization')
-    const { isLoggedIn } = useContext(AuthContext);
+    const { isLoggedIn, logOut } = useContext(AuthContext);
 
     useEffect(()=>{
         fetch("http://localhost:8080/api/getCookies",{
@@ -60,7 +56,13 @@ const Nav = () =>{
             console.log(new Date().getTime())
             console.log(data["time"]*1000)
         })
-    },[])
+    },[isLoggedIn])
+
+    const Logout = () =>{
+        Cookies.remove('jwt_authorization')
+        logOut();
+        window.location.reload();
+    }
 
 return (
     <nav style = {{"background-color":"#D6D26D"}}>
@@ -70,7 +72,7 @@ return (
         {navlinks.map((navlink) => (
             <Link key = {navlink.name} to={navlink.link} className="flex-item"> {navlink.name}</Link>
         ))}
-        <h1>{isLoggedIn ? 'Logged In' : 'Not Logged In'}</h1>
+        {isLoggedIn ? <Link onClick={Logout}>LOG OUT</Link>  :  <Link key = "login" to = "/login"> Login</Link>}
         </div>
         </Box>
     </nav>

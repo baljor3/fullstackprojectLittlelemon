@@ -93,10 +93,30 @@ const fun = (e)=>{
 
 return(
 <main>
-    <img src = {greek} alt = "Greek Salad" height="500px" width="500px"></img>
-    <p>The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
+    <div class ="grid-container-review">
+        <div>
+            <p>Greek Salad</p>
+            <p>The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
+        </div>
+        <div>
+            <img src = {greek} alt = "Greek Salad" height="200px" width="200px"></img>
+        </div>
+    </div>
 
-    <form onSubmit={fun}>
+    <div>
+       {reviewArray.map((item)=>{
+        return(<div className="grid-cotainer-userReviews">
+            <div>
+           <span align-content = "left">{item.username}</span>  <span align-content = "right">{item.rating}/5 </span>
+           </div>
+           <div>
+           {item.description}
+           </div>
+        </div>)
+       })}
+    </div>
+
+    <form style ={{"display":"grid"}}onSubmit={fun}>
     <select name = "rating" onChange={(e)=>{setRating(e.target.value)}}>
         {ratingSelection.map((item)=>{
             return(<option value={item.name}>{item.value}</option>)
@@ -106,13 +126,6 @@ return(
     <button>Add a Review!</button>
     </form>
 
-    <div>
-       {reviewArray.map((item)=>{
-        return(<div>
-            {item.name} {item.description} {item.rating}
-        </div>)
-       })}
-    </div>
    
 
 </main>)

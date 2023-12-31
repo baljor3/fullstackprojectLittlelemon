@@ -48,7 +48,6 @@ const Menu=() => {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
             }
-           
             await fetch('http://localhost:8080/api/deleteitem', {
             method: "POST",
             body: JSON.stringify({
@@ -105,9 +104,7 @@ const Menu=() => {
        if(productid === pro){
         count = count +1
        }
-       
 
-       
         const handleAddItem = (e) => additem(e.target.value);
         const handleMinusItem = (e) => minusitem(e.target.value);
         if( !number || number.length ===0 || productid !== pro ){

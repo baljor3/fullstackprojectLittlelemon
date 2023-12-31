@@ -178,7 +178,7 @@ router.get('/getTopReviews',(req,res)=>{
 
 router.post('/getReviews',(req,res)=>{
     const {productid} = req.body;
-    console.log(req.body)
+
     let sql = "SELECT rating, username, productid, description FROM review where productid = ?"
 
     db.query(sql,productid,(err,result)=>{

@@ -109,9 +109,9 @@ const  Main = () =>{
         <div className="flex-container-main" style = {{"background-color":"#5C7600"}}>
             <div>
                 <p className="headingOne" style = {{"color":"#D6D26D"}}> Little Lemon </p>
-                    <p className="headingTwo"style = {{"color":"#D6D26D"}}>Chicago</p>
+                <p className="headingTwo"style = {{"color":"#D6D26D"}}>Chicago</p>
                 <p style = {{"color":"#D6D26D"}}>
-                Lorem ipsum dolor sit amet,<br></br> consectetur adipiscing elit, 
+                Lorem ipsum dolor sit amet,<br></br> consectetur adipiscing elit,
                 sed do eiusmod tempor <br></br>incididunt ut labore et dolore magna aliqua.
                 </p>
                 <Link to="/register"><button className="blackbutton"> Reserve a table</button></Link>

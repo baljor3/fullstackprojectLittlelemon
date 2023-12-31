@@ -11,7 +11,7 @@ const Login = () => {
     const [password, setPassword] = useState();
     const [errorLogin, setErrorrLogin] = useState();
     const navigate = useNavigate()
-    const {logIn} = useContext(AuthContext)
+    const { logIn } = useContext(AuthContext)
 
     const login = async(user, pass) =>{
         await fetch('http://localhost:8080/api/login',{
