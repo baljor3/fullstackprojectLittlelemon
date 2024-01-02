@@ -170,21 +170,20 @@ const  Main = () =>{
         </div>
         <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
             <div className="testHeading">testimonials</div>
-            <div className="card">
-                <p>rating</p>
-                <img src = {bruchetta} alt = "bruchetta" className="testImages"></img>Bruchetta
-                <p>review here</p>
-            </div>
             {reviewData.map((item)=>{
                 return(
             <div className="card">
-                <div>{item.rating}</div>
+                <div>{item.Name}   {item.rating}/5</div>
                 <table>
                     <tb>
                     {findPicture(item.productid)}
                     </tb>
-                <tb style = {{className:"text-container"}} >
-                {item.Description}
+                <tb >
+                <EllipsisTextContainer
+                text={item.Description}
+                maxHeight="43px"
+                maxWidth="200px"
+                ></EllipsisTextContainer>
                 </tb>
             </table>
             </div>)

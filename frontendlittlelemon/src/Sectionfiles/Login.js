@@ -48,6 +48,7 @@ const Login = () => {
     }
 
     return(
+        <body style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center"}}>
     <form style={{"display": 'grid', "max-width": 200, "gap": 20}} onSubmit={k}> 
             <label>Username</label>
 
@@ -64,6 +65,7 @@ const Login = () => {
             <button type="submit">Login</button>
             <Link to="/register"><button>Register</button> </Link>
     </form>
+    </body>
     )
 }
 

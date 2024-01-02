@@ -114,6 +114,7 @@ const Register = () => {
     }
 
     return(
+        <body style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center"}}>
     <form style={{"display": 'grid', "max-width": 200, "gap": 20}} onSubmit={submitdata}>
             <label>Username</label>
             <input id = "username"
@@ -135,6 +136,7 @@ const Register = () => {
             <button type="submit">Register</button>
             <Link to="/login"> <button>Login</button></Link>
     </form>
+    </body>
     )
 }
 

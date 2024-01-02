@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 
 
@@ -44,7 +43,6 @@ const BookingForm  = () =>{
         '20:00',
         '21:00',
         '22:00',];
-        console.log("here is the temp " + temp)
         for(let i  =0; i <temptime.length; i++){
            for(let j = 0; j<temp.length; j++){
             if(temp[j] === temptime[i]){
@@ -75,7 +73,6 @@ const BookingForm  = () =>{
     }
 
     const handleSubmit = () => {
-        
         if(date === "" || date === null || date === undefined){
             alert("Please select a date")
             return
@@ -91,7 +88,9 @@ const BookingForm  = () =>{
     };
 
     return(
-    <form style={{"display": 'grid', "max-width": 200, "gap": 20}} onSubmit={handleSubmit}>
+        <main style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center"}}>
+            <div style={{justifyContent:"center"}}>
+    <form style={{"display": 'grid', "max-width": 200, "gap": 20, alignItems:"center"}} onSubmit={handleSubmit}>
         <label for="res-date" >Choose a Date</label>
 
         <input type = "date"
@@ -123,7 +122,11 @@ const BookingForm  = () =>{
         </select>
 
         <input type="submit" value="Make Your reservation"></input>
-    </form>)
+        
+    </form>
+    </div>
+    </main>
+    )
 
 }
 

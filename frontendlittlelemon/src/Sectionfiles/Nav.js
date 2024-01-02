@@ -13,10 +13,6 @@ const navlinks = [
         link: "/",
     },
     {
-        name: "About",
-        link: "/about",
-    },
-    {
         name:"Menu",
         link:"/menu",
     },
@@ -72,7 +68,9 @@ return (
         {navlinks.map((navlink) => (
             <Link key = {navlink.name} to={navlink.link} className="flex-item"> {navlink.name}</Link>
         ))}
+        <div style={{marginTop:"10px", marginLeft:"7px"}}>
         {isLoggedIn ? <Link onClick={Logout}>LOG OUT</Link>  :  <Link key = "login" to = "/login"> Login</Link>}
+        </div>
         </div>
         </Box>
     </nav>
