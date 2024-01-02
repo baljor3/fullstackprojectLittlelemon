@@ -93,12 +93,8 @@ const Menu=() => {
 
     const updateNumber = (num,arrayProductid,productid) =>{
        if(num){
-        console.log(num)
         var number = num[count]
         var pro = arrayProductid[count]
-        console.log(pro)
-        console.log("the product id",productid)
-        console.log(count)
        }
 
        if(productid === pro){

@@ -48,7 +48,6 @@ const Register = () => {
             return bool = true;
         }
         if(user.length < 4){
-            
             setErrorUser("Username is too short")
             return true;
         }
@@ -59,7 +58,6 @@ const Register = () => {
 
     const checkEmail = (email) => {
         var bool = false;
-        
         const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
         bool = hasWhiteSpace(email)
@@ -131,8 +129,6 @@ const Register = () => {
             <input id="password"
             onChange={(e)=> setPassword(e.target.value)}></input>
             <span >  {errorPass}  </span>
-
-
             <button type="submit">Register</button>
             <Link to="/login"> <button>Login</button></Link>
     </form>

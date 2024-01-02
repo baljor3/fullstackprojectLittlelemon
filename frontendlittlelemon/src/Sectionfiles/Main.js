@@ -17,8 +17,9 @@ const  Main = () =>{
     var [reviewData, setreviewData] = useState([]);
     const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
+    var count = 0;
 
-    const additem = async(productid) =>{
+    const additem = async(v) =>{
         try {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
@@ -26,21 +27,25 @@ const  Main = () =>{
             await fetch('http://localhost:8080/api/additem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": 1
+              "productid": v
             }),
             headers: {
               "token": jwtToken,
               'Content-type': 'application/json'
             }
+          }).then((data)=>{
+            if(data.status === 401){
+                alert("log in")
+            }
           });
-          setUpdateEffect(true)
+          setUpdateEffect(prev => !prev);
         } catch (error) {
             console.error('Error:', error);
             alert("Login to order items");
         }
     }
 
-    const minusitem = async(productid) =>{
+    const minusitem = async(v) =>{
         try {
             if(jwtToken ==="" || jwtToken === undefined){
                 alert("login to order items")
@@ -48,14 +53,14 @@ const  Main = () =>{
             await fetch('http://localhost:8080/api/deleteitem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": 1
+              "productid": v
             }),
             headers: {
               "token": jwtToken,
               'Content-type': 'application/json'
             }
           });
-          setUpdateEffect(true)
+          setUpdateEffect(prev => !prev);
         } catch (error) {
             console.error('Error:', error);
             alert("Login to order items");
@@ -87,23 +92,42 @@ const  Main = () =>{
         })
 
     },[])
-  
-   const updateNumber = (number) =>{
-    
-    if(!Array.isArray(number) || number.length === 0 || number.some(item => item === null || item < 1)){
-        
-        return(<button className="addButton" onClick={()=>additem()}>+ Add</button>)
-    }else{
-      return(  <div><button onClick={minusitem} className="lefthalfCircle">-</button><button className="greenPill">{number}</button><button onClick={additem} className="righthalfCircle">+</button></div>)
-    }
-   }
 
-   const findPicture = (productid) =>{
-    if(productid ===1){
-        return(<img style={{float:"left", padding:0,margin:0}}src = {greek} height = "70px" width= "70px"></img>)
-    }
+    const updateNumber = (num,arrayProductid,productid) =>{
+        if(num){
+         var number = num[count]
+         var pro = arrayProductid[count]
+        }
+        if(productid === pro){
+         count = count +1
+        }
+         const handleAddItem = (e) => additem(e.target.value);
+         const handleMinusItem = (e) => minusitem(e.target.value);
+         if( !number || number.length ===0 || productid !== pro ){
+             return(<button value ={productid} className="addButton" onClick={handleAddItem}>
+                 + Add
+                 </button>)
+         }else{
+           return(
+           <div>
+             <button value = {productid} onClick={handleMinusItem} className="lefthalfCircle">-</button>
+             <button className="greenPill">{number}</button>
+             <button value = {productid} onClick={handleAddItem} className="righthalfCircle">+</button>
+             </div>)
+         }
+     }
 
-   }
+
+     const findPicture = (productid) =>{
+
+        if(productid ===1){
+            return(<img style={{float:"left", padding:0,margin:0}}src = {greek} height = "70px" width= "70px"></img>)
+        } else if(productid === 4){
+            return(<img key ={productid} alt =""className="specialImage"src = {bruchetta} height = "30px" width= "30px"></img>)
+        }else{
+            return(<img key ={productid} alt =""className="specialImage"src = {lemondessert} height = "30px" width= "30px"></img>)
+        }
+    }
 
     return (<main>
         <div className="flex-container-main" style = {{"background-color":"#5C7600"}}>
@@ -133,9 +157,10 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}
-                        ))}
-
+                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.productid)}),
+                        1
+                        )}
             </div>
             <div className="card">
             <img src = {bruchetta} alt = "bruchetta" className="specialImage"></img>
@@ -149,8 +174,9 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}
-                        ))}
+                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.productid)}),
+                        4)}
             </div>
             <div className="card">
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
@@ -164,8 +190,9 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}
-                        ))}
+                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.productid)}),
+                        5)}
             </div>
         </div>
         <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
