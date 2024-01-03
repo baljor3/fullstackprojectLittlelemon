@@ -126,17 +126,35 @@ const Cart=()=>{
         }))
             }
         }
+        function showTotal(){
+            if(data.err === 'Unauthorized'){
+                return(null)
+            }
+            if(data === undefined || data.length === 0 || data.length === undefined  || data === "undefined"){
+                return(null)
+        }else{
+            const sum = data.map((item) => {
+                return item.total;
+              }).reduce((acc, currentValue) => acc + currentValue, 0);
+            const taxes = sum *.12
     
+            const grandtotal = taxes + sum
+
+            return(
+                <div style={{display:"grid",justifyContent:"center",alignItems: "center"}}>
+                    <p>subTotal: {sum}</p>
+                    <p>Taxes: {taxes}</p>
+                    <p>Total: {grandtotal}</p>
+                </div>
+            )
+        }
+    }
 
     return(
         <body style={{backgroundColor:"#5C7600",display:"flex",justifyContent: "center", alignItems: "center",}}>
             <div style={{justifyContent:"center",alignItems: "center"}}>
                 {listItems(data)}
-                <div>
-                    <p>subTotal:</p>
-                    <p>Taxes:</p>
-                    <p>Total:</p>
-                </div>
+                {showTotal()}
             </div>
 
         </body>
