@@ -1,47 +1,66 @@
 import {React, useEffect, useState, useCallback} from "react"
 import Cookies from "js-cookie";
 import bruchetta from "../asset/bruchetta.png"
+import greek from "../asset/greek salad.jpg"
+import lemondessert from  "../asset/lemon dessert.jpg"
 
 
 const Cart=()=>{
     var [data, setData] = useState([])
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
+    var count = 0;
 
 
-    const additem = useCallback(async (productid) => {
+    const additem = async(v) =>{
         try {
-          await fetch('http://localhost:8080/api/additem', {
+            if(jwtToken ==="" || jwtToken === undefined){
+                alert("login to order items")
+            }
+            await fetch('http://localhost:8080/api/additem', {
             method: "POST",
             body: JSON.stringify({
-              "productid": 1
+              "productid": v
+            }),
+            headers: {
+              "token": jwtToken,
+              'Content-type': 'application/json'
+            }
+          }).then((data)=>{
+            if(data.status === 401){
+                alert("log in")
+            }
+          });
+          setUpdateEffect(prev => !prev);
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Login to order items");
+        }
+    }
+
+    const minusitem = async(v) =>{
+        try {
+            if(jwtToken ==="" || jwtToken === undefined){
+                alert("login to order items")
+            }
+            await fetch('http://localhost:8080/api/deleteitem', {
+            method: "POST",
+            body: JSON.stringify({
+              "productid": v
             }),
             headers: {
               "token": jwtToken,
               'Content-type': 'application/json'
             }
           });
-          setUpdateEffect(true)
-        } catch (err) {
-          console.error(err);
+          setUpdateEffect(prev => !prev);
+        } catch (error) {
+            console.error('Error:', error);
+            alert("Login to order items");
         }
-      },);
+    }
 
-    const deleteitem = useCallback( async(productid) =>{
-        await fetch('http://localhost:8080/api/deleteitem',{
-            method: "POST",
-            body: JSON.stringify({
-                "productid": 1
-            }),
-            headers:{
-                "token":jwtToken,
-                'Content-type':'application/json'
-            }
-        }).then((data)=>{
-            setUpdateEffect(true)
-            console.log(data)
-        })
-    })
+
 
     // TODO:UseEffect is called mutiple times instead of once, hence creating mutiple re-renders.
     useEffect( () =>{
@@ -62,7 +81,11 @@ const Cart=()=>{
 
     function getImage(num) {
         if(num ===1){
-            return(<img  src = {bruchetta} alt ="MarioA" width= "200px" height="200px" />)
+            return(<img  src = {greek} alt ="MarioA" width= "150px" height="100px" />)
+        } else if(num === 4){
+        return(<img src = {bruchetta} width= "150px" height="100px"></img>)
+         }else{
+        return(<img  src = {lemondessert} width= "150px" height="100px"></img>)
         }
     }
 
@@ -75,21 +98,47 @@ const Cart=()=>{
         }else{
             console.log(data[0]["total"])
             return(data.map((item)=>{
-                return(<li key={item.orderid}>{item.name} {item.price} {item.total} {item.numberofItems} 
-                    <button onClick={()=>additem(item.productid)}>add</button> 
-                    <button onClick={ ()=>deleteitem(item.productid)}>delete</button>
+                return(<div style={{display:"flex", alignItems: "center",borderBottom: "1px solid black"}} key={item.productid}>
+                    <div >
                     {getImage(item.productid)}
-                    </li>)
+                    </div>
+                    <div>
+                        <ul style={{listStyle:"None"}}>
+                    <li>
+                    Name: {item.name}
+                    </li>
+                    <li>
+                      Unit Price: {item.price}
+                    </li>
+                    <li>
+                    Total: {item.total}
+                    </li>
+                    <li>
+                      Units:  {item.numberofItems}
+                    </li>
+                    <li>
+                    <button onClick={()=>additem(item.productid)}>add</button> 
+                    <button onClick={ ()=>minusitem(item.productid)}>delete</button>
+                    </li>
+                    </ul>
+                    </div>
+                    </div>)
         }))
             }
         }
     
 
     return(
-        <body>
-            <ul>
+        <body style={{backgroundColor:"#5C7600",display:"flex",justifyContent: "center", alignItems: "center",}}>
+            <div style={{justifyContent:"center",alignItems: "center"}}>
                 {listItems(data)}
-            </ul>
+                <div>
+                    <p>subTotal:</p>
+                    <p>Taxes:</p>
+                    <p>Total:</p>
+                </div>
+            </div>
+
         </body>
     )
     
