@@ -65,22 +65,24 @@ const Menu=() => {
         }
     }
 
-    useEffect(()=>{
-        fetch('http://localhost:8080/api/getCart',{
+    useEffect( ()=>{
+         fetch('http://localhost:8080/api/getCart',{
             headers:{
                 "token":Cookies.get('jwt_authorization')
             }
         })
         .then((response)=>response.json())
         .then((wdata)=>{
-            console.log(wdata)
+            console.log(wdata.err)
             if(wdata.err === undefined){
             setNumeberData(wdata)
             }
+            console.log(numberData)
         }).catch((err)=>{
             console.log(err.message);
         });
-    },[updateEffect])
+        
+},[updateEffect])
 
     useEffect(()=>{
         fetch('http://localhost:8080/api/getProducts',{
@@ -96,7 +98,8 @@ const Menu=() => {
         var number = num[count]
         var pro = arrayProductid[count]
        }
-
+       console.log(count)
+       console.log(number)
        if(productid === pro){
         count = count +1
        }
@@ -144,7 +147,7 @@ const Menu=() => {
                         height ="60px">
                     </EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.numberofitems)}),
                         numberData.map((item)=>{return(item.productid)}),
                         item.productid
                         )}

@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from "react";
 import greek from "../asset/greek salad.jpg"
 import Cookies from "js-cookie";
+import bruchetta from "../asset/bruchetta.png"
+import lemonDessert from "../asset/lemon dessert.jpg"
 
 const Review = ()=>{
 
@@ -101,6 +103,17 @@ const ratingSelection = [
 ]
 
 
+const findPicture = (productid) =>{
+
+    if(productid ===1){
+        return(<img key ={productid} alt =""className="specialImage"src = {greek} height = "70px" width= "70px"></img>)
+    } else if(productid === 4){
+        return(<img key ={productid} alt =""className="specialImage"src = {bruchetta} height = "70px" width= "70px"></img>)
+    }else{
+        return(<img key ={productid} alt =""className="specialImage"src = {lemonDessert} height = "70px" width= "70px"></img>)
+    }
+}
+
 const fun = (e)=>{
     if(jwtToken ==="" || jwtToken === undefined){
         alert("login to order items")
@@ -120,7 +133,7 @@ return(
                 <p> {item.name}</p>
                 <p>{item.description}</p>
             </div>
-            <div> {item.productid} </div>
+            <div> {findPicture(item.productid)} </div>
             </div>)
         })}
         

@@ -99,11 +99,8 @@ router.post('/additem',(req,res)=>{
     }
 
     const {productid} = req.body
-    const sql = 'INSERT INTO cart(userid, productid) VALUES (?, ?)'
-
+    const sql = 'INSERT INTO cart(userid, productid) VALUES ($1, $2)'
     const values = [IdorNot,productid]
-    
-
 
     db.query(sql,values,(err,result)=>{
         if(err){
