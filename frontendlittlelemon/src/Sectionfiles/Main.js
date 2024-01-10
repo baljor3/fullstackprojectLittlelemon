@@ -40,7 +40,7 @@ const  Main = () =>{
           });
           setUpdateEffect(prev => !prev);
         } catch (error) {
-            console.error('Error:', error);
+           
             alert("Login to order items");
         }
     }
@@ -62,7 +62,7 @@ const  Main = () =>{
           });
           setUpdateEffect(prev => !prev);
         } catch (error) {
-            console.error('Error:', error);
+            
             alert("Login to order items");
         }
     }
@@ -128,6 +128,40 @@ const  Main = () =>{
             return(<img key ={productid} alt =""className="specialImage"src = {lemondessert} height = "30px" width= "30px"></img>)
         }
     }
+    const TestimonialsReviews = () => {
+        
+        if (reviewData.length === 0 || reviewData.length === undefined) {
+          return null; // Instead of an empty string, return null when there are no reviews.
+        } else {
+          return (
+            <div>
+              {reviewData.map((item, index) => (
+                <div key={index} className="card">
+                  <div>
+                    {item.Name} {item.rating}/5
+                  </div>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>{findPicture(item.productid)}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <EllipsisTextContainer
+                            text={item.Description}
+                            maxHeight="43px"
+                            maxWidth="200px"
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              ))}
+            </div>
+          );
+        }
+      };
 
     return (<main>
         <div className="flex-container-main" style = {{"background-color":"#5C7600"}}>
@@ -197,24 +231,7 @@ const  Main = () =>{
         </div>
         <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
             <div className="testHeading">testimonials</div>
-            {reviewData.map((item)=>{
-                return(
-            <div className="card">
-                <div>{item.Name}   {item.rating}/5</div>
-                <table>
-                    <tb>
-                    {findPicture(item.productid)}
-                    </tb>
-                <tb >
-                <EllipsisTextContainer
-                text={item.Description}
-                maxHeight="43px"
-                maxWidth="200px"
-                ></EllipsisTextContainer>
-                </tb>
-            </table>
-            </div>)
-            })}
+            {TestimonialsReviews()}
         </div>
     </main>);
 };

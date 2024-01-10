@@ -139,7 +139,7 @@ const Menu=() => {
                        {findPicture(item.productid)}
                        <p style={{"margin-top":0, "margin-bottom":0}}><span style={{"float":"left"}}>{item.name} </span>  <span style={{"float":"right"}}>{item.price}</span> </p>
                     <EllipsisTextContainer
-                        text = {item.Description}
+                        text = {item.description}
                         width = "200px"
                         height ="60px">
                     </EllipsisTextContainer>

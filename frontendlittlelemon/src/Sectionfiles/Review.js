@@ -7,8 +7,24 @@ const Review = ()=>{
     const [review, setReview] = useState()
     const [rating, setRating] = useState(1)
     const [reviewArray, setReviewArray] = useState([])
+    const [productList, setProductList] = useState([])
 
     const jwtToken = Cookies.get('jwt_authorization')
+
+
+    var path = window.location.pathname;
+    var path = path.split('/')
+    var path = path[path.length -1]
+
+    useEffect(()=>{
+        fetch(`http://localhost:8080/api/getProducts/${path}`,{
+            method: "GET"
+        }).then((response)=>response.json())
+        .then((data)=>{
+            setProductList(data)
+        })
+    },[])
+
 
     useEffect(() => {
         // Define a function to fetch reviews
@@ -17,13 +33,13 @@ const Review = ()=>{
             const response = await fetch('http://localhost:8080/api/getReviews', {
               method: 'POST',
               body: JSON.stringify({
-                productid: '1'
+                productid: path
               }),
               headers: {
                 'Content-type': 'application/json'
               }
             });
-    
+            console.log(path)
             if (!response.ok) {
               throw new Error('Network response was not ok');
             }
@@ -47,7 +63,7 @@ const writeReview = async(rating,review)=>{
     body: JSON.stringify({
         rating: rating,
         description: review,
-        productid: "1"
+        productid: path
     }),headers:{
         "token":jwtToken,
         'Content-type':'application/json'
@@ -86,22 +102,28 @@ const ratingSelection = [
 
 
 const fun = (e)=>{
-
+    if(jwtToken ==="" || jwtToken === undefined){
+        alert("login to order items")
+        e.preventDefault()
+    }
+    else{
     writeReview(rating,review)
-    e.preventDefault();
+    }
 }
 
 return(
 <main>
-    <div class ="grid-container-review">
-        <div>
-            <p>Greek Salad</p>
-            <p>The famous greek salad of crispy lettuce, peppers, olives and our Chicago style feta cheese, garnished with crunchy garlic and rosemary croutons.</p>
-        </div>
-        <div>
-            <img src = {greek} alt = "Greek Salad" height="200px" width="200px"></img>
-        </div>
-    </div>
+        {productList.map((item)=>{
+            return(
+                <div class ="grid-container-review">
+            <div> 
+                <p> {item.name}</p>
+                <p>{item.description}</p>
+            </div>
+            <div> {item.productid} </div>
+            </div>)
+        })}
+        
 
     <div>
        {reviewArray.map((item)=>{
