@@ -5,7 +5,6 @@ import bruchetta from  "../asset/bruchetta.png"
 import greek from "../asset/greek salad.jpg"
 import lemondessert from  "../asset/lemon dessert.jpg"
 import MarioA from "../asset/Mario and Adrian A.jpg"
-import BookingForm from "./Booking"
 import EllipsisTextContainer from './EllipsisTextContainer';
 import Cookies from "js-cookie";
 
@@ -40,7 +39,6 @@ const  Main = () =>{
           });
           setUpdateEffect(prev => !prev);
         } catch (error) {
-           
             alert("Login to order items");
         }
     }
@@ -123,18 +121,19 @@ const  Main = () =>{
         if(productid ===1){
             return(<img style={{float:"left", padding:0,margin:0}}src = {greek} height = "70px" width= "70px"></img>)
         } else if(productid === 4){
-            return(<img key ={productid} alt =""className="specialImage"src = {bruchetta} height = "30px" width= "30px"></img>)
+            return(<img style={{float:"left", padding:0,margin:0}}src = {bruchetta} height = "70px" width= "70px"></img>)
         }else{
-            return(<img key ={productid} alt =""className="specialImage"src = {lemondessert} height = "30px" width= "30px"></img>)
+            return(<img style={{float:"left", padding:0,margin:0}}src = {lemondessert} height = "70px" width= "70px"></img>)
         }
     }
     const TestimonialsReviews = () => {
-        
         if (reviewData.length === 0 || reviewData.length === undefined) {
           return null; // Instead of an empty string, return null when there are no reviews.
         } else {
           return (
-            <div>
+
+            <div className="grid-container-testimonials"style={{backgroundColor: "#5C7600"}}>
+              <div className="testHeading">testimonials</div>
               {reviewData.map((item, index) => (
                 <div key={index} className="card">
                   <div>
@@ -148,7 +147,7 @@ const  Main = () =>{
                       <tr>
                         <td>
                           <EllipsisTextContainer
-                            text={item.Description}
+                            text={item.description}
                             maxHeight="43px"
                             maxWidth="200px"
                           />
@@ -191,9 +190,9 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.numberofitems)}),
                         numberData.map((item)=>{return(item.productid)}),
-                        1
+                        3
                         )}
             </div>
             <div className="card">
@@ -208,9 +207,9 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.numberofitems)}),
                         numberData.map((item)=>{return(item.productid)}),
-                        4)}
+                        1)}
             </div>
             <div className="card">
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
@@ -224,15 +223,16 @@ const  Main = () =>{
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
                     {updateNumber(
-                        numberData.map((item)=>{return(item.numberofItems)}),
+                        numberData.map((item)=>{return(item.numberofitems)}),
                         numberData.map((item)=>{return(item.productid)}),
-                        5)}
+                        2)}
             </div>
         </div>
-        <div className="grid-container-testimonials" style = {{"background-color":"#5C7600"}}>
-            <div className="testHeading">testimonials</div>
+            
+            
             {TestimonialsReviews()}
-        </div>
+            
+        
     </main>);
 };
 

@@ -119,16 +119,27 @@ router.post('/deleteitem',(req,res)=>{
     }
 
     const {productid} = req.body
-    const values = [IdorNot, productid]
+    const values = [productid,IdorNot ]
 
-    const sql = 'DELETE FROM cart where cart.userid = $1 and cart.productid = $2 LIMIT 1'
-
-
+    const sql = `WITH rows AS (
+        SELECT
+          orderid,
+       productid
+        FROM
+          cart
+          where productid =$1 and userid = $2
+        LIMIT 1
+      )
+      delete from cart
+      where (orderid,productid) in (select orderid,productid from rows)`
+        console.log("here")
     db.query(sql, values, (err,result)=>{
         if(err){
+            console.log(err);
             res.status(500).json({error:"Query failed"})
         }else{
-            res.status(200).json({message:"values inserted"})
+            console.log(result.rows)
+            res.status(200).json({message:"values deleted"})
         }
     })
 
@@ -173,7 +184,6 @@ router.get('/getCart',(req,res)=>{
    COUNT(cart.productid) as numberofItems
    FROM cart JOIN product ON cart.productid = product.productid
    where userid = $1 AND cart.productid IS NOT NULL GROUP BY cart.productid ORDER BY cart.productid`
-    console.log(IdorNot)
    db.query(sql, [IdorNot],(err,result)=>{
     if(err){
         res.status(500).json({error: err})
@@ -213,7 +223,7 @@ router.post('/getReviews',(req,res)=>{
     })
 })
 
-router.post('/writeReview',async (req,res)=>{
+router.post('/writeReview', async(req,res)=>{
    
 
     try{
@@ -223,12 +233,14 @@ router.post('/writeReview',async (req,res)=>{
     }
     
     
-    const username = await getUserName(IdorNot)
+    const username =  await getUserName(IdorNot)
     const {rating, description, productid} = req.body
     const values = [IdorNot , username, rating , description , productid]
     
-    const sql = 'INSERT INTO review(userid, username, rating, description, productid ) VAlUES ($1 , $2 , $3 , $4 , $5)'
-
+    const sql = `INSERT INTO review(userid, username, rating, description, productid )
+     VAlUES ($1 , $2 , $3 , $4 , $5)`
+     console.log(req.body)
+    console.log(values)
     
     db.query(sql, values, (err, result)=>{
         if(err){
@@ -257,7 +269,7 @@ router.get("/getCookies",(req,res)=>{
 function getUserName(id){
     return new Promise((resolve, reject) => {
         const sql = 'SELECT username FROM login WHERE id = $1';
-        db.query(sql, id, (err, result) => {
+        db.query(sql, [id], (err, result) => {
             if (err) {
                 reject(new Error('Query failed'));
             } else {

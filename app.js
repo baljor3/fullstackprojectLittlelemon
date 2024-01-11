@@ -97,7 +97,6 @@ app.use(
 }));
 
 const DatesRouter = require("./src");
-const { EncryptionFilterSensitiveLog } = require("@aws-sdk/client-s3");
 
 
 app.use(express.json());

@@ -73,15 +73,12 @@ const Menu=() => {
         })
         .then((response)=>response.json())
         .then((wdata)=>{
-            console.log(wdata.err)
             if(wdata.err === undefined){
             setNumeberData(wdata)
             }
-            console.log(numberData)
         }).catch((err)=>{
             console.log(err.message);
         });
-        
 },[updateEffect])
 
     useEffect(()=>{
@@ -98,8 +95,6 @@ const Menu=() => {
         var number = num[count]
         var pro = arrayProductid[count]
        }
-       console.log(count)
-       console.log(number)
        if(productid === pro){
         count = count +1
        }
