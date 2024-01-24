@@ -6,6 +6,8 @@ import lemonDessert from "../asset/lemon dessert.jpg"
 import Cookies from "js-cookie";
 import {Link }from 'react-router-dom';
 import EllipsisTextContainer from './EllipsisTextContainer';
+import ButtonsAPIS from "../APIS/ButtonAPIS";
+import GetAPIS from "../APIS/GetAPIS";
 
 
 
@@ -15,70 +17,23 @@ const Menu=() => {
     const [updateEffect,setUpdateEffect] = useState(false);
     const [numberData, setNumeberData] = useState([]);
     var count = 0;
+    const buttonsAPI = new ButtonsAPIS();
+    const getAPI = new GetAPIS();
 
-
-    const additem = async(v) =>{
-        try {
-            if(jwtToken ==="" || jwtToken === undefined){
-                alert("login to order items")
-            }
-            await fetch('http://localhost:8080/api/additem', {
-            method: "POST",
-            body: JSON.stringify({
-              "productid": v
-            }),
-            headers: {
-              "token": jwtToken,
-              'Content-type': 'application/json'
-            }
-          }).then((data)=>{
-            if(data.status === 401){
-                alert("log in")
-            }
-          });
-          setUpdateEffect(prev => !prev);
-        } catch (error) {
-            console.error('Error:', error);
-            alert("Login to order items");
-        }
-    }
-
-    const minusitem = async(v) =>{
-        try {
-            if(jwtToken ==="" || jwtToken === undefined){
-                alert("login to order items")
-            }
-            await fetch('http://localhost:8080/api/deleteitem', {
-            method: "POST",
-            body: JSON.stringify({
-              "productid": v
-            }),
-            headers: {
-              "token": jwtToken,
-              'Content-type': 'application/json'
-            }
-          });
-          setUpdateEffect(prev => !prev);
-        } catch (error) {
-            console.error('Error:', error);
-            alert("Login to order items");
-        }
-    }
 
     useEffect( ()=>{
-         fetch('http://localhost:8080/api/getCart',{
-            headers:{
-                "token":Cookies.get('jwt_authorization')
-            }
-        })
-        .then((response)=>response.json())
-        .then((wdata)=>{
-            if(wdata.err === undefined){
-            setNumeberData(wdata)
-            }
-        }).catch((err)=>{
-            console.log(err.message);
-        });
+        const dope = async() =>{ 
+        try{
+           const result = await getAPI.getCart(jwtToken)
+           console.log("these are the result",result)
+           if(result !== undefined){
+           setNumeberData(result)
+           }
+        }catch (err){
+            console.log(err)
+        }
+        }
+        dope()
 },[updateEffect])
 
     useEffect(()=>{
@@ -99,8 +54,22 @@ const Menu=() => {
         count = count +1
        }
 
-        const handleAddItem = (e) => additem(e.target.value);
-        const handleMinusItem = (e) => minusitem(e.target.value);
+        const handleAddItem = async(e) => {
+            try {
+              await buttonsAPI.additem(e.target.value, jwtToken);
+              setUpdateEffect(prev => !prev);
+            } catch (error) {
+              console.error('Error:', error);
+            }
+          };
+        const handleMinusItem = async(e) => {
+            try{
+            await buttonsAPI.minusitem(e.target.value,jwtToken)
+            setUpdateEffect(prev => !prev)
+            }catch(error){
+                console.error('Error',error)
+            }}
+
         if( !number || number.length ===0 || productid !== pro ){
             return(<button value ={productid} className="addButton" onClick={handleAddItem}>
                 + Add
