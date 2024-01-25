@@ -3,7 +3,6 @@ import { Box} from "@chakra-ui/react";
 import "../Css/Nav.css"
 import logo from "../asset/logo.png"
 import { Link } from 'react-router-dom';
-import Home from "./Main"
 import Cookies from "js-cookie";
 import { AuthContext } from './auth';
 
@@ -66,7 +65,7 @@ return (
         <div class = "flex-container" >
         <img src= {logo} alt = "Logo" />
         {navlinks.map((navlink) => (
-            <Link key = {navlink.name} to={navlink.link} className="flex-item"> {navlink.name}</Link>
+            <Link key = {navlink.name} to={navlink.link} className="flex-item-nav"> {navlink.name}</Link>
         ))}
         <div style={{marginTop:"10px", marginLeft:"7px"}}>
         {isLoggedIn ? <Link onClick={Logout}>LOG OUT</Link>  :  <Link key = "login" to = "/login"> Login</Link>}

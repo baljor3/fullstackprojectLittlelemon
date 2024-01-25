@@ -7,8 +7,13 @@
      /* Adjust the value to set the desired gap size */
   }
 
-.flex-item {
+.flex-item-nav {
     padding: 10px;
     text-align: center;
+    color: blue
   }
+
+.flex-item-nav:visited{
+  color: purple;
+}
 

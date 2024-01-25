@@ -7,6 +7,9 @@ import lemondessert from  "../asset/lemon dessert.jpg"
 import MarioA from "../asset/Mario and Adrian A.jpg"
 import EllipsisTextContainer from './EllipsisTextContainer';
 import Cookies from "js-cookie";
+import GetAPIS from "../APIS/GetAPIS";
+import AddDeleteButton from "../components/AddDeleteButton";
+import FindPicture from "../components/FindPicture";
 
 
 
@@ -16,71 +19,24 @@ const  Main = () =>{
     var [reviewData, setreviewData] = useState([]);
     const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
-    var count = 0;
+    const getAPI = new GetAPIS();
 
-    const additem = async(v) =>{
-        try {
-            if(jwtToken ==="" || jwtToken === undefined){
-                alert("login to order items")
-            }
-            await fetch('http://localhost:8080/api/additem', {
-            method: "POST",
-            body: JSON.stringify({
-              "productid": v
-            }),
-            headers: {
-              "token": jwtToken,
-              'Content-type': 'application/json'
-            }
-          }).then((data)=>{
-            if(data.status === 401){
-                alert("log in")
-            }
-          });
-          setUpdateEffect(prev => !prev);
-        } catch (error) {
-            alert("Login to order items");
-        }
-    }
 
-    const minusitem = async(v) =>{
-        try {
-            if(jwtToken ==="" || jwtToken === undefined){
-                alert("login to order items")
-            }
-            await fetch('http://localhost:8080/api/deleteitem', {
-            method: "POST",
-            body: JSON.stringify({
-              "productid": v
-            }),
-            headers: {
-              "token": jwtToken,
-              'Content-type': 'application/json'
-            }
-          });
-          setUpdateEffect(prev => !prev);
-        } catch (error) {
-            
-            alert("Login to order items");
-        }
-    }
+    useEffect( ()=>{
+      const Cart = async() =>{
+      try{
+         const result = await getAPI.getCart(jwtToken)
+         if(result !== undefined){
+         setNumeberData(result)
+         }
+      }catch (err){
+          console.log(err)
+      }
+      }
+      Cart()
+},[updateEffect])
 
-    useEffect(()=>{
-        fetch('http://localhost:8080/api/getCart',{
-            headers:{
-                "token":Cookies.get('jwt_authorization')
-            }
-        })
-        .then((response)=>response.json())
-        .then((wdata)=>{
-            setUpdateEffect(false)
-            if(wdata.err === undefined){
-            setNumeberData(wdata)
-            }
-        }).catch((err)=>{
-            console.log(err.message);
-        });
-    },[updateEffect])
+
 
     useEffect(()=>{
         fetch('http://localhost:8080/api/getTopReviews')
@@ -91,41 +47,7 @@ const  Main = () =>{
 
     },[])
 
-    const updateNumber = (num,arrayProductid,productid) =>{
-        if(num){
-         var number = num[count]
-         var pro = arrayProductid[count]
-        }
-        if(productid === pro){
-         count = count +1
-        }
-         const handleAddItem = (e) => additem(e.target.value);
-         const handleMinusItem = (e) => minusitem(e.target.value);
-         if( !number || number.length ===0 || productid !== pro ){
-             return(<button value ={productid} className="addButton" onClick={handleAddItem}>
-                 + Add
-                 </button>)
-         }else{
-           return(
-           <div>
-             <button value = {productid} onClick={handleMinusItem} className="lefthalfCircle">-</button>
-             <button className="greenPill">{number}</button>
-             <button value = {productid} onClick={handleAddItem} className="righthalfCircle">+</button>
-             </div>)
-         }
-     }
 
-
-     const findPicture = (productid) =>{
-
-        if(productid ===1){
-            return(<img style={{float:"left", padding:0,margin:0}}src = {greek} height = "70px" width= "70px"></img>)
-        } else if(productid === 4){
-            return(<img style={{float:"left", padding:0,margin:0}}src = {bruchetta} height = "70px" width= "70px"></img>)
-        }else{
-            return(<img style={{float:"left", padding:0,margin:0}}src = {lemondessert} height = "70px" width= "70px"></img>)
-        }
-    }
     const TestimonialsReviews = () => {
         if (reviewData.length === 0 || reviewData.length === undefined) {
           return null; // Instead of an empty string, return null when there are no reviews.
@@ -142,7 +64,13 @@ const  Main = () =>{
                   <table>
                     <tbody>
                       <tr>
-                        <td>{findPicture(item.productid)}</td>
+                        <td>
+                          <FindPicture
+                          style={{float:"left", padding:0,margin:0}}
+                       productid= {item.productid}
+                       height= "70px"
+                       width="70px"/>
+                       </td>
                       </tr>
                       <tr>
                         <td>
@@ -189,11 +117,14 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    {updateNumber(
-                        numberData.map((item)=>{return(item.numberofitems)}),
-                        numberData.map((item)=>{return(item.productid)}),
-                        3
-                        )}
+                    <AddDeleteButton
+                        number = {numberData
+                        .filter((item)=> item.productid === 3)
+                        .map((item)=>item.numberofitems)}
+                        productid = { numberData.map((item)=>item.productid)}
+                        jwtToken ={jwtToken}
+                        setUpdateEffect = {setUpdateEffect}
+                        />
             </div>
             <div className="card">
             <img src = {bruchetta} alt = "bruchetta" className="specialImage"></img>
@@ -206,10 +137,14 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    {updateNumber(
-                        numberData.map((item)=>{return(item.numberofitems)}),
-                        numberData.map((item)=>{return(item.productid)}),
-                        1)}
+                       <AddDeleteButton
+                        number = {numberData
+                        .filter((item)=> item.productid === 1)
+                        .map((item)=> item.numberofitems)}
+                        productid = { numberData.map((item)=>item.productid)}
+                        jwtToken ={jwtToken}
+                        setUpdateEffect = {setUpdateEffect}
+                        />
             </div>
             <div className="card">
             <img src = {lemondessert} alt = "lemondessert" className="specialImage"></img>
@@ -222,17 +157,19 @@ const  Main = () =>{
                     maxWidth="200px"
                     link="http://localhost:3000/review/1"
                     ></EllipsisTextContainer>
-                    {updateNumber(
-                        numberData.map((item)=>{return(item.numberofitems)}),
-                        numberData.map((item)=>{return(item.productid)}),
-                        2)}
+                       <AddDeleteButton
+                        number = {numberData
+                        .filter((item)=> item.productid === 2)
+                        .map((item)=>item.numberofitems)}
+                        productid = { numberData.map((item)=> item.productid)}
+                        jwtToken ={jwtToken}
+                        setUpdateEffect = {setUpdateEffect}
+                        />
             </div>
         </div>
-            
-            
+
             {TestimonialsReviews()}
-            
-        
+
     </main>);
 };
 

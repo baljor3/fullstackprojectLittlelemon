@@ -79,6 +79,15 @@ app.get('/createReview',(req,res)=>{
   })
 })
 
+//TODO: made reservation table
+app.get('/reservations',(req,res)=>{
+
+  let sql = `CREATE TABLE reservations(
+    
+  )
+`
+})
+
 app.get('/changeReviewTable',(req,res)=>{
   let sql = "ALTER TABLE review ADD date DATE"
 
