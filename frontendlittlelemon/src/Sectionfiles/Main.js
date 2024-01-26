@@ -14,7 +14,6 @@ import FindPicture from "../components/FindPicture";
 
 
 const  Main = () =>{
-    const [productid, setProductID] = useState()
     var [numberData, setNumeberData] = useState([]);
     var [reviewData, setreviewData] = useState([]);
     const [updateEffect,setUpdateEffect] = useState(false);

@@ -16,7 +16,7 @@ function App() {
   return (
     <main>
      <AuthProvider>
-      <BrowserRouter><Nav></Nav>
+      <Nav/>
       <Routes>
     <Route path="/" element={<Main />}></Route>
     <Route path="/booking" element={<BookingPage />}></Route>
@@ -26,9 +26,7 @@ function App() {
     <Route path = "/cart" element = {<Cart/>}> </Route>
     <Route path = "/review/:itemId" element= {<Review/>}></Route>
     </Routes>
-      </BrowserRouter>
-      <Footer></Footer>
-      </AuthProvider> 
+      </AuthProvider>
     </main>
   );
 }

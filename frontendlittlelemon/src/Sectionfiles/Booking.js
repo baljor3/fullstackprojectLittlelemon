@@ -1,26 +1,35 @@
 import React, { useState, useEffect } from "react";
-
+import moment from 'moment'
 
 
 
 const BookingForm  = () =>{
 
     const [date, setDate] = useState();
-    const [time,setTime] = useState("17:00");
-    const [guest, setGuest]  =useState("1");
+    const [time,setTime] = useState("8:00am");
+    const [guest, setGuest]  =useState(1);
     const [occasion, setOccasion] = useState("Birthday");
+    const [email, setEmail] =  useState()
     const [apidata, setData] = useState();
-    const [availableTimes, setAvailableTimes] = useState(['17:00',
-    '18:00',
-    '19:00',
-    '20:00',
-    '21:00',
-    '22:00',]);
+    const [availableTimes, setAvailableTimes] = useState(['8:00am',
+    '8:30am',
+    '9:00am',
+    '9:30am',
+    '10:00am',
+    '10:30am',
+    '11:00am',
+    '11:30am',
+'12:00pm',
+'12:30pm',
+'1:00pm',
+'1:30pm']);
 
    useEffect(() =>{
-        fetch('http://localhost:8080/api/getDates')
+        fetch('http://localhost:8080/api/getDate')
         .then((response)=>response.json())
         .then((data)=>{
+            console.log(data)
+            console.log(data.length)
             setData(data)
         }).catch((err)=>{
             console.log(err.message);
@@ -29,20 +38,30 @@ const BookingForm  = () =>{
 
     function updatedate(datevalue){
         var temptime = []
-        for(let i  =0; i< apidata["data"].length; i++){
-            if(datevalue === apidata["data"][i]["date"]
-            && apidata["data"][i]["time"] != null
-            && apidata["data"][i]["time"] !== ""){
-                temptime.push( apidata["data"][i]["time"])
+        for(let i  =0; i< apidata.length; i++){
+            let changeDate=moment(apidata[i]["date"])
+            changeDate=changeDate.format("YYYY-MM-DD")
+            console.log(changeDate)
+            if(datevalue === changeDate
+            && apidata[i]["time"] != null
+            && apidata[i]["time"] !== ""){
+                temptime.push( apidata[i]["time"])
 
             }
         }
-        const temp = ['17:00',
-        '18:00',
-        '19:00',
-        '20:00',
-        '21:00',
-        '22:00',];
+        console.log("temptime",temptime)
+        const temp = ['8:00am',
+        '8:30am',
+        '9:00am',
+        '9:30am',
+        '10:00am',
+        '10:30am',
+        '11:00am',
+        '11:30am',
+    '12:00pm',
+    '12:30pm',
+    '1:00pm',
+    '1:30pm'];
         for(let i  =0; i <temptime.length; i++){
            for(let j = 0; j<temp.length; j++){
             if(temp[j] === temptime[i]){
@@ -52,14 +71,15 @@ const BookingForm  = () =>{
         }
         setAvailableTimes(temp)
         }
-    const addDates = async(date,time,guest,occasion) =>{
-    await fetch('http://localhost:8080/api/saveDates',{
+    const addDates = async(date,time,guest,occasion,email) =>{
+    await fetch('http://localhost:8080/api/saveDate',{
         method: 'POST',
         body: JSON.stringify({
            "date": date,
            "time": time,
-           "guest":guest,
-           "occasion":occasion
+           "noguests":guest,
+           "occasion":occasion,
+           "email":email
         }),
         headers: {
            'Content-type': 'application/json',
@@ -72,13 +92,18 @@ const BookingForm  = () =>{
         })
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = (e) => {
         if(date === "" || date === null || date === undefined){
             alert("Please select a date")
             return
         }
-        addDates(date, time,guest,occasion);
+        if(email === "" || email === null || email === undefined){
+            alert("please enter an email")
+            return
+        }
+        addDates(date, time,guest,occasion,email);
         alert("Your reservations were made!")
+        e.preventDefault()
      };
 
 
@@ -120,6 +145,9 @@ const BookingForm  = () =>{
             <option>Birthday</option>
             <option>Anniversary</option>
         </select>
+
+        <label for="email">Email</label>
+        <input type = "text" onChange={(e)=>{setEmail(e.target.value)}}></input>
 
         <input type="submit" value="Make Your reservation"></input>
         

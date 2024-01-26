@@ -10,10 +10,17 @@
 .flex-item-nav {
     padding: 10px;
     text-align: center;
-    color: blue
+    color: green
   }
 
-.flex-item-nav:visited{
+.flex-item-nav:hover{
   color: purple;
 }
 
+.log{
+  color:green
+}
+
+.log:hover{
+  color:purple
+}

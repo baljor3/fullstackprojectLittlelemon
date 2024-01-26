@@ -5,6 +5,35 @@ const db = require('../db');
 const jwt  = require('jsonwebtoken');
 const { restart } = require('nodemon');
 
+router.post("/saveDate",(req,res) =>{
+    const {date, time, noguests, occasion, email} = req.body
+    let sql = `insert INTO reservations(date, time,noguests,occasion, email)
+    VALUES ($1,$2,$3,$4,$5)`
+    const values = [date,time,noguests,occasion,email]
+
+    db.query(sql, values, (error,result) =>{
+        if(error){
+            res.send({Err:error})
+        }else{
+            res.send({message:"dates inserted"})
+        }
+
+    })
+})
+
+router.get("/getDate",(req,res)=>{
+    let sql = "SELECT * FROM reservations"
+
+    db.query(sql,(err,result)=>{
+        if(err){
+            res.send({Err:err})
+        }else{
+            res.send(result.rows)
+        }
+    })
+
+})
+
 router.get("/getDates",(req,res)=>{
     try{
         datecontoller.getDates((err,result)=>{
@@ -291,3 +320,5 @@ function getUserID(TokenHeader){
     }
 }
 module.exports = router;
+
+

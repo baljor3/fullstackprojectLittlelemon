@@ -83,9 +83,14 @@ app.get('/createReview',(req,res)=>{
 app.get('/reservations',(req,res)=>{
 
   let sql = `CREATE TABLE reservations(
-    
+    date DATE NOT NULL,
+    time VARCHAR(20) NOT NULL,
+    Noguests INT NOT NULL,
+    OCCASION VARCHAR(20) NOT NULL
   )
 `
+
+
 })
 
 app.get('/changeReviewTable',(req,res)=>{
