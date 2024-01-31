@@ -1,16 +1,17 @@
 import './App.css';
-import  React from "react"
+import  React,{lazy,Suspense} from "react"
 import Nav from "./Sectionfiles/Nav"
 import Main from "./Sectionfiles/Main"
-import Menu from "./Sectionfiles/Menu"
 import Footer from "./Sectionfiles/Footer"
-import BookingPage from "./Sectionfiles/Booking"
-import Login  from "./Sectionfiles/Login"
-import Cart from "./Sectionfiles/Cart"
 import { BrowserRouter,Route,Routes } from 'react-router-dom';
-import Register from './Sectionfiles/Register';
 import Review from './Sectionfiles/Review';
 import { AuthProvider } from './Sectionfiles/auth';
+
+const Menu = lazy(()=>{import('./Sectionfiles/Menu')})
+const BookingPage= lazy(() =>{import('./Sectionfiles/Booking')})
+const Login = lazy(()=> {import('./Sectionfiles/Login')})
+const Register = lazy(()=>{import('./Sectionfiles/Register')})
+const Cart = lazy(()=>{import('./Sectionfiles/Cart')})
 
 function App() {
   return (
@@ -19,11 +20,34 @@ function App() {
       <Nav/>
       <Routes>
     <Route path="/" element={<Main />}></Route>
-    <Route path="/booking" element={<BookingPage />}></Route>
-    <Route path="/login" element ={<Login/>}> </Route>
-    <Route path="/register" element ={<Register/>}></Route>
-    <Route path = "/menu" element ={<Menu/>}></Route>
-    <Route path = "/cart" element = {<Cart/>}> </Route>
+
+    <Route path="/booking" element={
+      <Suspense>
+    <BookingPage />
+    </Suspense>}></Route>
+
+    <Route path="/login" element ={
+      <Suspense>
+    <Login/>
+    </Suspense> }> 
+    </Route>
+    
+    <Route path="/register" element ={
+      <Suspense>
+    <Register/>
+    </Suspense>
+    }></Route>
+    
+    <Route path = "/menu" element ={
+    <Suspense fallback = {<div>Loading Menu...</div>}>
+      <Menu/>
+    </Suspense>}></Route>
+    
+    <Route path = "/cart" element = {
+    <Suspense>
+    <Cart/>
+    </Suspense>
+    }> </Route>
     <Route path = "/review/:itemId" element= {<Review/>}></Route>
     </Routes>
       </AuthProvider>
