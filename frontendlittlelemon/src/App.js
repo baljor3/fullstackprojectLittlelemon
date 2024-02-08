@@ -7,11 +7,14 @@ import { BrowserRouter,Route,Routes } from 'react-router-dom';
 import Review from './Sectionfiles/Review';
 import { AuthProvider } from './Sectionfiles/auth';
 
-const Menu = lazy(()=>{import('./Sectionfiles/Menu')})
-const BookingPage= lazy(() =>{import('./Sectionfiles/Booking')})
-const Login = lazy(()=> {import('./Sectionfiles/Login')})
-const Register = lazy(()=>{import('./Sectionfiles/Register')})
-const Cart = lazy(()=>{import('./Sectionfiles/Cart')})
+
+const Menu = React.lazy(()=>import('./Sectionfiles/Menu'))
+const BookingPage = React.lazy(()=> import('./Sectionfiles/Booking'))
+const Login = React.lazy(()=> import('./Sectionfiles/Login'))
+const Register = React.lazy(()=>import('./Sectionfiles/Register'))
+const Cart = React.lazy(()=> import('./Sectionfiles/Cart') )
+
+
 
 function App() {
   return (
@@ -22,32 +25,35 @@ function App() {
     <Route path="/" element={<Main />}></Route>
 
     <Route path="/booking" element={
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
     <BookingPage />
-    </Suspense>}></Route>
+    </Suspense>
+    }></Route>
 
     <Route path="/login" element ={
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
     <Login/>
     </Suspense> }> 
     </Route>
     
     <Route path="/register" element ={
-      <Suspense>
+      <Suspense fallback={<div>Loading...</div>}>
     <Register/>
     </Suspense>
     }></Route>
     
     <Route path = "/menu" element ={
-    <Suspense fallback = {<div>Loading Menu...</div>}>
+    <Suspense fallback={<div>Loading...</div>} >
       <Menu/>
     </Suspense>}></Route>
     
     <Route path = "/cart" element = {
-    <Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
     <Cart/>
     </Suspense>
-    }> </Route>
+    }> 
+    
+    </Route>
     <Route path = "/review/:itemId" element= {<Review/>}></Route>
     </Routes>
       </AuthProvider>
