@@ -1,8 +1,8 @@
 import {React, useEffect, useState, useCallback} from "react"
 import Cookies from "js-cookie";
 import bruchetta from "../asset/bruchetta.png"
-import greek from "../asset/greek salad.jpg"
-import lemondessert from  "../asset/lemon dessert.jpg"
+import greek from "../asset/greek-salad.jpg"
+import lemondessert from  "../asset/lemon-dessert.jpg"
 
 
 const Cart=()=>{

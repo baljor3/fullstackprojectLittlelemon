@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
-import greek from "../asset/greek salad.jpg"
+import greek from "../asset/greek-salad.jpg"
 import Cookies from "js-cookie";
 import bruchetta from "../asset/bruchetta.png"
-import lemonDessert from "../asset/lemon dessert.jpg"
+import lemonDessert from "../asset/lemon-dessert.jpg"
 
 const Review = ()=>{
 

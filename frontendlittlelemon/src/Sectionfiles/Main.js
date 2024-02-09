@@ -2,15 +2,15 @@ import React, {useState, useReducer, useEffect} from "react"
 import {Link }from 'react-router-dom';
 import "../Css/Main.css"
 import bruchetta from  "../asset/bruchetta.png"
-import greek from "../asset/greek salad.jpg"
-import lemondessert from  "../asset/lemon dessert.jpg"
-import MarioA from "../asset/Mario and Adrian A.jpg"
+import greek from "../asset/greek-salad.jpg"
+import lemondessert from  "../asset/lemon-dessert.jpg"
+import MarioA from "../asset/Mario-and-Adrian.jpg"
 import EllipsisTextContainer from './EllipsisTextContainer';
 import Cookies from "js-cookie";
 import GetAPIS from "../APIS/GetAPIS";
 import AddDeleteButton from "../components/AddDeleteButton";
 import FindPicture from "../components/FindPicture";
-
+import Mariosmall from "../asset/Mario-small.jpg"
 
 
 const  Main = () =>{
@@ -19,6 +19,30 @@ const  Main = () =>{
     const [updateEffect,setUpdateEffect] = useState(false);
     const jwtToken = Cookies.get('jwt_authorization')
     const getAPI = new GetAPIS();
+    const [isLoaded, setIsLoaded] = useState(false);
+    const imgRef = React.createRef();
+
+  useEffect(() => {
+   
+
+    function loaded() {
+      setIsLoaded(true);
+    }
+
+    if (imgRef.current && imgRef.current.complete) {
+      loaded();
+    } else if (imgRef.current) {
+      imgRef.current.addEventListener("load", loaded);
+    }
+
+    return () => {
+      // Cleanup: remove event listener
+      if (imgRef.current) {
+        imgRef.current.removeEventListener("load", loaded);
+      }
+    };
+  }, []); // Empty dependency array ensures this effect runs only once
+
 
 
     useEffect( ()=>{
@@ -100,8 +124,15 @@ const  Main = () =>{
                 </p>
                 <Link to="/register"><button className="blackbutton"> Reserve a table</button></Link>
             </div>
-            <div style={{'padding-left':20}}>
-                <img src = {MarioA} alt ="MarioA" width= "200px" height="200px"></img>
+            <div  style={{'padding-left':20  }}>
+              <div className={`blurred-img ${isLoaded ? 'loaded' : ''}`} >
+                <img src = {MarioA} 
+                alt ="MarioA"  
+                ref ={imgRef} 
+                width= "200px" 
+                height="210px" 
+                loading="lazy"></img>
+                </div>
             </div>
         </div>
         <div className="grid-container-main" style = {{"background-color":"#D6D26D"}}>

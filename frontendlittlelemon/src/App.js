@@ -22,7 +22,8 @@ function App() {
      <AuthProvider>
       <Nav/>
       <Routes>
-    <Route path="/" element={<Main />}></Route>
+    <Route path="/" element={
+    <Main />}></Route>
 
     <Route path="/booking" element={
       <Suspense fallback={<div>Loading...</div>}>

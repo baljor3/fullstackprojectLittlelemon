@@ -1,7 +1,7 @@
 import "../Css/Main.css"
-import greek from "../asset/greek salad.jpg"
+import greek from "../asset/greek-salad.jpg"
 import bruchetta from "../asset/bruchetta.png"
-import lemonDessert from "../asset/lemon dessert.jpg"
+import lemonDessert from "../asset/lemon-dessert.jpg"
 
 const findPicture = ({productid, height,width, style}) =>{
 
