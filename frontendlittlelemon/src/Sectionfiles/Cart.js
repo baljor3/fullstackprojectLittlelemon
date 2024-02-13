@@ -1,8 +1,9 @@
-import {React, useEffect, useState, useCallback} from "react"
+import {React, useEffect, useState} from "react"
 import Cookies from "js-cookie";
 import bruchetta from "../asset/bruchetta.png"
 import greek from "../asset/greek-salad.jpg"
 import lemondessert from  "../asset/lemon-dessert.jpg"
+import PopupGfg from "./CartCheckout"
 
 
 const Cart=()=>{
@@ -147,17 +148,21 @@ const Cart=()=>{
             )
         }
     }
+    
 
     return(
-        <body style={{backgroundColor:"#5C7600",display:"flex",justifyContent: "center", alignItems: "center",}}>
+        <body style={{backgroundColor:"#5C7600"}}>
+            <div style={{display:"flex",justifyContent: "center", alignItems: "center",}}>
             <div style={{justifyContent:"center",alignItems: "center"}}>
                 {listItems(data)}
                 {showTotal()}
             </div>
-
+            </div>
+            <div style={{justifyContent:"center"}}>
+            <PopupGfg/>
+            </div>
         </body>
     )
-    
 }
 
 export default Cart;

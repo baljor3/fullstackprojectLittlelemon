@@ -23,8 +23,6 @@ const  Main = () =>{
     const imgRef = React.createRef();
 
   useEffect(() => {
-   
-
     function loaded() {
       setIsLoaded(true);
     }

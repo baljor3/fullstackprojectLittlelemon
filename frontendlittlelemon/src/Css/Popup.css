@@ -1,0 +1,64 @@
+.popupContainer{
+  top: 40%;
+  bottom:50%;
+  display: flex;
+  z-index: 1;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  width: 350px;
+  height: 350px;
+  border-style: solid;
+  border-color: #CDC959;
+}
+
+.popupForm {
+  display: grid;
+  gap: 10px;
+}
+
+.nameContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.creditCardContainer{
+  display: grid;
+  grid-template-columns: 1fr; /* Single column */
+    grid-template-rows: auto auto; /* Two rows with auto height */
+}
+
+.labelRow,
+.inputRow {
+    display: flex;
+    align-items: center;
+}
+
+.inputRow input {
+    width: 100%;
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 5px;
+  box-sizing: border-box;
+  border: 1px solid #5C7600;
+}
+
+input:focus {
+  border-color: #5C7600;
+  border: #5C7600;
+}
+input[type="submit"] {
+  width: auto;
+  padding: 5px 20px;
+  background-color: #5C7600;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
