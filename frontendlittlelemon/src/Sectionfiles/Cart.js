@@ -10,6 +10,7 @@ const Cart=()=>{
     var [data, setData] = useState([])
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
+    const [popUp, setPopUp] = useState(false);
     const[subtotal, setSubtotal] = useState();
     var count = 0;
 
@@ -91,6 +92,10 @@ const Cart=()=>{
         }
     }
 
+    const closeOpenCheckout = ()=>{
+        setPopUp(prev => !prev)
+    }
+
     function listItems(data){
         if(data.err === 'Unauthorized'){
             return(<p>Please login to add items to cart</p>)
@@ -151,16 +156,31 @@ const Cart=()=>{
     
 
     return(
-        <body style={{backgroundColor:"#5C7600"}}>
+        <body style={{backgroundColor:"#5C7600",
+        
+        }}>
             <div style={{display:"flex",justifyContent: "center", alignItems: "center",}}>
             <div style={{justifyContent:"center",alignItems: "center"}}>
                 {listItems(data)}
                 {showTotal()}
+                <button onClick={closeOpenCheckout}>checkout</button>
+
             </div>
             </div>
-            <div style={{justifyContent:"center"}}>
-            <PopupGfg/>
-            </div>
+            {popUp ?
+            <div style={{display: "flex",
+            alignItems: "center",
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0,0,0,0.5)",
+            zIndex: 2,
+
+            }}>
+            <PopupGfg closeCheckout = {closeOpenCheckout}/>
+            </div>: null}
         </body>
     )
 }

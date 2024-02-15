@@ -1,9 +1,8 @@
-
 import 'reactjs-popup/dist/index.css';
 import '../Css/Popup.css'
 import { useState } from 'react';
 
-export default function PopupGfg() {
+export default function PopupGfg({closeCheckout}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
@@ -28,8 +27,12 @@ export default function PopupGfg() {
         setCvv(formattedCvv);
     };
 
+
     return (
-        <div className="popupContainer">
+        <div className="popupContainer" >
+            <span className="closeButton" 
+            onClick={closeCheckout}>
+                X</span>
             <form className="popupForm">
                 <div className="nameContainer">
                     <div>
@@ -66,7 +69,7 @@ export default function PopupGfg() {
                             value={expiryDate}
                             onChange={handleExpiryDateChange}
                             placeholder="MM/YY"
-                            style={{ width: '6ch' }}
+                            style={{ width: '8ch' }}
                             maxLength="5"
                         />
                     </div>
@@ -78,7 +81,8 @@ export default function PopupGfg() {
                             type="text"
                             value={cvv}
                             onChange={handleCvvChange}
-                            style={{ width: '4ch' }}
+                            placeholder='XXX'
+                            style={{ width: '6ch' }}
                             maxLength="3"
                         />
                     </div>
