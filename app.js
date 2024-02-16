@@ -4,6 +4,7 @@ const cors = require("cors")
 const db = require("./db")
 require("dotenv").config()
 
+
 //create db
 app.get('/createdb',(req, res )=>{
   let sql = 'CREATE DATABASE nodemysql';

@@ -4,6 +4,37 @@ const router = express.Router()
 const db = require('../db');
 const jwt  = require('jsonwebtoken');
 const { restart } = require('nodemon');
+const nodemailer = require("nodemailer");
+
+
+let transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'littlelemon598@gmail.com',
+        pass: 'thisisafakeaccount'
+    }
+});
+
+router.post("/sendMessage",(req,res)=>{
+    const {email}=req.body
+    let mailOptions = {
+        from: 'your_email@gmail.com',
+        to: {email},
+        subject: 'Hello from Nodemailer',
+        text: 'This is a test email sent from Nodemailer using Gmail SMTP'
+    };
+
+    // Send email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.error('Error occurred:', error);
+        } else {
+            console.log('Email sent:', info.response);
+            res.send({message:"message sent"})
+        }
+    });
+
+})
 
 router.post("/saveDate",(req,res) =>{
     const {date, time, noguests, occasion, email} = req.body
@@ -20,6 +51,8 @@ router.post("/saveDate",(req,res) =>{
 
     })
 })
+
+
 
 router.get("/getDate",(req,res)=>{
     let sql = "SELECT * FROM reservations"

@@ -6,6 +6,7 @@ export default function PopupGfg({closeCheckout}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
+    const [email, setEmail] =useState();
 
     const handleCreditCardChange = (e) => {
         const formattedCreditCardNumber = e.target.value
@@ -26,14 +27,28 @@ export default function PopupGfg({closeCheckout}) {
         const formattedCvv = e.target.value.replace(/[^\d]/g, '').slice(0, 3); // Keep only the first three digits
         setCvv(formattedCvv);
     };
+    const sendMessage =async(email) =>{
+        await fetch('http://localhost:8080/api/sendMessage',{
+            method:'POST',
+            body: JSON.stringify({
+                "email":email
+            }),
+            headers:{
+                'Content-type':'application/json',
+            }
+        })
+    }
 
-
+    const finish = (e) =>{
+        e.preventDefault()
+        sendMessage(email)
+    }
     return (
         <div className="popupContainer" >
-            <span className="closeButton" 
+            <span className="closeButton"
             onClick={closeCheckout}>
                 X</span>
-            <form className="popupForm">
+            <form className="popupForm" onSubmit={finish}>
                 <div className="nameContainer">
                     <div>
                         <label>First Name</label>
@@ -45,7 +60,7 @@ export default function PopupGfg({closeCheckout}) {
                     </div>
                 </div>
                 <label>Email</label>
-                <input type="text" />
+                <input type="text" onChange={(e)=>setEmail(e.target.value)}/>
                 <div className='creditCardContainer'>
                     <div className="labelRow">
                         <label>Credit Card</label>
