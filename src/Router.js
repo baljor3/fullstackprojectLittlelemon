@@ -7,34 +7,42 @@ const { restart } = require('nodemon');
 const nodemailer = require("nodemailer");
 
 
-let transporter = nodemailer.createTransport({
-    service: 'Gmail',
+
+
+const transporter = nodemailer.createTransport({
+    host: "smtp-mail.outlook.com",
+    port: 587,
+    secure: false,
     auth: {
-        user: 'littlelemon598@gmail.com',
-        pass: 'thisisafakeaccount'
+        user: "littlelemon589@outlook.com", // Use environment variable
+        pass: "Ch159159!", // Use environment variable
+    },
+    tls: {
+        ciphers:'SSLv3'
     }
 });
 
-router.post("/sendMessage",(req,res)=>{
-    const {email}=req.body
-    let mailOptions = {
-        from: 'your_email@gmail.com',
-        to: {email},
-        subject: 'Hello from Nodemailer',
-        text: 'This is a test email sent from Nodemailer using Gmail SMTP'
-    };
+router.post("/sendMessage", async (req, res) => {
+    try {
+        const { email } = req.body;
+        let mailOptions = {
+            from: 'littlelemon589@outlook.com',
+            to: email,
+            subject: 'Hello from Nodemailer',
+            text: 'This is a test email sent from Nodemailer using Outlook SMTP'
+        };
+        console.log(mailOptions)
 
-    // Send email
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error occurred:', error);
-        } else {
-            console.log('Email sent:', info.response);
-            res.send({message:"message sent"})
-        }
-    });
+        // Send email
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent:', info.response);
+        res.send({ message: "message sent" });
+    } catch (error) {
+        console.error('Error occurred:', error);
+        res.status(500).send({ error: 'An error occurred while sending the email' });
+    }
+});
 
-})
 
 router.post("/saveDate",(req,res) =>{
     const {date, time, noguests, occasion, email} = req.body
