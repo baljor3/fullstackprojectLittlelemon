@@ -7,7 +7,7 @@ import PopupGfg from "./CartCheckout"
 
 
 const Cart=()=>{
-    var [data, setData] = useState([])
+    const [data, setData] = useState([])
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
     const [popUp, setPopUp] = useState(false);
@@ -103,7 +103,7 @@ const Cart=()=>{
         if(data === undefined || data.length === 0 || data.length === undefined  || data === "undefined"){
             return(<p>No items in the cart</p>)
         }else{
-            console.log(data[0]["total"])
+            
             return(data.map((item)=>{
                 return(<div style={{display:"flex", alignItems: "center",borderBottom: "1px solid black"}} key={item.productid}>
                     <div >
@@ -179,7 +179,7 @@ const Cart=()=>{
             zIndex: 2,
 
             }}>
-            <PopupGfg closeCheckout = {closeOpenCheckout}/>
+            <PopupGfg closeCheckout = {closeOpenCheckout} data = {data}/>
             </div>: null}
         </body>
     )

@@ -2,7 +2,7 @@ import 'reactjs-popup/dist/index.css';
 import '../Css/Popup.css'
 import { useState } from 'react';
 
-export default function PopupGfg({closeCheckout}) {
+export default function PopupGfg({closeCheckout, data}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
@@ -31,7 +31,8 @@ export default function PopupGfg({closeCheckout}) {
         await fetch('http://localhost:8080/api/sendMessage',{
             method:'POST',
             body: JSON.stringify({
-                "email":email
+                "email":email,
+                "items":data
             }),
             headers:{
                 'Content-type':'application/json',

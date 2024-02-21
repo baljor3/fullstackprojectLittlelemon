@@ -24,12 +24,53 @@ const transporter = nodemailer.createTransport({
 
 router.post("/sendMessage", async (req, res) => {
     try {
-        const { email } = req.body;
+        const { email, items } = req.body;
+
+        let itemList = '';
+
+        // Map the array of items to HTML list items
+        if (items && items.length > 0) {
+            itemList = `<div styel = "border-bottom: 1px solid #5C7600">`;
+            items.forEach(item => {
+                itemList += `<div stlye = "display:flex; align-items:center">
+                <div>
+                ${item.productid}
+                </div>
+                <ul style={{listStyle:"None"}}>
+                    <li>
+                      Unit Price: ${item.total/item.numberofitems}
+                    </li>
+                    <li>
+                    Total: ${item.total}
+                    </li>
+                    <li>
+                      Units:  ${item.numberofitems}
+                    </li>
+                    </ul>
+                </div>`;
+            });
+            itemList += `</div>`;
+        }
         let mailOptions = {
             from: 'littlelemon589@outlook.com',
             to: email,
             subject: 'Hello from Nodemailer',
-            text: 'This is a test email sent from Nodemailer using Outlook SMTP'
+            html: `
+            <html>
+            <head>
+            <style>
+            
+            </style>
+            </head>
+            <p>Order Confirm #112</p>
+            <p style = "border-bottom: 1px solid #5C7600"> Thank you for your purchase John Doe!</p>
+            <p>Order Details:</p>
+            <div style ="display:grid; justify-content:center; align-items: center ">
+              <div>
+              ${itemList}
+             </div>
+            </div>
+            `,
         };
         console.log(mailOptions)
 
