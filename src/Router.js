@@ -27,6 +27,8 @@ router.post("/sendMessage", async (req, res) => {
         const { email, items } = req.body;
 
         let itemList = '';
+        let grandtotal = 0;
+        let itemProductList = []
 
         // Map the array of items to HTML list items
         if (items && items.length > 0) {
@@ -48,9 +50,28 @@ router.post("/sendMessage", async (req, res) => {
                     </li>
                     </ul>
                 </div>`;
+                itemProductList.push(item.productid)
+                grandtotal += Number(item.total)
             });
             itemList += `</div>`;
+
+            let sql = `
+            select name
+            from product
+            where productid = $1
+            `
+            let itemNames = []
+            db.query(sql,itemProductList, (err,result) =>{
+                if(err){
+                    res.send({message:"error in fetching data for product names"})
+                }else{
+                    itemNames = result
+                }
+            })
         }
+
+
+
         let mailOptions = {
             from: 'littlelemon589@outlook.com',
             to: email,
@@ -59,7 +80,6 @@ router.post("/sendMessage", async (req, res) => {
             <html>
             <head>
             <style>
-            
             </style>
             </head>
             <p>Order Confirm #112</p>
@@ -68,6 +88,12 @@ router.post("/sendMessage", async (req, res) => {
             <div style ="display:grid; justify-content:center; align-items: center ">
               <div>
               ${itemList}
+             </div>
+             <div>
+             ${itemNames}
+             </div>
+             <div>
+             ${grandtotal}
              </div>
             </div>
             `,

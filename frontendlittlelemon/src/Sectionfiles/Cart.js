@@ -141,7 +141,7 @@ const Cart=()=>{
                 return Number(item.total)
               }).reduce((acc, currentValue) => acc + currentValue, 0);
             const taxes = Math.round((sum *.12+ Number.EPSILON) *100)/100
-    
+
             const grandtotal = taxes + sum
 
             return(
