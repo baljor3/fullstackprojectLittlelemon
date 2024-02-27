@@ -11,9 +11,7 @@ const Cart=()=>{
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
     const [popUp, setPopUp] = useState(false);
-    const[subtotal, setSubtotal] = useState();
-    var count = 0;
-
+    //TODO: after user checkouts show loading screen. once loading screen is done send a message saying order has been placed.
 
     const additem = async(v) =>{
         try {

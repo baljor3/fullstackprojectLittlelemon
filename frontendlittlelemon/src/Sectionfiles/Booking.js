@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import moment from 'moment'
-
+import '../Css/booking.css'
 
 
 const BookingForm  = () =>{
@@ -89,7 +89,9 @@ const BookingForm  = () =>{
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
-        })
+        }).catch((err)=>{
+            console.log(err.message);
+        });
     }
 
     const handleSubmit = (e) => {
@@ -113,43 +115,47 @@ const BookingForm  = () =>{
     };
 
     return(
-        <main style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center"}}>
+        <main style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center", paddingBottom:'5px'}}>
             <div style={{justifyContent:"center"}}>
     <form style={{"display": 'grid', "max-width": 200, "gap": 20, alignItems:"center"}} onSubmit={handleSubmit}>
-        <label for="res-date" >Choose a Date</label>
+        <label for="res-date" className="label">Choose a Date</label>
 
         <input type = "date"
         id="res-date"
         required name="date"
         onChange={ChangeDate}
+        className="input-date"
          ></input>
 
-        <label for ="res-time">Choose a Time</label>
+        <label for ="res-time" className="label">Choose a Time</label>
 
         <select id = "res-time"
+        className="select-dropdown"
         onChange={(e)=>{setTime(e.target.value)}}>
         {availableTimes.map((time) =>(
             <option>{time}</option>
         ))}
         </select>
 
-        <label for="guests" >Number of guests</label>
+        <label for="guests" className="label">Number of guests</label>
 
         <input type="number" placeholder="1" min="1" max="10" id="guests"
+        className="input-number"
         onChange={(e)=> {setGuest(e.target.value)}}></input>
 
-        <label for="occasion">Occasion</label>
+        <label for="occasion" className="label">Occasion</label>
 
         <select id="occasion"
+        className="select-dropdown"
         onChange={(e)=> {setOccasion(e.target.value)}} >
             <option>Birthday</option>
             <option>Anniversary</option>
         </select>
 
-        <label for="email">Email</label>
-        <input type = "text" onChange={(e)=>{setEmail(e.target.value)}}></input>
+        <label for="email" className="label">Email</label>
+        <input type = "text" className="input-text" onChange={(e)=>{setEmail(e.target.value)}}></input>
 
-        <input type="submit" value="Make Your reservation"></input>
+        <input type="submit" className="input-submit" value="Make Your reservation"></input>
         
     </form>
     </div>

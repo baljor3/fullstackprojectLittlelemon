@@ -1,12 +1,15 @@
 import 'reactjs-popup/dist/index.css';
 import '../Css/Popup.css'
 import { useState } from 'react';
+import Cookies from "js-cookie";
 
 export default function PopupGfg({closeCheckout, data}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
     const [email, setEmail] =useState();
+
+    const jwtToken = Cookies.get('jwt_authorization')
 
     const handleCreditCardChange = (e) => {
         const formattedCreditCardNumber = e.target.value
@@ -35,6 +38,7 @@ export default function PopupGfg({closeCheckout, data}) {
                 "items":data
             }),
             headers:{
+                "token":jwtToken,
                 'Content-type':'application/json',
             }
         })

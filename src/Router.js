@@ -23,87 +23,114 @@ const transporter = nodemailer.createTransport({
 });
 
 router.post("/sendMessage", async (req, res) => {
+    //TODO: create an orderid from db
     try {
         const { email, items } = req.body;
+        console.log(items)
 
         let itemList = '';
         let grandtotal = 0;
-        let itemProductList = []
+        let itemProductList = [];
 
         // Map the array of items to HTML list items
         if (items && items.length > 0) {
-            itemList = `<div styel = "border-bottom: 1px solid #5C7600">`;
+
+            items.forEach(item=>{
+                itemProductList.push(item.productid);
+            })
+
+            // Fetch product names from the database
+            let sql = `
+                SELECT name
+                FROM product
+                WHERE productid = ANY($1)
+                order by productid;
+            `;
+            let itemNames = [];
+            await db.query(sql, [itemProductList], async (err, result) => {
+                if (err) {
+                    console.log("error in db.query", err);
+                    res.send({ message: "error in fetching data for product names" });
+                } else {
+                    console.log("in result in db.query");
+                    itemNames = result.rows.map(row => row.name);
+                    console.log("Item Names:", itemNames);
+
+                    items.forEach((item, index) => {
+                        item.itemName = itemNames[index]; // Assuming itemNames and items have the same length
+                    });
+
+                    itemList = `<div style="border-bottom: 1px solid #5C7600">`;
             items.forEach(item => {
-                itemList += `<div stlye = "display:flex; align-items:center">
-                <div>
-                ${item.productid}
-                </div>
-                <ul style={{listStyle:"None"}}>
+                itemList += `<div style="display:flex; align-items:center">
+                    <ul style="list-style:none">
                     <li>
-                      Unit Price: ${item.total/item.numberofitems}
+                    ${item.itemName}
                     </li>
-                    <li>
-                    Total: ${item.total}
-                    </li>
-                    <li>
-                      Units:  ${item.numberofitems}
-                    </li>
+                        <li>
+                            Unit Price: $${item.total / item.numberofitems}
+                        </li>
+                        <li>
+                            Total:$${item.total}
+                        </li>
+                        <li>
+                            Units:$${item.numberofitems}
+                        </li>
                     </ul>
                 </div>`;
-                itemProductList.push(item.productid)
-                grandtotal += Number(item.total)
+                grandtotal += Number(item.total);
             });
             itemList += `</div>`;
 
-            let sql = `
-            select name
-            from product
-            where productid = $1
-            `
-            let itemNames = []
-            db.query(sql,itemProductList, (err,result) =>{
-                if(err){
-                    res.send({message:"error in fetching data for product names"})
-                }else{
-                    itemNames = result
+                    // Construct email HTML with item names
+                    let mailOptions = {
+                        from: 'littlelemon589@outlook.com',
+                        to: email,
+                        subject: 'Hello from Nodemailer',
+                        html: `
+                            <html>
+                            <head>
+                                <style></style>
+                            </head>
+                            <body>
+                                <p>Order Confirm #112</p>
+                                <p style="border-bottom: 1px solid #5C7600"> Thank you for your purchase John Doe!</p>
+                                <p>Order Details:</p>
+                                <div style="display:grid; justify-content:center; align-items: center ">
+                                    <div>${itemList}</div>
+                                    <div>$${grandtotal}</div>
+                                </div>
+                            </body>
+                            </html>
+                        `,
+                    };
+
+                    // Send email
+                    const info = await transporter.sendMail(mailOptions);
+                    try{
+                        var IdorNot = getUserID(req.headers.token)
+                        }catch(err){
+                            return res.status(401).json({err:err.message})
+                        }
+
+                        let sql = `
+                        DELETE
+                        FROM cart
+                        where userid = $1
+                        `
+                        db.query(sql, IdorNot,(err,result)=>{
+                            if(err){
+                                console.log(err)
+                            }else{
+                                console.log("cart deleted")
+                            }
+                        })
+                    res.send({ message: "message sent" });
                 }
-            })
+            });
+        } else {
+            res.status(400).send({ error: 'No items provided' });
         }
-
-
-
-        let mailOptions = {
-            from: 'littlelemon589@outlook.com',
-            to: email,
-            subject: 'Hello from Nodemailer',
-            html: `
-            <html>
-            <head>
-            <style>
-            </style>
-            </head>
-            <p>Order Confirm #112</p>
-            <p style = "border-bottom: 1px solid #5C7600"> Thank you for your purchase John Doe!</p>
-            <p>Order Details:</p>
-            <div style ="display:grid; justify-content:center; align-items: center ">
-              <div>
-              ${itemList}
-             </div>
-             <div>
-             ${itemNames}
-             </div>
-             <div>
-             ${grandtotal}
-             </div>
-            </div>
-            `,
-        };
-        console.log(mailOptions)
-
-        // Send email
-        const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.response);
-        res.send({ message: "message sent" });
     } catch (error) {
         console.error('Error occurred:', error);
         res.status(500).send({ error: 'An error occurred while sending the email' });
@@ -142,40 +169,7 @@ router.get("/getDate",(req,res)=>{
 
 })
 
-router.get("/getDates",(req,res)=>{
-    try{
-        datecontoller.getDates((err,result)=>{
-            if(err){
-                res.status(400).send("dates object not found")
-            }else{
-                res.status(200).send({status:"Ok",data:result})
-            }
-        })
-    }catch(err){
-        res.status(500).send("reload api")
-    }
 
-})
-
-router.post("/saveDates",(req,res)=>{
-
-    try{
-
-        const dateDetails = req.body;
-        console.log(req.body);
-
-        datecontoller.saveDatesDetails(dateDetails,(err,results)=>{
-            if(err){
-                res.status(400).send("could not save datesObject")
-            }else{
-                res.status(201).send({status:"OK",data:results})
-            }
-        });
-    }catch(err){
-        res.status(500).send("reload save details")
-    }
-
-});
 
 router.post('/logininsert', (req, res) => {
   const { username, email,password } = req.body;
@@ -354,7 +348,6 @@ router.post('/getReviews',(req,res)=>{
             console.log(err)
             res.status(500).json({error:"Query failed"})
         }else{
-            
             res.send(result.rows)
         }
     })
