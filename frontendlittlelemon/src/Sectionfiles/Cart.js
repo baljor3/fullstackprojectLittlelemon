@@ -101,7 +101,6 @@ const Cart=()=>{
         if(data === undefined || data.length === 0 || data.length === undefined  || data === "undefined"){
             return(<p>No items in the cart</p>)
         }else{
-            
             return(data.map((item)=>{
                 return(<div style={{display:"flex", alignItems: "center",borderBottom: "1px solid black"}} key={item.productid}>
                     <div >
@@ -143,25 +142,27 @@ const Cart=()=>{
             const grandtotal = taxes + sum
 
             return(
+            <div>
                 <div style={{display:"grid",justifyContent:"center",alignItems: "center"}}>
                     <p>subTotal: {sum}</p>
                     <p>Taxes: {taxes}</p>
                     <p>Total: {grandtotal}</p>
+                <button onClick={closeOpenCheckout}>checkout</button>
                 </div>
+            </div>
             )
         }
     }
     
 
     return(
-        <body style={{backgroundColor:"#5C7600",
+        <body style={{backgroundColor:"#5C7600", height:"100vh"
         
         }}>
             <div style={{display:"flex",justifyContent: "center", alignItems: "center",}}>
             <div style={{justifyContent:"center",alignItems: "center"}}>
                 {listItems(data)}
                 {showTotal()}
-                <button onClick={closeOpenCheckout}>checkout</button>
 
             </div>
             </div>

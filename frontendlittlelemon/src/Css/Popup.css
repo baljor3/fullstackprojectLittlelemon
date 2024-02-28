@@ -50,22 +50,22 @@
     width: 100%;
 }
 
-label {
+.label-popup {
   font-weight: bold;
 }
 
-input {
+.input-popup {
   width: 100%;
   padding: 5px;
   box-sizing: border-box;
   border: 1px solid #5C7600;
 }
 
-input:focus {
+.input-popup:focus {
   border-color: #5C7600;
   border: #5C7600;
 }
-input[type="submit"] {
+.input-popup-submit {
   width: auto;
   padding: 5px 20px;
   background-color: #5C7600;

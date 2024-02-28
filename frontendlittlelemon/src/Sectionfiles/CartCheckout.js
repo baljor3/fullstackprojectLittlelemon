@@ -56,23 +56,24 @@ export default function PopupGfg({closeCheckout, data}) {
             <form className="popupForm" onSubmit={finish}>
                 <div className="nameContainer">
                     <div>
-                        <label>First Name</label>
-                        <input type="text" />
+                        <label className='label-popup'>First Name</label>
+                        <input type="text" className='input-popup'/>
                     </div>
                     <div>
-                        <label>Last Name</label>
-                        <input type="text" />
+                        <labe className='label-popup'l>Last Name</labe>
+                        <input type="text"  className='input-popup'/>
                     </div>
                 </div>
-                <label>Email</label>
-                <input type="text" onChange={(e)=>setEmail(e.target.value)}/>
+                <labe className='label-popup'l>Email</labe>
+                <input type="text" className='input-popup' onChange={(e)=>setEmail(e.target.value)}/>
                 <div className='creditCardContainer'>
                     <div className="labelRow">
-                        <label>Credit Card</label>
+                        <label className='label-popup'>Credit Card</label>
                     </div>
                     <div className="inputRow">
                         <input
                             type="text"
+                            className='input-popup'
                             value={creditCardNumber}
                             onChange={handleCreditCardChange}
                             placeholder="XXXX-XXXX-XXXX-XXXX"
@@ -81,11 +82,12 @@ export default function PopupGfg({closeCheckout, data}) {
                         />
                     </div>
                     <div className="labelRow">
-                        <label>Expiry Date</label>
+                        <label className='label-popup'>Expiry Date</label>
                     </div>
                     <div className="inputRow">
                         <input
                             type="text"
+                            className='input-popup'
                             value={expiryDate}
                             onChange={handleExpiryDateChange}
                             placeholder="MM/YY"
@@ -94,11 +96,12 @@ export default function PopupGfg({closeCheckout, data}) {
                         />
                     </div>
                     <div className="labelRow">
-                        <label>CVV</label>
+                        <label className='label-popup'>CVV</label>
                     </div>
                     <div className="inputRow">
                         <input
                             type="text"
+                            className='input-popup'
                             value={cvv}
                             onChange={handleCvvChange}
                             placeholder='XXX'
@@ -107,7 +110,7 @@ export default function PopupGfg({closeCheckout, data}) {
                         />
                     </div>
                 </div>
-                <input type="submit" />
+                <input type="submit"  className='input-popup-submit'/>
             </form>
         </div>
     );

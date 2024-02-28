@@ -68,7 +68,7 @@ return (
             <NavLink  key = {navlink.name} to={navlink.link} className="flex-item-nav"> {navlink.name}</NavLink>
         ))}
         <div style={{marginTop:"10px", marginLeft:"7px"}}>
-        {isLoggedIn ? <Link onClick={Logout} className="log">LOG OUT</Link>  :  <Link key = "login" to = "/login" 
+        {isLoggedIn ? <Link onClick={Logout} className="log">Logout</Link>  :  <Link key = "login" to = "/login" 
         className="log" > Login</Link>}
         </div>
         </div>

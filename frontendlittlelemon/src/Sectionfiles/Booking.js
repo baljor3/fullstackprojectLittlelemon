@@ -115,7 +115,7 @@ const BookingForm  = () =>{
     };
 
     return(
-        <main style={{backgroundColor:"#5C7600",display:"flex" ,justifyContent:"center", alignItems: "center", paddingBottom:'5px'}}>
+        <main style={{backgroundColor:"#5C7600",height:"100vh",display:"flex" ,justifyContent:"center", alignItems: "center", paddingBottom:'5px'}}>
             <div style={{justifyContent:"center"}}>
     <form style={{"display": 'grid', "max-width": 200, "gap": 20, alignItems:"center"}} onSubmit={handleSubmit}>
         <label for="res-date" className="label">Choose a Date</label>
