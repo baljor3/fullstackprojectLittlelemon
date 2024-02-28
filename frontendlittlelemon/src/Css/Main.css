@@ -1,3 +1,31 @@
+.review-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.reivew-button {
+  width: 25%;
+  justify-content: center;
+  background-color: #588f99;
+  color: white;
+  border: none;
+  padding: 8px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: auto;
+  margin-top: 20px;
+}
+
+.reivew-button:hover {
+  background-color: #356972; /* Darken the color on hover */
+}
 .grid-container-main{
     display: grid;
     justify-content: center;
@@ -30,15 +58,11 @@
 }
 
 .grid-container-review{
-  display: grid;
-  padding-left: 50px;
-  padding-right: 50px;
+  display: flex;
+  padding-left: 40px;
+  padding-right: 20px;
+  gap: 10px;
   padding-top: 20px;
-  row-gap: 5px;
-  column-gap: 20px;
-  grid-template-areas: 'title image image';
-  grid-template-columns: 150px, 200px;
-  grid-template-rows: 50px 200px;
   padding-bottom: 20px;
   background-color: #5C7600;
 }
@@ -49,12 +73,17 @@
   margin:0
 }
 
+
+
 .grid-cotainer-userReviews{
   display: grid;
   grid-template-rows: 25px 100px;
+  position: relative;
+  width: 600px;
   background-color: #CDC959;
   border-style: solid;
   border-color: #5C7600;
+  margin: auto;
 }
 
 .testHeading{
@@ -144,7 +173,7 @@
 
 .card{
   background-color: #D9D9D9;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 5px;
 }
 
 

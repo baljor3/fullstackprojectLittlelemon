@@ -45,7 +45,7 @@ const Menu=() => {
 
     return(
         <main>
-        <div className="grid-container-menu" style = {{"background-color":"#5C7600"}}>
+        <div className="grid-container-menu" style = {{"background-color":"#5C7600",height:"100vh"}}>
             {productList.map((item)=>{
                 return(
                     <div className="card">
@@ -54,7 +54,7 @@ const Menu=() => {
                         height: "103px",
                         borderRadius: "5px",
                         marginBottom: "0",
-                        paddingBottom: 0}}
+                        }}
                         productid = {item.productid}
                         height = "70px"
                         width = "70px"
