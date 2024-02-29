@@ -1,13 +1,15 @@
 import 'reactjs-popup/dist/index.css';
 import '../Css/Popup.css'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Cookies from "js-cookie";
 
-export default function PopupGfg({closeCheckout, data}) {
+export default function PopupGfg({closeCheckout, data, effect}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
     const [email, setEmail] =useState();
+    const [load, setLoading] = useState(false);
+    const [thankscreen, setThankScreen] = useState(false)
 
     const jwtToken = Cookies.get('jwt_authorization')
 
@@ -41,15 +43,57 @@ export default function PopupGfg({closeCheckout, data}) {
                 "token":jwtToken,
                 'Content-type':'application/json',
             }
+        }).catch(err =>{
+            console.log(err)
         })
     }
 
-    const finish = (e) =>{
-        e.preventDefault()
-        sendMessage(email)
+    const finish = async(e) =>{
+        e.preventDefault(); // Prevent default form submission
+        console.log(thankscreen)
+        setLoading(true)
+        await sendMessage(email);
+        closeCheckout(); // Close the checkout popup
+        effect(); // Update the cart data
+        setLoading(false)
+        changeThanks();
+        console.log(thankscreen)
     }
+
+    const changeThanks = async() =>{
+       await setThankScreen(prev => !prev)
+    }
+
+
+    const ThankyouWindow = () =>{
+        <div className='popupContainer'>
+             <span className="closeButton"
+            onClick={setThankScreen(false)}>
+                X</span>
+                <p>Order has been processed</p>
+
+        </div>
+    }
+
+    const LoadingScreen = ({})=>{
+    return(
+        <div className='loadContainer'>
+           <div>Loading...</div>
+           <div className='loading'></div>
+
+        </div>
+    )
+    }
+
     return (
-        <div className="popupContainer" >
+            <div>                
+                {thankscreen && <ThankyouWindow/>}
+                { load 
+                ?
+                <LoadingScreen />
+                :
+
+                 <div className="popupContainer" >
             <span className="closeButton"
             onClick={closeCheckout}>
                 X</span>
@@ -57,7 +101,8 @@ export default function PopupGfg({closeCheckout, data}) {
                 <div className="nameContainer">
                     <div>
                         <label className='label-popup'>First Name</label>
-                        <input type="text" className='input-popup'/>
+                        <input type="text" className='input-popup'
+                        />
                     </div>
                     <div>
                         <labe className='label-popup'l>Last Name</labe>
@@ -65,7 +110,10 @@ export default function PopupGfg({closeCheckout, data}) {
                     </div>
                 </div>
                 <labe className='label-popup'l>Email</labe>
-                <input type="text" className='input-popup' onChange={(e)=>setEmail(e.target.value)}/>
+                <input type="text" className='input-popup' 
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+                required/>
                 <div className='creditCardContainer'>
                     <div className="labelRow">
                         <label className='label-popup'>Credit Card</label>
@@ -112,6 +160,9 @@ export default function PopupGfg({closeCheckout, data}) {
                 </div>
                 <input type="submit"  className='input-popup-submit'/>
             </form>
+
         </div>
-    );
+}
+            </div>
+    )
 };

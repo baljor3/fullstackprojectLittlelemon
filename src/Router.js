@@ -74,7 +74,7 @@ router.post("/sendMessage", async (req, res) => {
                             Total:$${item.total}
                         </li>
                         <li>
-                            Units:$${item.numberofitems}
+                            Units:${item.numberofitems}
                         </li>
                     </ul>
                 </div>`;
@@ -98,7 +98,7 @@ router.post("/sendMessage", async (req, res) => {
                                 <p>Order Details:</p>
                                 <div style="display:grid; justify-content:center; align-items: center ">
                                     <div>${itemList}</div>
-                                    <div>$${grandtotal}</div>
+                                    <div>Total:  $${grandtotal}</div>
                                 </div>
                             </body>
                             </html>
@@ -106,26 +106,30 @@ router.post("/sendMessage", async (req, res) => {
                     };
 
                     // Send email
-                    const info = await transporter.sendMail(mailOptions);
-                    try{
-                        var IdorNot = getUserID(req.headers.token)
-                        }catch(err){
-                            return res.status(401).json({err:err.message})
-                        }
-
+                    try {
+                        // Send email
+                        const info = await transporter.sendMail(mailOptions);
+                        
+                        // Deleting cart items
+                        var IdorNot = getUserID(req.headers.token);
                         let sql = `
-                        DELETE
-                        FROM cart
-                        where userid = $1
-                        `
-                        db.query(sql, IdorNot,(err,result)=>{
-                            if(err){
-                                console.log(err)
-                            }else{
-                                console.log("cart deleted")
+                            DELETE FROM cart
+                            WHERE userid = $1
+                        `;
+                        db.query(sql, [IdorNot], (err, result) => {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                console.log("cart deleted");
                             }
-                        })
-                    res.send({ message: "message sent" });
+                        });
+                    
+                        // Send response after email is sent
+                        res.send({ message: "message sent" });
+                    } catch (err) {
+                        console.log(err);
+                        res.status(500).send({ error: 'An error occurred while sending the email' });
+                    }
                 }
             });
         } else {

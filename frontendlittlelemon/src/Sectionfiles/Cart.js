@@ -4,6 +4,7 @@ import bruchetta from "../asset/bruchetta.png"
 import greek from "../asset/greek-salad.jpg"
 import lemondessert from  "../asset/lemon-dessert.jpg"
 import PopupGfg from "./CartCheckout"
+import GetAPIS from "../APIS/GetAPIS";
 
 
 const Cart=()=>{
@@ -11,6 +12,7 @@ const Cart=()=>{
     const jwtToken = Cookies.get('jwt_authorization')
     const [updateEffect,setUpdateEffect] = useState(false);
     const [popUp, setPopUp] = useState(false);
+    const apis = new GetAPIS
     //TODO: after user checkouts show loading screen. once loading screen is done send a message saying order has been placed.
 
     const additem = async(v) =>{
@@ -61,23 +63,21 @@ const Cart=()=>{
         }
     }
 
-
+    const Cart = async() =>{
+        try{
+           const result = await apis.getCart(jwtToken)
+           if(result !== undefined){
+           setData(result)
+           }
+        }catch (err){
+            console.log(err)
+        }
+        }
+       
 
     // TODO:UseEffect is called mutiple times instead of once, hence creating mutiple re-renders.
     useEffect( () =>{
-         fetch('http://localhost:8080/api/getCart',{
-            headers:{
-                "token":Cookies.get('jwt_authorization')
-            }
-        })
-        .then((response)=>response.json())
-        .then((wdata)=>{
-            setUpdateEffect(false)
-            setData(wdata)
-            console.log(data)
-        }).catch((err)=>{
-            console.log(err.message);
-        });
+        Cart()
     },[updateEffect])
 
     function getImage(num) {
@@ -88,6 +88,10 @@ const Cart=()=>{
          }else{
         return(<img  src = {lemondessert} width= "150px" height="100px"></img>)
         }
+    }
+
+    const updatetheEffect = ()=>{
+        setUpdateEffect(prev => !prev)
     }
 
     const closeOpenCheckout = ()=>{
@@ -178,7 +182,7 @@ const Cart=()=>{
             zIndex: 2,
 
             }}>
-            <PopupGfg closeCheckout = {closeOpenCheckout} data = {data}/>
+            <PopupGfg closeCheckout = {closeOpenCheckout} data = {data} effect ={updatetheEffect}/>
             </div>: null}
         </body>
     )
