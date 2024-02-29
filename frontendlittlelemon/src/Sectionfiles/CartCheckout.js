@@ -49,20 +49,16 @@ export default function PopupGfg({closeCheckout, data, effect}) {
     }
 
     const finish = async(e) =>{
-        e.preventDefault(); // Prevent default form submission
-        console.log(thankscreen)
-        setLoading(true)
-        await sendMessage(email);
-        closeCheckout(); // Close the checkout popup
-        effect(); // Update the cart data
-        setLoading(false)
-        changeThanks();
-        console.log(thankscreen)
+    e.preventDefault(); // Prevent default form submission
+    setLoading(true);
+    await sendMessage(email);
+    closeCheckout(); // Close the checkout popup
+    effect(); // Update the cart data
+    setThankScreen(prev => !prev); // Toggle the state
+    console.log("Thankscreen value:", thankscreen); // Check the value of thankscreen
+    setLoading(false);
     }
 
-    const changeThanks = async() =>{
-       await setThankScreen(prev => !prev)
-    }
 
 
     const ThankyouWindow = () =>{
@@ -86,9 +82,9 @@ export default function PopupGfg({closeCheckout, data, effect}) {
     }
 
     return (
-            <div>                
+            <div>
                 {thankscreen && <ThankyouWindow/>}
-                { load 
+                { load
                 ?
                 <LoadingScreen />
                 :
