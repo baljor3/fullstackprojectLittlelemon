@@ -30,6 +30,7 @@
   border-color: #CDC959;
 }
 
+
 @keyframes loading {
   0% {
     transform: rotate(0deg);
@@ -48,6 +49,15 @@
   animation: loading 1s linear infinite;
 }
 .closeButton {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.closeButton-thank {
   position: absolute;
   top: 5px;
   right: 5px;

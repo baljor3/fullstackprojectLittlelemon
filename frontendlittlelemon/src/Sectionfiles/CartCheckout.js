@@ -1,6 +1,6 @@
 import 'reactjs-popup/dist/index.css';
 import '../Css/Popup.css'
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Cookies from "js-cookie";
 
 export default function PopupGfg({closeCheckout, data, effect}) {
@@ -48,27 +48,31 @@ export default function PopupGfg({closeCheckout, data, effect}) {
         })
     }
 
+    useEffect(() => {
+        console.log("Thankscreen value:", thankscreen);
+        console.log("loading", load)
+      }, [thankscreen]);
+
     const finish = async(e) =>{
     e.preventDefault(); // Prevent default form submission
     setLoading(true);
     await sendMessage(email);
     closeCheckout(); // Close the checkout popup
     effect(); // Update the cart data
-    setThankScreen(prev => !prev); // Toggle the state
-    console.log("Thankscreen value:", thankscreen); // Check the value of thankscreen
     setLoading(false);
+    setThankScreen(true)
     }
 
-
-
+ 
     const ThankyouWindow = () =>{
-        <div className='popupContainer'>
+        return(
+        <div className='loadContainer'>
              <span className="closeButton"
             onClick={setThankScreen(false)}>
                 X</span>
-                <p>Order has been processed</p>
-
+                <div>Order has been processed</div>
         </div>
+        )
     }
 
     const LoadingScreen = ({})=>{
@@ -83,7 +87,7 @@ export default function PopupGfg({closeCheckout, data, effect}) {
 
     return (
             <div>
-                {thankscreen && <ThankyouWindow/>}
+               {thankscreen ? <ThankyouWindow/>: null}
                 { load
                 ?
                 <LoadingScreen />
@@ -156,7 +160,6 @@ export default function PopupGfg({closeCheckout, data, effect}) {
                 </div>
                 <input type="submit"  className='input-popup-submit'/>
             </form>
-
         </div>
 }
             </div>
