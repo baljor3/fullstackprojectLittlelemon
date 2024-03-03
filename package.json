@@ -22,7 +22,8 @@
         "nodemon": "^3.0.2",
         "pg": "^8.11.3",
         "sql": "^0.78.0",
-        "stripe": "^14.16.0"
+        "stripe": "^14.16.0",
+        "uuid": "^9.0.1"
     },
     "devDependencies": {
         "gh-pages": "^6.1.1"

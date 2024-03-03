@@ -10,8 +10,23 @@ export default function PopupGfg({closeCheckout, data, effect}) {
     const [email, setEmail] =useState();
     const [load, setLoading] = useState(false);
     const [thankscreen, setThankScreen] = useState(false)
+    const [name, setName] = useState('')
 
     const jwtToken = Cookies.get('jwt_authorization')
+
+    useEffect(()=>{
+        fetch("http://localhost:8080/api/getName",{
+            method:"GET",
+            headers:{
+                "token":jwtToken,
+                'Content-type':'application/json',
+            }
+        }).then((result) = ()=> {
+            setName(result)
+        }).catch((err) = ()=>{
+            console.log(err)
+        })
+    })
 
     const handleCreditCardChange = (e) => {
         const formattedCreditCardNumber = e.target.value
@@ -37,7 +52,8 @@ export default function PopupGfg({closeCheckout, data, effect}) {
             method:'POST',
             body: JSON.stringify({
                 "email":email,
-                "items":data
+                "items":data,
+                "name": name
             }),
             headers:{
                 "token":jwtToken,
@@ -63,7 +79,6 @@ export default function PopupGfg({closeCheckout, data, effect}) {
     setThankScreen(true)
     }
 
- 
     const ThankyouWindow = () =>{
         return(
         <div className='loadContainer'>

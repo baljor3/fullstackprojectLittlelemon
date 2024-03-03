@@ -18,6 +18,25 @@ app.get('/createdb',(req, res )=>{
   console.log("db created")
 })
 
+app.get('/createOrder',(req,res)=>{
+  let sql = `CREATE TABLE orders ( id UUID, 
+    item VARCHAR(255)[], 
+  price NUMERIC[], 
+  Quantity int[], 
+  total NUMERIC[],
+  taxes NUMERIC,
+  grandtotal NUMERIC,
+  order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
+
+  db.query(sql,(err,result)=>{
+    if(err){
+      throw err;
+    }
+    console.log(result)
+    res.send("order table created")
+  })
+})
+
 // create table
 app.get('/createlogintable', (req,res)=>{
   let sql = 'CREATE TABLE login(id int AUTO_INCREMENT, username VARCHAR(255), email VARCHAR(255) ,password VARCHAR(255), PRIMARY KEY (id))';
@@ -45,7 +64,7 @@ app.get('/createCart',(req,res)=>{
 
 //create product
 app.get('/createProduct',(req,res)=>{
-  let sql = 'CREATE TABLE product(productid int AUTO_INCREMENT, name VARCHAR(255), Description TEXT, price double(3,2), PRIMARY KEY(productid))'
+  let sql = 'CREATE TABLE product(productid int AUTO_INCREMENT, name VARCHAR(255), Description TEXT,  price double(3,2), PRIMARY KEY(productid))'
   db.query(sql, (err,result)=>{
     if(err){
       throw err;

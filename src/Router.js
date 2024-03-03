@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
 router.post("/sendMessage", async (req, res) => {
     //TODO: create an orderid from db
     try {
-        const { email, items } = req.body;
+        const { email, items, name } = req.body;
         console.log(items)
 
         let itemList = '';
@@ -47,7 +47,7 @@ router.post("/sendMessage", async (req, res) => {
                 order by productid;
             `;
             let itemNames = [];
-            await db.query(sql, [itemProductList], async (err, result) => {
+            db.query(sql, [itemProductList], async (err, result) => {
                 if (err) {
                     console.log("error in db.query", err);
                     res.send({ message: "error in fetching data for product names" });
@@ -81,12 +81,23 @@ router.post("/sendMessage", async (req, res) => {
                 grandtotal += Number(item.total);
             });
             itemList += `</div>`;
+            let orderNUmber =''
+            let arrayofItems = [items.itemName,items.price, items.numberofitems,items.total,0,grandtotal]
+            let sql = `INSERT INTO orders VALUES ($1,$2,$3,$4,$5,$6)`
 
+            db.query(sql,arrayofItems,(err,result)=>{
+                if(err){
+                    console.log(err)
+                }else{
+                    orderNUmber=result
+                }
+            })
+            console.log(result)
                     // Construct email HTML with item names
                     let mailOptions = {
                         from: 'littlelemon589@outlook.com',
                         to: email,
-                        subject: 'Hello from Nodemailer',
+                        subject: 'Order Confirmation',
                         html: `
                             <html>
                             <head>
@@ -94,7 +105,7 @@ router.post("/sendMessage", async (req, res) => {
                             </head>
                             <body>
                                 <p>Order Confirm #112</p>
-                                <p style="border-bottom: 1px solid #5C7600"> Thank you for your purchase John Doe!</p>
+                                <p style="border-bottom: 1px solid #5C7600"> Thank you for your purchase ${name}!</p>
                                 <p>Order Details:</p>
                                 <div style="display:grid; justify-content:center; align-items: center ">
                                     <div>${itemList}</div>
@@ -109,7 +120,7 @@ router.post("/sendMessage", async (req, res) => {
                     try {
                         // Send email
                         const info = await transporter.sendMail(mailOptions);
-                        
+
                         // Deleting cart items
                         var IdorNot = getUserID(req.headers.token);
                         let sql = `
@@ -123,7 +134,7 @@ router.post("/sendMessage", async (req, res) => {
                                 console.log("cart deleted");
                             }
                         });
-                    
+
                         // Send response after email is sent
                         res.send({ message: "message sent" });
                     } catch (err) {
@@ -398,6 +409,16 @@ router.get("/getCookies",(req,res)=>{
         }catch(err){
             return res.status(401).json({err:err.message})
     }
+})
+
+router.get("/getName", async (req,res)=>{
+    try{
+        var IdorNot = getUserID(req.headers.token)
+        }catch(err){
+            return res.status(401).json({err:err.message})
+        }
+    result= await getUserName(IdorNot);    
+    res.send(result)
 })
 
 function getUserName(id){
