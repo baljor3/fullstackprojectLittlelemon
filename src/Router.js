@@ -5,6 +5,7 @@ const db = require('../db');
 const jwt  = require('jsonwebtoken');
 const { restart } = require('nodemon');
 const nodemailer = require("nodemailer");
+const { v4: uuidv4 } = require('uuid');
 
 
 
@@ -60,6 +61,9 @@ router.post("/sendMessage", async (req, res) => {
                         item.itemName = itemNames[index]; // Assuming itemNames and items have the same length
                     });
 
+                    let itemPrices = []
+                    let itemQuantity = []
+                    let itemTotals = []
                     itemList = `<div style="border-bottom: 1px solid #5C7600">`;
             items.forEach(item => {
                 itemList += `<div style="display:flex; align-items:center">
@@ -78,21 +82,14 @@ router.post("/sendMessage", async (req, res) => {
                         </li>
                     </ul>
                 </div>`;
+                let prices = item.total/item.numberofitems
+                itemPrices.push(prices)
+                itemQuantity.push(item.numberofitems)
+                itemTotals.push(item.total)
                 grandtotal += Number(item.total);
             });
             itemList += `</div>`;
-            let orderNUmber =''
-            let arrayofItems = [items.itemName,items.price, items.numberofitems,items.total,0,grandtotal]
-            let sql = `INSERT INTO orders VALUES ($1,$2,$3,$4,$5,$6)`
-
-            db.query(sql,arrayofItems,(err,result)=>{
-                if(err){
-                    console.log(err)
-                }else{
-                    orderNUmber=result
-                }
-            })
-            console.log(result)
+            let randomUUID = uuidv4();
                     // Construct email HTML with item names
                     let mailOptions = {
                         from: 'littlelemon589@outlook.com',
@@ -104,7 +101,7 @@ router.post("/sendMessage", async (req, res) => {
                                 <style></style>
                             </head>
                             <body>
-                                <p>Order Confirm #112</p>
+                                <p>Order Confirm ${uuidv4}</p>
                                 <p style="border-bottom: 1px solid #5C7600"> Thank you for your purchase ${name}!</p>
                                 <p>Order Details:</p>
                                 <div style="display:grid; justify-content:center; align-items: center ">
@@ -120,6 +117,18 @@ router.post("/sendMessage", async (req, res) => {
                     try {
                         // Send email
                         const info = await transporter.sendMail(mailOptions);
+                        console.log(randomUUID);
+                        console.log("items array",randomUUID,itemNames,itemPrices, itemQuantity,itemTotals,grandtotal,grandtotal)
+                        let arrayofItems = [randomUUID,itemNames,itemPrices, itemQuantity,itemTotals,(grandtotal*.12).toFixed(2), grandtotal*.12 + grandtotal]
+                        let sqlorder = `INSERT INTO orders VALUES ($1,$2,$3,$4,$5,$6,$7)`
+
+                         db.query(sqlorder,arrayofItems,(err,result)=>{
+                             if(err){
+                              console.log("error in orders",err)
+                              }else{
+                                console.log("oreder result",result)
+                             }
+                         })
 
                         // Deleting cart items
                         var IdorNot = getUserID(req.headers.token);
