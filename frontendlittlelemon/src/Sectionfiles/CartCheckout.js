@@ -3,14 +3,15 @@ import '../Css/Popup.css'
 import React, { useState,useEffect } from 'react';
 import Cookies from "js-cookie";
 
-export default function PopupGfg({closeCheckout, data, effect}) {
+
+export default function PopupGfg({closeCheckout, data, effect, changeThank, changeErr}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
     const [email, setEmail] =useState();
     const [load, setLoading] = useState(false);
-    const [thankscreen, setThankScreen] = useState(false)
     const [name, setName] = useState('')
+   
 
     const jwtToken = Cookies.get('jwt_authorization')
 
@@ -21,18 +22,18 @@ export default function PopupGfg({closeCheckout, data, effect}) {
                 "token":jwtToken,
                 'Content-type':'application/json',
             }
-        }).then((result) = ()=> {
+        }).then((result)=> {
             setName(result)
-        }).catch((err) = ()=>{
+        }).catch((err)=>{
             console.log(err)
         })
-    })
+    },[])
 
     const handleCreditCardChange = (e) => {
         const formattedCreditCardNumber = e.target.value
             .replace(/[^\d]/g, '') // Remove non-digit characters
             .replace(/(.{4})/g, '$1-') // Add a dash every four characters
-            .slice(0, 19); // Limit to 19 characters (4 digits + 3 dashes)
+            .slice(0, 19); // Limit to 19 characters (4 digits/ + 3 dashes)
         setCreditCardNumber(formattedCreditCardNumber);
     };
 
@@ -47,48 +48,50 @@ export default function PopupGfg({closeCheckout, data, effect}) {
         const formattedCvv = e.target.value.replace(/[^\d]/g, '').slice(0, 3); // Keep only the first three digits
         setCvv(formattedCvv);
     };
-    const sendMessage =async(email) =>{
-        await fetch('http://localhost:8080/api/sendMessage',{
-            method:'POST',
-            body: JSON.stringify({
-                "email":email,
-                "items":data,
-                "name": name
-            }),
-            headers:{
-                "token":jwtToken,
-                'Content-type':'application/json',
+    const sendMessage = async (email) => {
+        try {
+            const response = await fetch('http://localhost:8080/api/sendMessage', {
+                method: 'POST',
+                body: JSON.stringify({
+                    "email": email,
+                    "items": data,
+                    "name": name
+                }),
+                headers: {
+                    "token": jwtToken,
+                    'Content-type': 'application/json',
+                }
+            });
+            if (!response.ok) {
+                throw new Error("Failed to send message"); // Throw an error if the response is not ok
             }
-        }).catch(err =>{
-            console.log(err)
-        })
+        } catch (err) {
+            console.log(err);
+            throw err; // Rethrow the error to be caught in the finish function
+        }
     }
 
-    useEffect(() => {
-        console.log("Thankscreen value:", thankscreen);
-        console.log("loading", load)
-      }, [thankscreen]);
 
-    const finish = async(e) =>{
-    e.preventDefault(); // Prevent default form submission
-    setLoading(true);
-    await sendMessage(email);
-    closeCheckout(); // Close the checkout popup
-    effect(); // Update the cart data
-    setLoading(false);
-    setThankScreen(true)
-    }
 
-    const ThankyouWindow = () =>{
-        return(
-        <div className='loadContainer'>
-             <span className="closeButton"
-            onClick={setThankScreen(false)}>
-                X</span>
-                <div>Order has been processed</div>
-        </div>
-        )
-    }
+      const finish = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+        setLoading(true)
+        try {
+          await sendMessage(email);
+          console.log("after setting setLoading");
+          closeCheckout(); // Close the checkout popup
+          effect(); // Update the cart data
+          setLoading(false)
+          changeThank(); //Show thank you screen
+        } catch (error) {
+          console.error("Error occurred:", error);
+          setLoading(false); // Reset loading state in case of error
+          closeCheckout();
+          changeErr(); // set Error Screen
+        }
+      }
+
+    
 
     const LoadingScreen = ({})=>{
     return(
@@ -102,7 +105,6 @@ export default function PopupGfg({closeCheckout, data, effect}) {
 
     return (
             <div>
-               {thankscreen ? <ThankyouWindow/>: null}
                 { load
                 ?
                 <LoadingScreen />
@@ -124,7 +126,7 @@ export default function PopupGfg({closeCheckout, data, effect}) {
                         <input type="text"  className='input-popup'/>
                     </div>
                 </div>
-                <labe className='label-popup'l>Email</labe>
+                <label className='label-popup'l>Email</label>
                 <input type="text" className='input-popup' 
                 value={email}
                 onChange={(e)=>setEmail(e.target.value)}
