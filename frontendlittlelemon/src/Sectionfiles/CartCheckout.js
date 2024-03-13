@@ -4,6 +4,7 @@ import React, { useState,useEffect } from 'react';
 import Cookies from "js-cookie";
 
 
+
 export default function PopupGfg({closeCheckout, data, effect, changeThank, changeErr}) {
     const [creditCardNumber, setCreditCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
@@ -15,19 +16,29 @@ export default function PopupGfg({closeCheckout, data, effect, changeThank, chan
 
     const jwtToken = Cookies.get('jwt_authorization')
 
-    useEffect(()=>{
-        fetch("http://localhost:8080/api/getName",{
-            method:"GET",
-            headers:{
-                "token":jwtToken,
-                'Content-type':'application/json',
+    useEffect(() => {
+        const names = async() =>{
+            try{
+            const response = await fetch("http://localhost:8080/api/getName", {
+                method: "GET",
+                headers: {
+                    "token": jwtToken,
+                    'Content-type': 'application/json',
+                }})
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+    
+                const data = await response.json();
+                setName(data[0].username);
+            }catch(error){
+                console.error('Error fetching Name:', error);
             }
-        }).then((result)=> {
-            setName(result)
-        }).catch((err)=>{
-            console.log(err)
-        })
-    },[])
+        }
+        names()
+    }, []);
+
 
     const handleCreditCardChange = (e) => {
         const formattedCreditCardNumber = e.target.value

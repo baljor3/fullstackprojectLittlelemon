@@ -28,7 +28,7 @@ router.post("/sendMessage", async (req, res) => {
     //TODO: create an orderid from db
     try {
         const { email, items, name } = req.body;
-        console.log(items)
+        console.log("here is the name",name)
 
         let itemList = '';
         let grandtotal = 0;
@@ -102,7 +102,7 @@ router.post("/sendMessage", async (req, res) => {
                                 <style></style>
                             </head>
                             <body>
-                                <p>Order Confirm ${uuidv4}</p>
+                                <p>Order Confirm ${randomUUID}</p>
                                 <p style="border-bottom: 1px solid #5C7600"> Thank you for your purchase ${name}!</p>
                                 <p>Order Details:</p>
                                 <div style="display:grid; justify-content:center; align-items: center ">
@@ -427,7 +427,7 @@ router.get("/getName", async (req,res)=>{
         }catch(err){
             return res.status(401).json({err:err.message})
         }
-    result= await getUserName(IdorNot);    
+    result= await getUserName(IdorNot);
     res.send(result)
 })
 
@@ -438,7 +438,8 @@ function getUserName(id){
             if (err) {
                 reject(new Error('Query failed'));
             } else {
-                resolve(result.rows[0].username);
+                console.log(result.rows)
+                resolve(result.rows);
             }
         });
     });
