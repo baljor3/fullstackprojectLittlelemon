@@ -8,7 +8,6 @@ class GetAPIS{
                     "token": jwtToken
                 }
             });
-
             const wdata = await response.json();
             if (wdata.err === undefined) {
                 return wdata;

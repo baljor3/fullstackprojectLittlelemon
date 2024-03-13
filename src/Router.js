@@ -6,6 +6,7 @@ const jwt  = require('jsonwebtoken');
 const { restart } = require('nodemon');
 const nodemailer = require("nodemailer");
 const { v4: uuidv4 } = require('uuid');
+require('dotenv').config();
 
 
 
@@ -15,8 +16,8 @@ const transporter = nodemailer.createTransport({
     port: 587,
     secure: false,
     auth: {
-        user: "littlelemon589@outlook.com", // Use environment variable
-        pass: "Ch159159!", // Use environment variable
+        user: process.env.EMAIL, // Use environment variable
+        pass: process.env.EPASS, // Use environment variable
     },
     tls: {
         ciphers:'SSLv3'
