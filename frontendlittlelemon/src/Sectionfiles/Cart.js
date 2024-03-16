@@ -73,16 +73,6 @@ const Cart=()=>{
         }
     }
 
-    useEffect(()=>{
-        data.forEach(item => {
-            console.log("Item:", item);
-            // Log specific properties of the item if needed
-            console.log("Product ID:", item.productid);
-            console.log("Name:", item.name);
-            console.log("Price:", item.price);
-            // Add more properties as needed
-        });
-    },[data])
 
     const Cart = async() =>{
         try{
